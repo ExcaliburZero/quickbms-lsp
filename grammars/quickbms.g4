@@ -29,14 +29,21 @@ fragment X: [xX];
 fragment Y: [yY];
 fragment Z: [zZ];
 
-// The actual grammar
+// based on: https://github.com/antlr/grammars-v4/blob/f69c762c6d67eb5324d55c82129748454adb145c/c/C.g4#L830
+fragment CHARACTER:
+	~["\\\r\n]
+	//| ESCAPE_SEQUENCE // TODO: implement this
+	| '\\\n'
+	| '\\\r\n';
+
+// Grammar rules
 script: statement;
 statement: print_statement;
-expression: STRING;
+expression: STRING_LITERAL;
 
 print_statement: PRINT expression;
-//print_statement: P R I N T;
 
-STRING: '"' [a-zA-Z0-9]* '"';
+// Tokens
+STRING_LITERAL: '"' CHARACTER*? '"';
 PRINT: P R I N T;
 WS: [ \t\r\n]+ -> skip;
