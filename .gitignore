@@ -2,10 +2,12 @@
 /lib
 
 # Files generate by antlr
+.antlr/
 /src/grammar/*.interp
 /src/grammar/*.tokens
 /src/grammar/quickbmslexer.rs
 /src/grammar/quickbmslistener.rs
 /src/grammar/quickbmsparser.rs
+/src/grammar/quickbmsvisitor.rs
 /src/grammar/*.java
 /src/grammar/*.class
