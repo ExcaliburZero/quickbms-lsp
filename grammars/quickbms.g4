@@ -37,7 +37,7 @@ fragment CHARACTER:
 	| '\\\r\n';
 
 // Grammar rules
-script: statement;
+script: statement*;
 statement: print_statement;
 expression: STRING_LITERAL;
 
