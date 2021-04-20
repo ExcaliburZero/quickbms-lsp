@@ -1,4 +1,5 @@
 /target
+/lib
 
 # Files generate by antlr
 /src/grammar/*.interp
@@ -6,3 +7,5 @@
 /src/grammar/quickbmslexer.rs
 /src/grammar/quickbmslistener.rs
 /src/grammar/quickbmsparser.rs
+/src/grammar/*.java
+/src/grammar/*.class
