@@ -1,8 +1,12 @@
 grammar quickbms;
 
+@tokenfactory {
+	pub type LocalTokenFactory<'input> = antlr_rust::token_factory::ArenaCommonFactory<'input>;
+}
+
 // Case insensitivity schenanigans
 // https://github.com/antlr/antlr4/blob/master/doc/case-insensitive-lexing.md
-fragment A: [aA]; // match either an 'a' or 'A'
+fragment A:[aA]; // match either an 'a' or 'A'
 fragment B: [bB];
 fragment C: [cC];
 fragment D: [dD];

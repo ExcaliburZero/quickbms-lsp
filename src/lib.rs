@@ -1,12 +1,12 @@
 #![feature(try_blocks)]
 
-mod grammar {
-    mod ast;
-    mod parsing;
+pub mod grammar {
+    pub mod ast;
+    pub mod parsing;
 
     // Antlr generated modules
-    mod quickbmslexer;
-    mod quickbmslistener;
-    mod quickbmsparser;
-    mod quickbmsvisitor;
+    pub mod quickbmslexer;
+    pub mod quickbmslistener;
+    pub mod quickbmsparser;
+    pub mod quickbmsvisitor;
 }
