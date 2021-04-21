@@ -19,6 +19,8 @@ jobs:
           components: rustfmt
       - name: Construct parser
         run: make grammar
+      - name: Test grammar
+        run: make test
       - name: Build
         run: cargo build --verbose
       - name: Run tests
