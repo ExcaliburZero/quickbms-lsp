@@ -1,8 +1,8 @@
 pub trait CompilationUnit {}
 
 pub struct PrintStatement {
-    print_string: String,
-    expression: dyn Expression,
+    pub print_string: String,
+    pub expression: dyn Expression,
 }
 impl CompilationUnit for PrintStatement {}
 
