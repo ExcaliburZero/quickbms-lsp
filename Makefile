@@ -5,7 +5,7 @@ GRUN = java org.antlr.v4.gui.TestRig
 
 .PHONY: test grammar
 
-grammar:
+grammar: $(RUST_ANTLR_JAR)
 	java -jar $(RUST_ANTLR_JAR) -Dlanguage=Rust src/grammar/quickbms.g4 -visitor
 
 test: $(RUST_ANTLR_JAR)
