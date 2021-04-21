@@ -1,2 +1,2 @@
-# QuickBMS-lsp
+# QuickBMS-lsp [![quickbms-lsp](https://github.com/ExcaliburZero/quickbms-lsp/actions/workflows/quickbms-lsp.yml/badge.svg)](https://github.com/ExcaliburZero/quickbms-lsp/actions/workflows/quickbms-lsp.yml)
 This is an experimental language server for the scripting language QuickBMS.
