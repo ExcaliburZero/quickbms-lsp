@@ -11,7 +11,7 @@ use antlr_rust::tree::{ParseTreeVisitor, TerminalNode, Tree, Visitable, Visitabl
 use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
-    CompilationUnit, Expression, Keyword, LineColumn, LocationRange, PrintStatement, Script,
+    CompilationUnit, Expression, File, Keyword, LineColumn, LocationRange, PrintStatement, Script,
     Statement, StringLiteral,
 };
 use crate::grammar::quickbmslexer::*;
@@ -58,10 +58,13 @@ struct QuickBMSVisitorImpl {
 }
 
 impl QuickBMSVisitorImpl {
-    pub fn get_result(&self) -> Option<Script> {
+    pub fn get_result(&self) -> Option<File> {
         if self.return_stack.len() > 0 {
             match self.return_stack.last().unwrap() {
-                CompilationUnit::CUScript(script) => Some(script.clone()),
+                CompilationUnit::CUScript(script) => Some(File {
+                    script: script.clone(),
+                    keywords_by_location: self.keywords_by_location.clone(),
+                }),
                 _ => panic!(),
             }
         } else {
@@ -185,29 +188,38 @@ fn test_visitor() {
         };
         result.accept(&mut visitor);
 
-        assert_eq!(
-            visitor.get_result(),
-            Some(Script {
-                statements: vec![Statement::StmPrintStatement(PrintStatement {
-                    print_keyword: {
-                        Keyword {
-                            content: "print".to_string(),
+        if let Some(file) = visitor.get_result() {
+            assert_eq!(
+                file.script,
+                Script {
+                    statements: vec![Statement::StmPrintStatement(PrintStatement {
+                        print_keyword: {
+                            Keyword {
+                                content: "print".to_string(),
+                                location: LocationRange {
+                                    start: LineColumn { line: 1, column: 0 },
+                                    end: LineColumn { line: 1, column: 4 },
+                                },
+                            }
+                        },
+                        expression: Expression::ExpStringLiteral(StringLiteral {
+                            content: "Hello, World!".to_string(),
                             location: LocationRange {
-                                start: LineColumn { line: 1, column: 0 },
-                                end: LineColumn { line: 1, column: 4 },
+                                start: LineColumn { line: 1, column: 6 },
+                                end: LineColumn {
+                                    line: 1,
+                                    column: 20
+                                },
                             },
-                        }
-                    },
-                    expression: Expression::ExpStringLiteral(StringLiteral {
-                        content: "Hello, World!".to_string(),
+                        }),
                         location: LocationRange {
-                            start: LineColumn { line: 1, column: 6 },
+                            start: LineColumn { line: 1, column: 0 },
                             end: LineColumn {
                                 line: 1,
                                 column: 20
                             },
-                        },
-                    }),
+                        }
+                    })],
                     location: LocationRange {
                         start: LineColumn { line: 1, column: 0 },
                         end: LineColumn {
@@ -215,33 +227,28 @@ fn test_visitor() {
                             column: 20
                         },
                     }
-                })],
-                location: LocationRange {
-                    start: LineColumn { line: 1, column: 0 },
-                    end: LineColumn {
-                        line: 1,
-                        column: 20
-                    },
                 }
-            })
-        );
+            );
 
-        assert_eq!(
-            visitor.keywords_by_location,
-            vec![(
-                LocationRange {
-                    start: LineColumn { line: 1, column: 0 },
-                    end: LineColumn { line: 1, column: 4 }
-                },
-                Keyword {
-                    content: "print".to_string(),
-                    location: LocationRange {
+            assert_eq!(
+                file.keywords_by_location,
+                vec![(
+                    LocationRange {
                         start: LineColumn { line: 1, column: 0 },
                         end: LineColumn { line: 1, column: 4 }
+                    },
+                    Keyword {
+                        content: "print".to_string(),
+                        location: LocationRange {
+                            start: LineColumn { line: 1, column: 0 },
+                            end: LineColumn { line: 1, column: 4 }
+                        }
                     }
-                }
-            )]
-        );
+                )]
+            );
+        } else {
+            assert!(false);
+        }
 
         result
     }

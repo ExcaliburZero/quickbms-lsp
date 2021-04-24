@@ -1,4 +1,16 @@
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct File {
+    pub script: Script,
+    pub keywords_by_location: Vec<(LocationRange, Keyword)>,
+}
+
+impl File {
+    fn get_hover_message(&self, location: LineColumn) -> Option<String> {
+        panic!()
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CompilationUnit {
     CUScript(Script),
     CUPrintStatement(PrintStatement),
