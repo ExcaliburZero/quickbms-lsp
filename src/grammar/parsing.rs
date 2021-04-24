@@ -24,7 +24,7 @@ use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmslistener::*;
 use crate::grammar::quickbmsparser::{
     quickbmsParser, quickbmsParserContext, quickbmsParserContextType, ExpressionContext,
-    Print_statementContext, ScriptContext, StatementContext,
+    Print_statementContext, ScriptContext, StatementContext, String_literalContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
@@ -106,20 +106,7 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
         self.return_stack.push(CompilationUnit::CUScript(script));
     }
 
-    fn visit_statement(&mut self, ctx: &StatementContext<'i>) {
-        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
-        let statement = match self.return_stack.pop().unwrap() {
-            CompilationUnit::CUPrintStatement(print_statement) => {
-                Statement::StmPrintStatement(print_statement)
-            }
-            _ => panic!(),
-        };
-
-        self.return_stack
-            .push(CompilationUnit::CUStatement(statement));
-    }
-
-    fn visit_expression(&mut self, ctx: &ExpressionContext<'i>) {
+    fn visit_string_literal(&mut self, ctx: &String_literalContext<'i>) {
         //self.visit_children(ctx)
         ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
         let string_literal = match self.return_stack.pop().unwrap() {
@@ -160,7 +147,9 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             expression,
         };
         self.return_stack
-            .push(CompilationUnit::CUPrintStatement(value));
+            .push(CompilationUnit::CUStatement(Statement::StmPrintStatement(
+                value,
+            )));
     }
 }
 

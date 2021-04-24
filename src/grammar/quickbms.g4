@@ -42,10 +42,8 @@ fragment CHARACTER:
 
 // Grammar rules
 script: statement*;
-statement: print_statement;
-expression: STRING_LITERAL;
-
-print_statement: PRINT expression;
+statement: PRINT expression # print_statement;
+expression: STRING_LITERAL # string_literal;
 
 // Tokens
 STRING_LITERAL: '"' CHARACTER*? '"';
