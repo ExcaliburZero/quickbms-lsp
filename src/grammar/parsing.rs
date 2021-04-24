@@ -1,37 +1,23 @@
-use std::borrow::{Borrow, Cow};
-use std::fmt::Debug;
-use std::fmt::Write;
-use std::io::Read;
-use std::iter::FromIterator;
+use std::borrow::Cow;
 use std::ops::Deref;
 use std::rc::Rc;
 
 use antlr_rust::common_token_stream::CommonTokenStream;
-use antlr_rust::int_stream::IntStream;
-use antlr_rust::lexer::Lexer;
 
-use antlr_rust::parser_rule_context::{BaseParserRuleContext, ParserRuleContext};
-use antlr_rust::rule_context::CustomRuleContext;
-use antlr_rust::token::GenericToken;
-use antlr_rust::token::{Token, TOKEN_EOF};
-use antlr_rust::token_factory::{ArenaCommonFactory, OwningTokenFactory};
-use antlr_rust::token_stream::{TokenStream, UnbufferedTokenStream};
-use antlr_rust::tree::{
-    ParseTree, ParseTreeListener, ParseTreeVisitor, ParseTreeWalker, TerminalNode, Tree,
-    VisitChildren, Visitable, VisitableDyn,
-};
+use antlr_rust::parser_rule_context::ParserRuleContext;
+use antlr_rust::token::Token;
+use antlr_rust::token_factory::ArenaCommonFactory;
+use antlr_rust::tree::{ParseTreeVisitor, TerminalNode, Tree, Visitable, VisitableDyn};
 use antlr_rust::InputStream;
-use antlr_rust::TidAble;
 
 use crate::grammar::ast::{
     CompilationUnit, Expression, Keyword, LineColumn, LocationRange, PrintStatement, Script,
     Statement, StringLiteral,
 };
 use crate::grammar::quickbmslexer::*;
-use crate::grammar::quickbmslistener::*;
 use crate::grammar::quickbmsparser::{
-    quickbmsParser, quickbmsParserContext, quickbmsParserContextType, ExpressionContext,
-    Print_statementContext, ScriptContext, StatementContext, String_literalContext,
+    quickbmsParser, quickbmsParserContextType, Print_statementContext, ScriptContext,
+    String_literalContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
