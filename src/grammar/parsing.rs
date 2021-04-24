@@ -47,13 +47,6 @@ impl QuickBMSVisitorImpl {
 
 impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl {
     fn visit_terminal(&mut self, node: &TerminalNode<'i, quickbmsParserContextType>) {
-        /*if node.symbol.get_token_type() == PRINT {
-            if let Cow::Borrowed(s) = node.symbol.text {
-                self.return_stack.push(CompilationUnit::CUKeyword(Keyword {
-                    content: s.to_string(),
-                }));
-            }
-        }*/
         match node.symbol.get_token_type() {
             PRINT => {
                 if let Cow::Borrowed(s) = node.symbol.text {
@@ -76,20 +69,11 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
             }
             _ => {}
         }
-        /*if node.symbol.get_token_type() == csvparser::TEXT {
-            if let Cow::Borrowed(s) = node.symbol.text {
-                self.0.push(s);
-            }
-        }*/
-
-        //panic!()
     }
 }
 
 impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
-        //ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
-
         let mut statements = vec![];
         for child in ctx.get_children() {
             child.as_ref().accept_dyn(self);
@@ -107,7 +91,6 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     }
 
     fn visit_string_literal(&mut self, ctx: &String_literalContext<'i>) {
-        //self.visit_children(ctx)
         ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
         let string_literal = match self.return_stack.pop().unwrap() {
             CompilationUnit::CUStringLiteral(string_literal) => string_literal,
@@ -121,13 +104,6 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     }
 
     fn visit_print_statement(&mut self, ctx: &Print_statementContext<'i>) {
-        println!("{:?}", ctx);
-        println!("{:?}", ctx.get_child(0));
-        println!("{:?}", ctx.get_child(1));
-        //println!("{:?}", self.visit_children(ctx));
-
-        //ctx.accept(ctx.get_child(0).unwrap());
-
         ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
         let print_keyword = match self.return_stack.pop().unwrap() {
             CompilationUnit::CUKeyword(keyword) => keyword,
