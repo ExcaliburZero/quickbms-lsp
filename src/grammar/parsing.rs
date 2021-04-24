@@ -17,7 +17,9 @@ use antlr_rust::tree::{
 };
 use antlr_rust::InputStream;
 
-use crate::grammar::ast::{CompilationUnit, Expression, Keyword, PrintStatement, StringLiteral};
+use crate::grammar::ast::{
+    CompilationUnit, Expression, Keyword, PrintStatement, Script, Statement, StringLiteral,
+};
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmslistener::*;
 use crate::grammar::quickbmsparser::{
@@ -28,6 +30,19 @@ use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
 struct QuickBMSVisitorImpl {
     return_stack: Vec<CompilationUnit>,
+}
+
+impl QuickBMSVisitorImpl {
+    pub fn get_result(&self) -> Option<Script> {
+        if self.return_stack.len() > 0 {
+            match self.return_stack.last().unwrap() {
+                CompilationUnit::CUScript(script) => Some(script.clone()),
+                _ => panic!(),
+            }
+        } else {
+            panic!()
+        }
+    }
 }
 
 impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl {
@@ -53,7 +68,7 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
                 if let Cow::Borrowed(s) = node.symbol.text {
                     self.return_stack
                         .push(CompilationUnit::CUStringLiteral(StringLiteral {
-                            content: s.to_string(),
+                            content: s[1..(s.len() - 1)].to_string(),
                         }));
                 } else {
                     panic!();
@@ -72,13 +87,37 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
 }
 
 impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
-    /*fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
-        self.visit_children(ctx)
+    fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
+        //ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+
+        let mut statements = vec![];
+        for child in ctx.get_children() {
+            child.as_ref().accept_dyn(self);
+            let statement = match self.return_stack.pop().unwrap() {
+                CompilationUnit::CUStatement(statement) => statement,
+                _ => panic!(),
+            };
+
+            statements.push(statement);
+        }
+
+        let script = Script { statements };
+
+        self.return_stack.push(CompilationUnit::CUScript(script));
     }
 
     fn visit_statement(&mut self, ctx: &StatementContext<'i>) {
-        self.visit_children(ctx)
-    }*/
+        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+        let statement = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUPrintStatement(print_statement) => {
+                Statement::StmPrintStatement(print_statement)
+            }
+            _ => panic!(),
+        };
+
+        self.return_stack
+            .push(CompilationUnit::CUStatement(statement));
+    }
 
     fn visit_expression(&mut self, ctx: &ExpressionContext<'i>) {
         //self.visit_children(ctx)
@@ -127,10 +166,9 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
 
 #[test]
 fn test_visitor() {
-    // TODO: Actually get this to test something. Right now it exists to make sure things can compile.
     fn parse<'a>(tf: &'a ArenaCommonFactory<'a>) -> Rc<ScriptContext<'a>> {
         let mut _lexer = quickbmsLexer::new_with_token_factory(
-            InputStream::new("print \"Hello, World!\"\n".into()),
+            InputStream::new("print \"Hello, World!\"\n"),
             tf,
         );
         let token_source = CommonTokenStream::new(_lexer);
@@ -142,8 +180,21 @@ fn test_visitor() {
         };
         result.accept(&mut visitor);
 
-        println!("{:?}", visitor.return_stack);
-        //assert_eq!(visitor.0, vec!["d1", "d2"]);
+        assert_eq!(
+            visitor.get_result(),
+            Some(Script {
+                statements: vec![Statement::StmPrintStatement(PrintStatement {
+                    print_keyword: {
+                        Keyword {
+                            content: "print".to_string(),
+                        }
+                    },
+                    expression: Expression::ExpStringLiteral(StringLiteral {
+                        content: "Hello, World!".to_string(),
+                    })
+                })]
+            })
+        );
 
         result
     }
