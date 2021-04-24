@@ -150,6 +150,4 @@ fn test_visitor() {
     let tf = ArenaCommonFactory::default();
 
     let _result = parse(&tf);
-
-    assert!(false);
 }
