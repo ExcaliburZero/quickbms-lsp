@@ -115,8 +115,7 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
 
 impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
-        println!("script = {:?}", ctx);
-        println!(" = {:?}", ctx_location_range![ctx]);
+        let location = ctx_location_range![ctx];
 
         let mut statements = vec![];
         for child in ctx.get_children() {
@@ -129,7 +128,10 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             statements.push(statement);
         }
 
-        let script = Script { statements };
+        let script = Script {
+            statements,
+            location,
+        };
 
         self.return_stack.push(CompilationUnit::CUScript(script));
     }
@@ -148,6 +150,8 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     }
 
     fn visit_print_statement(&mut self, ctx: &Print_statementContext<'i>) {
+        let location = ctx_location_range![ctx];
+
         ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
         let print_keyword = match self.return_stack.pop().unwrap() {
             CompilationUnit::CUKeyword(keyword) => keyword,
@@ -163,6 +167,7 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
         let value = PrintStatement {
             print_keyword,
             expression,
+            location,
         };
         self.return_stack
             .push(CompilationUnit::CUStatement(Statement::StmPrintStatement(
@@ -209,8 +214,22 @@ fn test_visitor() {
                                 column: 20
                             },
                         },
-                    })
-                })]
+                    }),
+                    location: LocationRange {
+                        start: LineColumn { line: 1, column: 0 },
+                        end: LineColumn {
+                            line: 1,
+                            column: 20
+                        },
+                    }
+                })],
+                location: LocationRange {
+                    start: LineColumn { line: 1, column: 0 },
+                    end: LineColumn {
+                        line: 1,
+                        column: 20
+                    },
+                }
             })
         );
 

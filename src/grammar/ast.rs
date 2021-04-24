@@ -11,6 +11,7 @@ pub enum CompilationUnit {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Script {
     pub statements: Vec<Statement>,
+    pub location: LocationRange,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -22,6 +23,7 @@ pub enum Statement {
 pub struct PrintStatement {
     pub print_keyword: Keyword,
     pub expression: Expression,
+    pub location: LocationRange,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
