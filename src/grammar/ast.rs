@@ -32,9 +32,23 @@ pub enum Expression {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct StringLiteral {
     pub content: String,
+    pub location: LocationRange,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Keyword {
     pub content: String,
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LocationRange {
+    pub start: LineColumn,
+    pub end: LineColumn,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LineColumn {
+    pub line: isize,
+    pub column: isize,
 }

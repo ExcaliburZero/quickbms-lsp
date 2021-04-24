@@ -1,13 +1,18 @@
 use std::borrow::{Borrow, Cow};
+use std::fmt::Debug;
 use std::fmt::Write;
 use std::io::Read;
 use std::iter::FromIterator;
+use std::ops::Deref;
 use std::rc::Rc;
 
 use antlr_rust::common_token_stream::CommonTokenStream;
 use antlr_rust::int_stream::IntStream;
 use antlr_rust::lexer::Lexer;
 
+use antlr_rust::parser_rule_context::{BaseParserRuleContext, ParserRuleContext};
+use antlr_rust::rule_context::CustomRuleContext;
+use antlr_rust::token::GenericToken;
 use antlr_rust::token::{Token, TOKEN_EOF};
 use antlr_rust::token_factory::{ArenaCommonFactory, OwningTokenFactory};
 use antlr_rust::token_stream::{TokenStream, UnbufferedTokenStream};
@@ -16,9 +21,11 @@ use antlr_rust::tree::{
     VisitChildren, Visitable, VisitableDyn,
 };
 use antlr_rust::InputStream;
+use antlr_rust::TidAble;
 
 use crate::grammar::ast::{
-    CompilationUnit, Expression, Keyword, PrintStatement, Script, Statement, StringLiteral,
+    CompilationUnit, Expression, Keyword, LineColumn, LocationRange, PrintStatement, Script,
+    Statement, StringLiteral,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmslistener::*;
@@ -27,6 +34,37 @@ use crate::grammar::quickbmsparser::{
     Print_statementContext, ScriptContext, StatementContext, String_literalContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
+
+// Some macros to get the locations of tokens. It might be possible to define these as functions,
+// but after trying for quite a while I wasn't able to get the trait bounds right, so I just made
+// them macros instead.
+#[macro_export]
+macro_rules! ctx_location_range {
+    ($ctx:expr) => {{
+        let start = token_location_range![$ctx.start().deref()].start;
+        let end = token_location_range![$ctx.stop().deref()].end;
+
+        LocationRange { start, end }
+    }};
+}
+
+#[macro_export]
+macro_rules! token_location_range {
+    ($token:expr) => {{
+        let start = LineColumn {
+            line: $token.line,
+            column: $token.column,
+        };
+
+        // TODO: How does this work with multi-line tokens?
+        let end = LineColumn {
+            line: $token.line,
+            column: $token.column + ($token.stop - $token.start),
+        };
+
+        LocationRange { start, end }
+    }};
+}
 
 struct QuickBMSVisitorImpl {
     return_stack: Vec<CompilationUnit>,
@@ -47,11 +85,13 @@ impl QuickBMSVisitorImpl {
 
 impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl {
     fn visit_terminal(&mut self, node: &TerminalNode<'i, quickbmsParserContextType>) {
+        let location = token_location_range![node.symbol];
         match node.symbol.get_token_type() {
             PRINT => {
                 if let Cow::Borrowed(s) = node.symbol.text {
                     self.return_stack.push(CompilationUnit::CUKeyword(Keyword {
                         content: s.to_string(),
+                        location,
                     }));
                 } else {
                     panic!();
@@ -62,6 +102,7 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
                     self.return_stack
                         .push(CompilationUnit::CUStringLiteral(StringLiteral {
                             content: s[1..(s.len() - 1)].to_string(),
+                            location,
                         }));
                 } else {
                     panic!();
@@ -74,6 +115,9 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
 
 impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
+        println!("script = {:?}", ctx);
+        println!(" = {:?}", ctx_location_range![ctx]);
+
         let mut statements = vec![];
         for child in ctx.get_children() {
             child.as_ref().accept_dyn(self);
@@ -109,14 +153,12 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             CompilationUnit::CUKeyword(keyword) => keyword,
             _ => panic!(),
         };
-        println!("{:?}", print_keyword);
 
         ctx.get_child(1).unwrap().as_ref().accept_dyn(self);
         let expression = match self.return_stack.pop().unwrap() {
             CompilationUnit::CUExpression(expression) => expression,
             _ => panic!(),
         };
-        println!("{:?}", expression);
 
         let value = PrintStatement {
             print_keyword,
@@ -152,10 +194,21 @@ fn test_visitor() {
                     print_keyword: {
                         Keyword {
                             content: "print".to_string(),
+                            location: LocationRange {
+                                start: LineColumn { line: 1, column: 0 },
+                                end: LineColumn { line: 1, column: 4 },
+                            },
                         }
                     },
                     expression: Expression::ExpStringLiteral(StringLiteral {
                         content: "Hello, World!".to_string(),
+                        location: LocationRange {
+                            start: LineColumn { line: 1, column: 6 },
+                            end: LineColumn {
+                                line: 1,
+                                column: 20
+                            },
+                        },
                     })
                 })]
             })
