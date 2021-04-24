@@ -68,6 +68,7 @@ macro_rules! token_location_range {
 
 struct QuickBMSVisitorImpl {
     return_stack: Vec<CompilationUnit>,
+    keywords_by_location: Vec<(LocationRange, Keyword)>,
 }
 
 impl QuickBMSVisitorImpl {
@@ -89,10 +90,15 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
         match node.symbol.get_token_type() {
             PRINT => {
                 if let Cow::Borrowed(s) = node.symbol.text {
-                    self.return_stack.push(CompilationUnit::CUKeyword(Keyword {
+                    let keyword = Keyword {
                         content: s.to_string(),
                         location,
-                    }));
+                    };
+                    self.return_stack
+                        .push(CompilationUnit::CUKeyword(keyword.clone()));
+
+                    self.keywords_by_location
+                        .push((keyword.location.clone(), keyword));
                 } else {
                     panic!();
                 }
@@ -189,6 +195,7 @@ fn test_visitor() {
 
         let mut visitor = QuickBMSVisitorImpl {
             return_stack: vec![],
+            keywords_by_location: vec![],
         };
         result.accept(&mut visitor);
 
@@ -231,6 +238,23 @@ fn test_visitor() {
                     },
                 }
             })
+        );
+
+        assert_eq!(
+            visitor.keywords_by_location,
+            vec![(
+                LocationRange {
+                    start: LineColumn { line: 1, column: 0 },
+                    end: LineColumn { line: 1, column: 4 }
+                },
+                Keyword {
+                    content: "print".to_string(),
+                    location: LocationRange {
+                        start: LineColumn { line: 1, column: 0 },
+                        end: LineColumn { line: 1, column: 4 }
+                    }
+                }
+            )]
         );
 
         result
