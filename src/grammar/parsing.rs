@@ -1,3 +1,4 @@
+use std::borrow::{Borrow, Cow};
 use std::fmt::Write;
 use std::io::Read;
 use std::iter::FromIterator;
@@ -12,11 +13,11 @@ use antlr_rust::token_factory::{ArenaCommonFactory, OwningTokenFactory};
 use antlr_rust::token_stream::{TokenStream, UnbufferedTokenStream};
 use antlr_rust::tree::{
     ParseTree, ParseTreeListener, ParseTreeVisitor, ParseTreeWalker, TerminalNode, Tree,
-    VisitChildren, Visitable,
+    VisitChildren, Visitable, VisitableDyn,
 };
 use antlr_rust::InputStream;
 
-use crate::grammar::ast::{CompilationUnit, Expression, PrintStatement};
+use crate::grammar::ast::{CompilationUnit, Expression, Keyword, PrintStatement, StringLiteral};
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmslistener::*;
 use crate::grammar::quickbmsparser::{
@@ -25,12 +26,41 @@ use crate::grammar::quickbmsparser::{
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
-struct QuickBMSVisitorImpl<'i, CompilationUnit>(Vec<&'i str>, CompilationUnit);
+struct QuickBMSVisitorImpl {
+    return_stack: Vec<CompilationUnit>,
+}
 
-impl<'i, CompilationUnit> ParseTreeVisitor<'i, quickbmsParserContextType>
-    for QuickBMSVisitorImpl<'i, CompilationUnit>
-{
+impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl {
     fn visit_terminal(&mut self, node: &TerminalNode<'i, quickbmsParserContextType>) {
+        /*if node.symbol.get_token_type() == PRINT {
+            if let Cow::Borrowed(s) = node.symbol.text {
+                self.return_stack.push(CompilationUnit::CUKeyword(Keyword {
+                    content: s.to_string(),
+                }));
+            }
+        }*/
+        match node.symbol.get_token_type() {
+            PRINT => {
+                if let Cow::Borrowed(s) = node.symbol.text {
+                    self.return_stack.push(CompilationUnit::CUKeyword(Keyword {
+                        content: s.to_string(),
+                    }));
+                } else {
+                    panic!();
+                }
+            }
+            STRING_LITERAL => {
+                if let Cow::Borrowed(s) = node.symbol.text {
+                    self.return_stack
+                        .push(CompilationUnit::CUStringLiteral(StringLiteral {
+                            content: s.to_string(),
+                        }));
+                } else {
+                    panic!();
+                }
+            }
+            _ => {}
+        }
         /*if node.symbol.get_token_type() == csvparser::TEXT {
             if let Cow::Borrowed(s) = node.symbol.text {
                 self.0.push(s);
@@ -41,21 +71,57 @@ impl<'i, CompilationUnit> ParseTreeVisitor<'i, quickbmsParserContextType>
     }
 }
 
-impl<'i, CompilationUnit> quickbmsVisitor<'i> for QuickBMSVisitorImpl<'i, CompilationUnit> {
+impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     /*fn visit_script(&mut self, ctx: &ScriptContext<'i>) {
         self.visit_children(ctx)
     }
 
     fn visit_statement(&mut self, ctx: &StatementContext<'i>) {
         self.visit_children(ctx)
-    }
-
-    fn visit_expression(&mut self, ctx: &ExpressionContext<'i>) {
-        self.visit_children(ctx)
     }*/
 
+    fn visit_expression(&mut self, ctx: &ExpressionContext<'i>) {
+        //self.visit_children(ctx)
+        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+        let string_literal = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUStringLiteral(string_literal) => string_literal,
+            _ => panic!(),
+        };
+
+        self.return_stack
+            .push(CompilationUnit::CUExpression(Expression::ExpStringLiteral(
+                string_literal,
+            )));
+    }
+
     fn visit_print_statement(&mut self, ctx: &Print_statementContext<'i>) {
-        println!("{:?}", self.visit_children(ctx))
+        println!("{:?}", ctx);
+        println!("{:?}", ctx.get_child(0));
+        println!("{:?}", ctx.get_child(1));
+        //println!("{:?}", self.visit_children(ctx));
+
+        //ctx.accept(ctx.get_child(0).unwrap());
+
+        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+        let print_keyword = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUKeyword(keyword) => keyword,
+            _ => panic!(),
+        };
+        println!("{:?}", print_keyword);
+
+        ctx.get_child(1).unwrap().as_ref().accept_dyn(self);
+        let expression = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUExpression(expression) => expression,
+            _ => panic!(),
+        };
+        println!("{:?}", expression);
+
+        let value = PrintStatement {
+            print_keyword,
+            expression,
+        };
+        self.return_stack
+            .push(CompilationUnit::CUPrintStatement(value));
     }
 }
 
@@ -71,9 +137,12 @@ fn test_visitor() {
         let mut parser = quickbmsParser::new(token_source);
         let result = parser.script().expect("parsed unsuccessfully");
 
-        let mut test = 5;
-        let mut visitor = QuickBMSVisitorImpl(Vec::new(), &mut test);
+        let mut visitor = QuickBMSVisitorImpl {
+            return_stack: vec![],
+        };
         result.accept(&mut visitor);
+
+        println!("{:?}", visitor.return_stack);
         //assert_eq!(visitor.0, vec!["d1", "d2"]);
 
         result
@@ -81,4 +150,6 @@ fn test_visitor() {
     let tf = ArenaCommonFactory::default();
 
     let _result = parse(&tf);
+
+    assert!(false);
 }
