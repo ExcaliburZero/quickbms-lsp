@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 antlr-rust = "=0.2"
+jsonrpc-core = "17.0.0"
