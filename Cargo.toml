@@ -9,3 +9,6 @@ edition = "2018"
 [dependencies]
 antlr-rust = "=0.2"
 jsonrpc-core = "17.0.0"
+lsp-types = "0.89.0"
+serde = "1.0.125"
+serde_json = "1.0.64"

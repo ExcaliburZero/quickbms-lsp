@@ -10,3 +10,7 @@ pub mod grammar {
     pub mod quickbmsparser;
     pub mod quickbmsvisitor;
 }
+
+pub mod server {
+    pub mod server;
+}
