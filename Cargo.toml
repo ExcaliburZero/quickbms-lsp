@@ -4,6 +4,14 @@ version = "0.1.0"
 authors = ["Christopher Wells <cwellsny@nycap.rr.com>"]
 edition = "2018"
 
+[[bin]]
+name = "server"
+path = "src/main.rs"
+
+[[bin]]
+name = "client"
+path = "src/client/main.rs"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
