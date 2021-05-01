@@ -1,0 +1,41 @@
+Print MESSAGE
+
+    It prints a string in C notation with the values of the
+    variables if their names are specified between '%' chars.
+    It's also possible to specify the maximum amount of bytes to
+    visualize (or a variable containing such value) and if they
+    must be displayed in hex or dump mode specifying some flags
+    after a '|' like
+    in the examples:
+    - x/h/hex: hexadecimal numbers and chars
+    - dump:    hexadecimal dump, left in hex and right in chars
+    - number:  amount of bytes to show
+    - var:     variable containing the amount of bytes to show
+
+    Arguments:
+      MESSAGE   C notation string, each %VAR% word is converted to
+                its value (cstring)
+                From version 0.11 it also supports combinations of
+                colors using the {FB} notation for Foreground and
+                Background color using ANSI notation (it also
+                supports the full name):
+                  0: Black          8: Bright Black
+                  1: Red            9: Bright Red
+                  2: Green          a: Bright Green
+                  3: Yellow         b: Bright Yellow
+                  4: Blue           c: Bright Blue
+                  5: Magenta        d: Bright Magenta
+                  6: Cyan           e: Bright Cyan
+                  7: White          f: Bright White
+
+    Examples:
+      print "the variable OFFSET of the file %FILENAME% has the value %OFFSET|x%"
+      print "this is the first line\nthis is the second line\n"
+      print "variable %VAR% and %VAR2%"
+      print "variable %VAR|h% and %VAR2|hex%"
+      print "variable %VAR|3% and %VAR2|4%"
+      print "variable %VAR|3h% and %VAR2|h4%"
+      print "variable %VAR|dump16%"
+      print "variable %VAR|dumpVARSZ%"
+      print "\x68\x65\x6c\x6c\x6f"
+      print "Hello, {1}how are you?{}\n{f}Fine!{} ... {0f}also this {green}closing{/green} works"

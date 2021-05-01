@@ -9,12 +9,14 @@ use crate::grammar::parsing::parse_str;
 
 pub struct ServerState {
     files: HashMap<Url, File>,
+    keyword_docs: HashMap<String, String>,
 }
 
 impl ServerState {
     pub fn new() -> ServerState {
         ServerState {
             files: HashMap::new(),
+            keyword_docs: get_keyword_docs(),
         }
     }
 
@@ -37,10 +39,12 @@ impl ServerState {
         let line_column = LineColumn::from_position(&text_document_position_params.position);
         for (loc_range, keyword) in file.keywords_by_location.iter() {
             if loc_range.contains(&line_column) {
+                let keyword_lower = keyword.content.to_lowercase();
+                let keyword_docs = self.keyword_docs.get(&keyword_lower);
                 return Some(Hover {
                     contents: HoverContents::Markup(MarkupContent {
                         kind: MarkupKind::Markdown,
-                        value: keyword.content.clone(),
+                        value: keyword_docs.unwrap().to_string(),
                     }),
                     range: None,
                 });
@@ -49,4 +53,14 @@ impl ServerState {
 
         None
     }
+}
+
+pub fn get_keyword_docs() -> HashMap<String, String> {
+    [(
+        "print".to_string(),
+        include_str!("keyword_docs/print.txt").to_string(),
+    )]
+    .iter()
+    .cloned()
+    .collect()
 }
