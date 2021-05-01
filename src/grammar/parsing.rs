@@ -171,6 +171,23 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
     }
 }
 
+pub fn parse_str(contents: &str) -> File {
+    let tf = ArenaCommonFactory::default();
+
+    let mut _lexer = quickbmsLexer::new_with_token_factory(InputStream::new(contents), &tf);
+    let token_source = CommonTokenStream::new(_lexer);
+    let mut parser = quickbmsParser::new(token_source);
+    let result = parser.script().expect("parsed unsuccessfully");
+
+    let mut visitor = QuickBMSVisitorImpl {
+        return_stack: vec![],
+        keywords_by_location: vec![],
+    };
+    result.accept(&mut visitor);
+
+    visitor.get_result().unwrap()
+}
+
 #[test]
 fn test_visitor() {
     fn parse<'a>(tf: &'a ArenaCommonFactory<'a>) -> Rc<ScriptContext<'a>> {
