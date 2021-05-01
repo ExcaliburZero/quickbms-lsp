@@ -1,13 +1,23 @@
-use std::io::{BufRead, Write};
+use std::io::{BufRead, BufReader, Write};
 
 use jsonrpc_core::{IoHandler, Params};
 use serde_json::{self, from_value, Value};
 
-pub fn run<R, W>(mut input: R, output: W)
+pub fn run<R, W>(mut input: R, mut output: W)
 where
     R: BufRead,
     W: Write,
 {
+    let io = setup_handler();
+
+    for line in input.lines() {
+        let line = line.unwrap();
+        let response = io.handle_request_sync(&line).unwrap();
+        write!(output, "{}", response);
+    }
+}
+
+fn setup_handler() -> IoHandler {
     let mut io = IoHandler::new();
 
     io.add_sync_method("initialize", |params| {
@@ -25,9 +35,5 @@ where
         Ok(Value::String("Hello World!".into()))
     });
 
-    let request =
-        r#"{"jsonrpc": "2.0", "method": "initialize", "params": {"capabilities": {}}, "id": 1}"#;
-    let response = r#"{"jsonrpc":"2.0","result":"Hello World!","id":1}"#;
-
-    assert_eq!(io.handle_request_sync(request), Some(response.to_string()));
+    io
 }
