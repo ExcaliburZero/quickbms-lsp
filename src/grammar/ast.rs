@@ -70,11 +70,11 @@ pub struct LocationRange {
 }
 
 impl LocationRange {
-    pub fn contains(&self, lineColumn: &LineColumn) -> bool {
+    pub fn contains(&self, line_column: &LineColumn) -> bool {
         if self.start.line == self.end.line {
-            self.start.line == lineColumn.line
-                && self.start.column <= lineColumn.column
-                && lineColumn.column <= self.end.column
+            self.start.line == line_column.line
+                && self.start.column <= line_column.column
+                && line_column.column <= self.end.column
         } else {
             panic!()
         }
