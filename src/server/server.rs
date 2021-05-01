@@ -2,7 +2,10 @@ use std::io::{BufRead, Write};
 use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
-use lsp_types::{DidOpenTextDocumentParams, InitializeParams, InitializeResult};
+use lsp_types::{
+    DidOpenTextDocumentParams, Hover, HoverContents, HoverParams, InitializeParams,
+    InitializeResult, MarkupContent, MarkupKind,
+};
 use serde_json::{self, from_value, to_value, Value};
 
 use crate::server::state::ServerState;
@@ -16,6 +19,7 @@ where
 
     for line in input.lines() {
         let line = line.unwrap();
+        println!("{}", line);
         let response = io.handle_request_sync(&line);
         if let Some(response) = response {
             writeln!(output, "{}", response).unwrap();
@@ -37,11 +41,25 @@ fn setup_handler() -> IoHandler {
         Ok(to_value(response).unwrap())
     });
 
+    let state_c = state.clone();
     io.add_notification("textDocument/didOpen", move |params| {
         let value = params_to_value(params);
         let notification = from_value::<DidOpenTextDocumentParams>(value).unwrap();
 
-        state.lock().unwrap().did_open(&notification);
+        state_c.lock().unwrap().did_open(&notification);
+    });
+
+    let state_c = state.clone();
+    io.add_sync_method("textDocument/hover", move |params| {
+        let value = params_to_value(params);
+        let request = from_value::<HoverParams>(value).unwrap();
+
+        let response = state_c.lock().unwrap().hover(&request);
+
+        match response {
+            None => Ok(Value::Null),
+            Some(response) => Ok(to_value(response).unwrap()),
+        }
     });
 
     io

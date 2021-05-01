@@ -1,3 +1,5 @@
+use lsp_types::Position;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct File {
     pub script: Script,
@@ -68,7 +70,7 @@ pub struct LocationRange {
 }
 
 impl LocationRange {
-    fn contains(&self, lineColumn: &LineColumn) -> bool {
+    pub fn contains(&self, lineColumn: &LineColumn) -> bool {
         if self.start.line == self.end.line {
             self.start.line == lineColumn.line
                 && self.start.column <= lineColumn.column
@@ -83,6 +85,15 @@ impl LocationRange {
 pub struct LineColumn {
     pub line: isize,
     pub column: isize,
+}
+
+impl LineColumn {
+    pub fn from_position(position: &Position) -> LineColumn {
+        LineColumn {
+            line: position.line as isize,
+            column: position.character as isize,
+        }
+    }
 }
 
 #[test]
