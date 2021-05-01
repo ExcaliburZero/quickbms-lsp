@@ -1,6 +1,5 @@
 use std::borrow::Cow;
 use std::ops::Deref;
-use std::rc::Rc;
 
 use antlr_rust::common_token_stream::CommonTokenStream;
 

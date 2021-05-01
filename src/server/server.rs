@@ -2,10 +2,7 @@ use std::io::{BufRead, Write};
 use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
-use lsp_types::{
-    DidOpenTextDocumentParams, Hover, HoverContents, HoverParams, InitializeParams,
-    InitializeResult, MarkupContent, MarkupKind,
-};
+use lsp_types::{DidOpenTextDocumentParams, HoverParams, InitializeParams, InitializeResult};
 use serde_json::{self, from_value, to_value, Value};
 
 use crate::server::state::ServerState;
