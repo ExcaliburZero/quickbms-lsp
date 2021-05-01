@@ -31,7 +31,7 @@ fn setup_handler() -> IoHandler {
 
     io.add_sync_method("initialize", |params| {
         let value = params_to_value(params);
-        let request = from_value::<InitializeParams>(value).unwrap();
+        let _request = from_value::<InitializeParams>(value).unwrap();
 
         let response = InitializeResult::default();
 
