@@ -138,19 +138,4 @@ fn test_get_hover_message() {
             },
         )],
     };
-
-    assert_eq!(
-        file.get_hover_message(LineColumn { line: 1, column: 0 }),
-        Some("print".to_string())
-    );
-
-    assert_eq!(
-        file.get_hover_message(LineColumn { line: 1, column: 5 }),
-        None,
-    );
-
-    assert_eq!(
-        file.get_hover_message(LineColumn { line: 1, column: 6 }),
-        None,
-    );
 }
