@@ -1,4 +1,4 @@
-* Update the version number in `package.json`
+* Update the version number in `Cargo.toml`
 * Update `CHANGELOG.md`
 * Create a package file for the crate:
 
