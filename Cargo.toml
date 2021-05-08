@@ -20,6 +20,7 @@ include = [
     "**/*.bms",
     "Cargo.toml",
     "LICENSE",
+    "CHANGELOG.md",
     "Makefile",
 ]
 
