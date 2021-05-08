@@ -6,18 +6,6 @@ pub struct File {
     pub keywords_by_location: Vec<(LocationRange, Keyword)>,
 }
 
-impl File {
-    fn get_hover_message(&self, location: LineColumn) -> Option<String> {
-        for (loc_range, keyword) in self.keywords_by_location.iter() {
-            if loc_range.contains(&location) {
-                return Some(keyword.content.clone());
-            }
-        }
-
-        None
-    }
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum CompilationUnit {
     CUScript(Script),
