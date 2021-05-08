@@ -3,6 +3,28 @@ name = "quickbms-lsp"
 version = "0.0.1"
 authors = ["Christopher Wells <cwellsny@nycap.rr.com>"]
 edition = "2018"
+description = "An experimental language server protocol for the QuickBMS scripting language."
+readme = "README.md"
+homepage = "https://github.com/ExcaliburZero/quickbms-lsp"
+repository = "https://github.com/ExcaliburZero/quickbms-lsp"
+license = "MIT"
+
+# Need to explicitly define which files to include in the package, since the gitignore file ignores
+# the Antlr generated source code, but we do need to include those files in the package.
+include = [
+    "**/*.rs",
+    "**/*.txt",
+    "**/*.md",
+    "**/*.g4",
+    "**/*.sh",
+    "**/*.bms",
+    "Cargo.toml",
+    "LICENSE",
+    "Makefile",
+]
+
+[[bin]]
+name = "quickbms-lsp"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
