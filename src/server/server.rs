@@ -16,7 +16,6 @@ where
 
     for line in input.lines() {
         let line = line.unwrap();
-        println!("{}", line);
         let response = io.handle_request_sync(&line);
         if let Some(response) = response {
             writeln!(output, "{}", response).unwrap();
