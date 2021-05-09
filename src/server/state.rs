@@ -44,7 +44,7 @@ impl ServerState {
                 let keyword_docs = self.keyword_docs.get(&keyword_lower);
                 return Some(Hover {
                     contents: HoverContents::Markup(MarkupContent {
-                        kind: MarkupKind::Markdown,
+                        kind: MarkupKind::PlainText,
                         value: keyword_docs.unwrap().to_string(),
                     }),
                     range: None,

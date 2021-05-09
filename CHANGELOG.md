@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Message header parsing.
 - Parser support for ignoring line comments that start with `#` symbol.
 
+### Changed
+- Keyword documentation hover message type from markdown to plaintext.
+
 ## [0.0.1] - 2021-05-08
 ### Added
 - Initial support for `initialize`, `textDocument/didOpen`, and `textDocument/hover`.
