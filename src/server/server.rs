@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
     DidOpenTextDocumentParams, HoverParams, HoverProviderCapability, InitializeParams,
-    InitializeResult,
+    InitializeResult, ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind,
 };
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
@@ -27,6 +27,7 @@ where
         if let Some(response) = response {
             let response_message = Message::from_content(&response);
             write!(output, "{}", response_message).unwrap();
+            output.flush().unwrap();
         }
     }
 }
@@ -42,6 +43,17 @@ fn setup_handler() -> IoHandler {
 
         let mut response = InitializeResult::default();
         response.capabilities.hover_provider = Some(HoverProviderCapability::Simple(true));
+
+        let response = InitializeResult {
+            capabilities: ServerCapabilities {
+                text_document_sync: Some(TextDocumentSyncCapability::Kind(
+                    TextDocumentSyncKind::Full,
+                )),
+                hover_provider: Some(true.into()),
+                ..ServerCapabilities::default()
+            },
+            ..InitializeResult::default()
+        };
 
         Ok(to_value(response).unwrap())
     });

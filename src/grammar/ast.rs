@@ -78,7 +78,7 @@ pub struct LineColumn {
 impl LineColumn {
     pub fn from_position(position: &Position) -> LineColumn {
         LineColumn {
-            line: position.line as isize,
+            line: position.line as isize + 1,
             column: position.character as isize,
         }
     }

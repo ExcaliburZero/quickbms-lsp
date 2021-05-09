@@ -38,6 +38,7 @@ impl ServerState {
         // Handle if the user is pointing at a keyword
         let line_column = LineColumn::from_position(&text_document_position_params.position);
         for (loc_range, keyword) in file.keywords_by_location.iter() {
+            eprintln!("{:?}, {:?}", loc_range, keyword);
             if loc_range.contains(&line_column) {
                 let keyword_lower = keyword.content.to_lowercase();
                 let keyword_docs = self.keyword_docs.get(&keyword_lower);
@@ -50,6 +51,8 @@ impl ServerState {
                 });
             }
         }
+
+        eprintln!("Failed to find hover keyword");
 
         None
     }
