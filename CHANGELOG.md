@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Message header parsing.
+- Parser support for ignoring line comments that start with `#` symbol.
 
 ## [0.0.1] - 2021-05-08
 ### Added
