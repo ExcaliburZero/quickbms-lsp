@@ -49,3 +49,4 @@ expression: STRING_LITERAL # string_literal;
 STRING_LITERAL: '"' CHARACTER*? '"';
 PRINT: P R I N T;
 WS: [ \t\r\n]+ -> skip;
+COMMENT: '#' .+? ('\n' | EOF) -> skip;
