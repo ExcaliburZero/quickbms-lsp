@@ -51,3 +51,4 @@ PRINT: P R I N T;
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT_NUMBER_SIGN: '#' .+? ('\n' | EOF) -> skip;
 LINE_COMMENT_DOUBLE_SLASH: '//' .+? ('\n' | EOF) -> skip;
+BLOCK_COMMENT: '/*' .+? '*/' -> skip;

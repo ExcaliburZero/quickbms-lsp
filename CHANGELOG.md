@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Message header parsing.
-- Parser support for ignoring line comments.
+- Parser support for ignoring block and line comments.
 
 ### Changed
 - Keyword documentation hover message type from markdown to plaintext.
