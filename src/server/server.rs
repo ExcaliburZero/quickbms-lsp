@@ -1,9 +1,13 @@
+use std::fmt;
 use std::io::{BufRead, Write};
 use std::str::from_utf8;
 use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
-use lsp_types::{DidOpenTextDocumentParams, HoverParams, InitializeParams, InitializeResult};
+use lsp_types::{
+    DidOpenTextDocumentParams, HoverParams, HoverProviderCapability, InitializeParams,
+    InitializeResult,
+};
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
 
@@ -21,7 +25,8 @@ where
 
         let response = io.handle_request_sync(&message.content);
         if let Some(response) = response {
-            writeln!(output, "{}", response).unwrap();
+            let response_message = Message::from_content(&response);
+            write!(output, "{}", response_message).unwrap();
         }
     }
 }
@@ -35,7 +40,8 @@ fn setup_handler() -> IoHandler {
         let value = params_to_value(params);
         let _request = from_value::<InitializeParams>(value).unwrap();
 
-        let response = InitializeResult::default();
+        let mut response = InitializeResult::default();
+        response.capabilities.hover_provider = Some(HoverProviderCapability::Simple(true));
 
         Ok(to_value(response).unwrap())
     });
@@ -111,6 +117,12 @@ impl Header {
     }
 }
 
+impl fmt::Display for Header {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Content-Length: {}\r\n\r\n", self.content_length)
+    }
+}
+
 #[derive(Debug)]
 struct Message {
     header: Header,
@@ -127,5 +139,23 @@ impl Message {
         let content = from_utf8(&content_buf).unwrap().to_string();
 
         Message { header, content }
+    }
+
+    fn from_content(content: &str) -> Message {
+        let content_length = content.as_bytes().len() as u64;
+
+        Message {
+            header: Header {
+                content_length,
+                content_type: None,
+            },
+            content: content.to_string(),
+        }
+    }
+}
+
+impl fmt::Display for Message {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}{}", self.header, self.content)
     }
 }
