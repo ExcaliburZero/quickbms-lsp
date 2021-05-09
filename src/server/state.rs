@@ -51,8 +51,6 @@ impl ServerState {
             }
         }
 
-        eprintln!("Failed to find hover keyword");
-
         None
     }
 }
