@@ -42,12 +42,22 @@ fragment CHARACTER:
 
 // Grammar rules
 script: statement*;
-statement: PRINT expression # print_statement;
-expression: STRING_LITERAL # string_literal;
+statement:
+	PRINT expression						# print_statement
+	| SET variable type_name? expression	# set_statement;
+expression:
+	STRING_LITERAL		# string_literal
+	| INTEGER_LITERAL	# integer_literal;
+type_name: LONG # long_type;
+variable: ID;
 
 // Tokens
 STRING_LITERAL: '"' CHARACTER*? '"';
+INTEGER_LITERAL: [0-9]+;
 PRINT: P R I N T;
+SET: S E T;
+LONG: L O N G;
+ID: [a-zA-Z0-9_]+;
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT_NUMBER_SIGN: '#' .+? ('\n' | EOF) -> skip;
 LINE_COMMENT_DOUBLE_SLASH: '//' .+? ('\n' | EOF) -> skip;

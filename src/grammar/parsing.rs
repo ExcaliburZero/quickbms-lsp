@@ -7,17 +7,17 @@ use antlr_rust::common_token_stream::CommonTokenStream;
 use antlr_rust::parser_rule_context::ParserRuleContext;
 use antlr_rust::token::Token;
 use antlr_rust::token_factory::ArenaCommonFactory;
-use antlr_rust::tree::{ParseTreeVisitor, TerminalNode, Tree, Visitable, VisitableDyn};
+use antlr_rust::tree::{ParseTree, ParseTreeVisitor, TerminalNode, Tree, Visitable, VisitableDyn};
 use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
-    CompilationUnit, Expression, File, Keyword, LineColumn, LocationRange, PrintStatement, Script,
-    Statement, StringLiteral,
+    CompilationUnit, Expression, File, IntegerLiteral, Keyword, LineColumn, LocationRange,
+    PrintStatement, Script, SetStatement, Statement, StringLiteral, Variable,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmsparser::{
     quickbmsParser, quickbmsParserContextType, Print_statementContext, ScriptContext,
-    String_literalContext,
+    Set_statementContext, String_literalContext, VariableContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
@@ -71,27 +71,34 @@ impl QuickBMSVisitorImpl {
             panic!()
         }
     }
+
+    fn keyword<'i>(
+        &mut self,
+        node: &TerminalNode<'i, quickbmsParserContextType>,
+        location: LocationRange,
+    ) {
+        if let Cow::Borrowed(s) = node.symbol.text {
+            let keyword = Keyword {
+                content: s.to_string(),
+                location,
+            };
+            self.return_stack
+                .push(CompilationUnit::CUKeyword(keyword.clone()));
+
+            self.keywords_by_location
+                .push((keyword.location.clone(), keyword));
+        } else {
+            panic!();
+        }
+    }
 }
 
 impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl {
     fn visit_terminal(&mut self, node: &TerminalNode<'i, quickbmsParserContextType>) {
         let location = token_location_range![node.symbol];
         match node.symbol.get_token_type() {
-            PRINT => {
-                if let Cow::Borrowed(s) = node.symbol.text {
-                    let keyword = Keyword {
-                        content: s.to_string(),
-                        location,
-                    };
-                    self.return_stack
-                        .push(CompilationUnit::CUKeyword(keyword.clone()));
-
-                    self.keywords_by_location
-                        .push((keyword.location.clone(), keyword));
-                } else {
-                    panic!();
-                }
-            }
+            PRINT => self.keyword(node, location),
+            SET => self.keyword(node, location),
             STRING_LITERAL => {
                 if let Cow::Borrowed(s) = node.symbol.text {
                     self.return_stack
@@ -168,6 +175,43 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             .push(CompilationUnit::CUStatement(Statement::StmPrintStatement(
                 value,
             )));
+    }
+
+    fn visit_set_statement(&mut self, ctx: &Set_statementContext<'i>) {
+        let location = ctx_location_range![ctx];
+
+        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+        let set_keyword = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUKeyword(keyword) => keyword,
+            _ => panic!(),
+        };
+
+        ctx.get_child(1).unwrap().as_ref().accept_dyn(self);
+        let variable = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUVariable(variable) => variable,
+            _ => panic!(),
+        };
+
+        let value = SetStatement {
+            set_keyword,
+            type_name: None, // TODO: get type
+            variable,
+            value: None, // TODO: actually get this
+            location,
+        };
+        self.return_stack
+            .push(CompilationUnit::CUStatement(Statement::StmSetStatement(
+                value,
+            )));
+    }
+
+    fn visit_variable(&mut self, ctx: &VariableContext<'i>) {
+        let location = ctx_location_range![ctx];
+
+        let name = ctx.get_text();
+
+        let value = Variable { name, location };
+        self.return_stack.push(CompilationUnit::CUVariable(value));
     }
 }
 

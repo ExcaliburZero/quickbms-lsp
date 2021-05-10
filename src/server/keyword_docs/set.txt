@@ -1,0 +1,40 @@
+Set VAR [TYPE] VAR
+
+    Command for assigning a constant or a variable to another
+    variable with the possibility of changing its type, like utf8
+    to unicode and vice versa, and so on.
+
+    Arguments:
+      VAR       Output variable or memory file
+      TYPE      In general the type is not much important because
+                in QuickBMS there is almost no difference between
+                numbers and strings, these are the special types:
+                - unicode, unicode to utf8, endian dependent
+                  set NAME unicode NAME
+                - to_unicode, utf8 to unicode, endian dependent
+                  set NAME to_unicode NAME
+                - binary, C notation (cstring)
+                  set MEMORY_FILE binary "\x11\x22\x00hello"
+                - alloc: allocates memory, something like
+                  putvarchr VAR SIZE 0 ; set VAR alloc 0x1234
+                - filename: example that returns "myfile.txt":
+                  set NAME filename "c:\folder\myfile.txt"
+                - basename: for example it returns "myfile"
+                - filepath
+                - fullbasename
+                - extension: the extension part from a string (txt)
+                - unknown: the user is prompted to insert the
+                  content of the variable: set VAR ? ?
+                - signed_byte/short/threebyte/long
+                - unicode32: utf32
+                - strlen: just a wrapper for the Strlen command
+                  set NAMESZ strlen NAME
+      VAR       Variable or constant to assign
+
+    Examples:
+      Set i long 0
+      Set TMP long SIZE
+      Set TMPNAME NAME
+      Set MEMORY_FILE binary "\x12\x34\x56\x78"
+      Set ASCII_VAR unicode UNICODE_VAR # from unicode to string
+      Set VAR ? ?   # the user is prompted to insert a filename

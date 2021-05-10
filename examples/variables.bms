@@ -1,0 +1,3 @@
+set MyVar long 0
+set MyVar2 1
+print "Hi"

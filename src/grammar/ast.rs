@@ -10,10 +10,13 @@ pub struct File {
 pub enum CompilationUnit {
     CUScript(Script),
     CUPrintStatement(PrintStatement),
+    CUSetStatement(SetStatement),
     CUKeyword(Keyword),
+    CUVariable(Variable),
     CUExpression(Expression),
     CUStatement(Statement),
     CUStringLiteral(StringLiteral),
+    CUIntegerLiteral(IntegerLiteral),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -25,6 +28,7 @@ pub struct Script {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Statement {
     StmPrintStatement(PrintStatement),
+    StmSetStatement(SetStatement),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -35,8 +39,18 @@ pub struct PrintStatement {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SetStatement {
+    pub set_keyword: Keyword,
+    pub variable: Variable,
+    pub type_name: Option<Type>,
+    pub value: Option<Expression>, // TODO: this should not be optional
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Expression {
     ExpStringLiteral(StringLiteral),
+    ExpIntegerLiteral(IntegerLiteral),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -46,9 +60,26 @@ pub struct StringLiteral {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegerLiteral {
+    pub value: String,
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Keyword {
     pub content: String,
     pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Variable {
+    pub name: String,
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum Type {
+    Long,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

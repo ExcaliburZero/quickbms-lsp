@@ -56,10 +56,16 @@ impl ServerState {
 }
 
 pub fn get_keyword_docs() -> HashMap<String, String> {
-    [(
-        "print".to_string(),
-        include_str!("keyword_docs/print.txt").to_string(),
-    )]
+    [
+        (
+            "print".to_string(),
+            include_str!("keyword_docs/print.txt").to_string(),
+        ),
+        (
+            "set".to_string(),
+            include_str!("keyword_docs/set.txt").to_string(),
+        ),
+    ]
     .iter()
     .cloned()
     .collect()
