@@ -1,3 +1,9 @@
 set MyVar long 0
 set MyVar2 1
-print "Hi"
+set MyVar3 "Hello, World!"
+print "MyVar = %MyVar%"
+print "MyVar2 = %MyVar2%"
+print "MyVar3 = %MyVar3%"
+
+set MyVar2 "Goodbye, World!"
+print "MyVar2 = %MyVar2%"
