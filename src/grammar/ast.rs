@@ -17,6 +17,7 @@ pub enum CompilationUnit {
     CUStatement(Statement),
     CUStringLiteral(StringLiteral),
     CUIntegerLiteral(IntegerLiteral),
+    CUType(Type),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -43,7 +44,7 @@ pub struct SetStatement {
     pub set_keyword: Keyword,
     pub variable: Variable,
     pub type_name: Option<Type>,
-    pub value: Option<Expression>, // TODO: this should not be optional
+    pub value: Expression,
     pub location: LocationRange,
 }
 

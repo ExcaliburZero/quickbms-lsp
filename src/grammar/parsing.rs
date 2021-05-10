@@ -12,12 +12,12 @@ use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
     CompilationUnit, Expression, File, IntegerLiteral, Keyword, LineColumn, LocationRange,
-    PrintStatement, Script, SetStatement, Statement, StringLiteral, Variable,
+    PrintStatement, Script, SetStatement, Statement, StringLiteral, Type, Variable,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmsparser::{
-    quickbmsParser, quickbmsParserContextType, Print_statementContext, ScriptContext,
-    Set_statementContext, String_literalContext, VariableContext,
+    quickbmsParser, quickbmsParserContextType, Integer_literalContext, Print_statementContext,
+    ScriptContext, Set_statementContext, String_literalContext, VariableContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
@@ -99,6 +99,7 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
         match node.symbol.get_token_type() {
             PRINT => self.keyword(node, location),
             SET => self.keyword(node, location),
+            LONG => self.return_stack.push(CompilationUnit::CUType(Type::Long)),
             STRING_LITERAL => {
                 if let Cow::Borrowed(s) = node.symbol.text {
                     self.return_stack
@@ -151,6 +152,17 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             )));
     }
 
+    fn visit_integer_literal(&mut self, ctx: &Integer_literalContext<'i>) {
+        let location = ctx_location_range![ctx];
+
+        self.return_stack.push(CompilationUnit::CUExpression(
+            Expression::ExpIntegerLiteral(IntegerLiteral {
+                value: ctx.get_text(),
+                location,
+            }),
+        ));
+    }
+
     fn visit_print_statement(&mut self, ctx: &Print_statementContext<'i>) {
         let location = ctx_location_range![ctx];
 
@@ -192,11 +204,27 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             _ => panic!(),
         };
 
+        ctx.get_child(2).unwrap().as_ref().accept_dyn(self);
+        let mut type_name = None;
+        let expression = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUExpression(expression) => expression,
+            CompilationUnit::CUType(t) => {
+                type_name = Some(t);
+
+                ctx.get_child(3).unwrap().as_ref().accept_dyn(self);
+                match self.return_stack.pop().unwrap() {
+                    CompilationUnit::CUExpression(expression) => expression,
+                    _ => panic!(),
+                }
+            }
+            _ => panic!(),
+        };
+
         let value = SetStatement {
             set_keyword,
-            type_name: None, // TODO: get type
+            type_name,
             variable,
-            value: None, // TODO: actually get this
+            value: expression,
             location,
         };
         self.return_stack
