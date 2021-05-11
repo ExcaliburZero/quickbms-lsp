@@ -20,6 +20,8 @@ where
 {
     let io = setup_handler();
 
+    eprintln!("Started server");
+
     loop {
         let message = Message::read_from_buffered_reader(&mut input);
 
