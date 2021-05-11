@@ -1,0 +1,18 @@
+StartFunction GreetWorld
+    print "Hello, World!"
+EndFunction
+
+/*CallFunction GreetWorld
+CallFunction GreetWorld
+
+StartFunction PrintValue
+    print "%PrintValue_ARG1%"
+EndFunction
+
+CallFunction PrintValue 0 "Hi, there!"
+
+StartFunction NestingFunc
+EndFunction*/
+
+#CallFunction NestingFunc
+#CallFunction NestedFunc

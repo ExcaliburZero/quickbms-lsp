@@ -22,14 +22,26 @@ pub enum CompilationUnit {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Script {
-    pub statements: Vec<Statement>,
+    pub statements: Vec<TopStatement>,
     pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum TopStatement {
+    TStmStatement(Statement),
+    TStmFunction(Function),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Statement {
     StmPrintStatement(PrintStatement),
     StmSetStatement(SetStatement),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Function {
+    pub name: String,
+    pub statements: Vec<Statement>, // No nested function definitions allowed
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

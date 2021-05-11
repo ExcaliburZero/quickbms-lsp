@@ -41,10 +41,13 @@ fragment CHARACTER:
 	| '\\\r\n';
 
 // Grammar rules
-script: statement*;
+script: top_statement*;
+top_statement: statement | function_definition;
+function_definition: START_FUNCTION ID statement* END_FUNCTION;
 statement:
 	PRINT expression						# print_statement
-	| SET variable type_name? expression	# set_statement;
+	| SET variable type_name? expression	# set_statement
+	| CALL_FUNCTION ID						# function_call_statement;
 expression:
 	STRING_LITERAL		# string_literal
 	| INTEGER_LITERAL	# integer_literal;
@@ -57,6 +60,9 @@ INTEGER_LITERAL: [0-9]+;
 PRINT: P R I N T;
 SET: S E T;
 LONG: L O N G;
+START_FUNCTION: S T A R T F U N C T I O N;
+END_FUNCTION: E N D F U N C T I O N;
+CALL_FUNCTION: C A L L F U N C T I O N;
 ID: [a-zA-Z0-9_]+;
 WS: [ \t\r\n]+ -> skip;
 LINE_COMMENT_NUMBER_SIGN: '#' .+? ('\n' | EOF) -> skip;

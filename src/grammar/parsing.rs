@@ -12,7 +12,7 @@ use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
     CompilationUnit, Expression, File, IntegerLiteral, Keyword, LineColumn, LocationRange,
-    PrintStatement, Script, SetStatement, Statement, StringLiteral, Type, Variable,
+    PrintStatement, Script, SetStatement, Statement, StringLiteral, TopStatement, Type, Variable,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmsparser::{
@@ -124,7 +124,7 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
         for child in ctx.get_children() {
             child.as_ref().accept_dyn(self);
             let statement = match self.return_stack.pop().unwrap() {
-                CompilationUnit::CUStatement(statement) => statement,
+                CompilationUnit::CUStatement(statement) => TopStatement::TStmStatement(statement),
                 _ => panic!(),
             };
 
@@ -281,34 +281,36 @@ fn test_visitor() {
             assert_eq!(
                 file.script,
                 Script {
-                    statements: vec![Statement::StmPrintStatement(PrintStatement {
-                        print_keyword: {
-                            Keyword {
-                                content: "print".to_string(),
+                    statements: vec![TopStatement::TStmStatement(Statement::StmPrintStatement(
+                        PrintStatement {
+                            print_keyword: {
+                                Keyword {
+                                    content: "print".to_string(),
+                                    location: LocationRange {
+                                        start: LineColumn { line: 1, column: 0 },
+                                        end: LineColumn { line: 1, column: 4 },
+                                    },
+                                }
+                            },
+                            expression: Expression::ExpStringLiteral(StringLiteral {
+                                content: "Hello, World!".to_string(),
                                 location: LocationRange {
-                                    start: LineColumn { line: 1, column: 0 },
-                                    end: LineColumn { line: 1, column: 4 },
+                                    start: LineColumn { line: 1, column: 6 },
+                                    end: LineColumn {
+                                        line: 1,
+                                        column: 20
+                                    },
                                 },
-                            }
-                        },
-                        expression: Expression::ExpStringLiteral(StringLiteral {
-                            content: "Hello, World!".to_string(),
+                            }),
                             location: LocationRange {
-                                start: LineColumn { line: 1, column: 6 },
+                                start: LineColumn { line: 1, column: 0 },
                                 end: LineColumn {
                                     line: 1,
                                     column: 20
                                 },
-                            },
-                        }),
-                        location: LocationRange {
-                            start: LineColumn { line: 1, column: 0 },
-                            end: LineColumn {
-                                line: 1,
-                                column: 20
-                            },
+                            }
                         }
-                    })],
+                    ))],
                     location: LocationRange {
                         start: LineColumn { line: 1, column: 0 },
                         end: LineColumn {
