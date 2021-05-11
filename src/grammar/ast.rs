@@ -11,10 +11,12 @@ pub enum CompilationUnit {
     CUScript(Script),
     CUPrintStatement(PrintStatement),
     CUSetStatement(SetStatement),
+    CUFunctionDefinition(FunctionDefinition),
     CUKeyword(Keyword),
     CUVariable(Variable),
     CUExpression(Expression),
     CUStatement(Statement),
+    CUTopStatement(TopStatement),
     CUStringLiteral(StringLiteral),
     CUIntegerLiteral(IntegerLiteral),
     CUType(Type),
@@ -29,7 +31,7 @@ pub struct Script {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum TopStatement {
     TStmStatement(Statement),
-    TStmFunction(Function),
+    TStmFunctionDefinition(FunctionDefinition),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -39,9 +41,10 @@ pub enum Statement {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Function {
+pub struct FunctionDefinition {
     pub name: String,
     pub statements: Vec<Statement>, // No nested function definitions allowed
+    pub location: LocationRange,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]

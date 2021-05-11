@@ -1,0 +1,41 @@
+CallFunction NAME [KEEP_VAR] [ARG1] [ARG2] ... [ARGn]
+StartFunction NAME
+...
+EndFunction
+
+    Calling and declaration of a function identified by NAME where
+    the values of the variables are backed up till the termination
+    of the function when they are restored.
+    It works very well for recursive/nested archives like those
+    used by "The Void" and "Another Day".
+    If KEEP_VAR is not specified or zero, QuickBMS will make a
+    backup of the current values and the function will work on a
+    copy, when the function terminates the variables will be
+    restored to their backup.
+    If KEEP_VAR is set to 1, there will be no backup and any change
+    made in the function will remain when it terminates.
+    Do not use KEEP_VAR if you are working on a nested/recursive
+    file table, use it to 1 if you are creating a macro or a
+    function called many times to perform a task.
+    It's a good idea to place all the functions (from StartFunction
+    till EndFunction) at the end of the scripts.
+    It's also possible to pass optional arguments to the function,
+    they will have the name of the function plus ARGnumber, eg:
+      MYFUNCTION_ARG1 amd MYFUNCTION_ARG2.
+    Doesn't exist a return value at the moment but it's possible to
+    do it in other ways like saving the value in an array or on a
+    MEMORY_FILE.
+
+    Arguments:
+      NAME      Name assigned to the function
+      KEEP_VAR  Set to 1 if you want to keep the content of the
+                variables without resetting them, in short words:
+                0 = for recursive functions (default)
+                1 = for normal functions that change variables,
+                    this is faster and suggested in most cases
+      ARGs      Arguments, they are seen inside the function as
+                "name of the function" + ARG + argument_number
+
+    Examples:
+      http://aluigi.org/bms/thevoid.bms
+      http://aluigi.org/bms/fear.bms

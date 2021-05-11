@@ -11,13 +11,15 @@ use antlr_rust::tree::{ParseTree, ParseTreeVisitor, TerminalNode, Tree, Visitabl
 use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
-    CompilationUnit, Expression, File, IntegerLiteral, Keyword, LineColumn, LocationRange,
-    PrintStatement, Script, SetStatement, Statement, StringLiteral, TopStatement, Type, Variable,
+    CompilationUnit, Expression, File, FunctionDefinition, IntegerLiteral, Keyword, LineColumn,
+    LocationRange, PrintStatement, Script, SetStatement, Statement, StringLiteral, TopStatement,
+    Type, Variable,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmsparser::{
-    quickbmsParser, quickbmsParserContextType, Integer_literalContext, Print_statementContext,
-    ScriptContext, Set_statementContext, String_literalContext, VariableContext,
+    quickbmsParser, quickbmsParserContextType, Function_definitionContext, Integer_literalContext,
+    Print_statementContext, ScriptContext, Set_statementContext, String_literalContext,
+    VariableContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
@@ -99,6 +101,8 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
         match node.symbol.get_token_type() {
             PRINT => self.keyword(node, location),
             SET => self.keyword(node, location),
+            START_FUNCTION => self.keyword(node, location),
+            END_FUNCTION => self.keyword(node, location),
             LONG => self.return_stack.push(CompilationUnit::CUType(Type::Long)),
             STRING_LITERAL => {
                 if let Cow::Borrowed(s) = node.symbol.text {
@@ -125,6 +129,9 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             child.as_ref().accept_dyn(self);
             let statement = match self.return_stack.pop().unwrap() {
                 CompilationUnit::CUStatement(statement) => TopStatement::TStmStatement(statement),
+                CompilationUnit::CUFunctionDefinition(function_definition) => {
+                    TopStatement::TStmFunctionDefinition(function_definition)
+                }
                 _ => panic!(),
             };
 
@@ -240,6 +247,51 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
 
         let value = Variable { name, location };
         self.return_stack.push(CompilationUnit::CUVariable(value));
+    }
+
+    fn visit_function_definition(&mut self, ctx: &Function_definitionContext<'i>) {
+        let location = ctx_location_range![ctx];
+        let children: Vec<_> = ctx.get_children().collect();
+
+        // StartFunction
+        children[0].as_ref().accept_dyn(self);
+        let start_keyword = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUKeyword(keyword) => keyword,
+            _ => panic!(),
+        };
+
+        // Function name
+        let name_token = &children[1];
+        let name = name_token.get_text();
+
+        // Function statements
+        let mut statements = vec![];
+        for i in 2..(children.len() - 1) {
+            let child = &children[i];
+            child.as_ref().accept_dyn(self);
+            let statement = match self.return_stack.pop().unwrap() {
+                CompilationUnit::CUStatement(statement) => statement,
+                _ => panic!(),
+            };
+
+            statements.push(statement);
+        }
+
+        // EndFunction
+        children.last().unwrap().as_ref().accept_dyn(self);
+        let end_keyword = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUKeyword(keyword) => keyword,
+            _ => panic!(),
+        };
+
+        let value = FunctionDefinition {
+            name,
+            statements,
+            location,
+        };
+
+        self.return_stack
+            .push(CompilationUnit::CUFunctionDefinition(value));
     }
 }
 

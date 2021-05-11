@@ -65,6 +65,18 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "set".to_string(),
             include_str!("keyword_docs/set.txt").to_string(),
         ),
+        (
+            "startfunction".to_string(),
+            include_str!("keyword_docs/functions.txt").to_string(),
+        ),
+        (
+            "endfunction".to_string(),
+            include_str!("keyword_docs/functions.txt").to_string(),
+        ),
+        (
+            "callfunction".to_string(),
+            include_str!("keyword_docs/functions.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
