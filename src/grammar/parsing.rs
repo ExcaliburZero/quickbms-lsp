@@ -11,15 +11,15 @@ use antlr_rust::tree::{ParseTree, ParseTreeVisitor, TerminalNode, Tree, Visitabl
 use antlr_rust::InputStream;
 
 use crate::grammar::ast::{
-    CompilationUnit, Expression, File, FunctionDefinition, IntegerLiteral, Keyword, LineColumn,
-    LocationRange, PrintStatement, Script, SetStatement, Statement, StringLiteral, TopStatement,
-    Type, Variable,
+    CompilationUnit, Expression, File, FunctionCall, FunctionDefinition, IntegerLiteral, Keyword,
+    LineColumn, LocationRange, PrintStatement, Script, SetStatement, Statement, StringLiteral,
+    TopStatement, Type, Variable,
 };
 use crate::grammar::quickbmslexer::*;
 use crate::grammar::quickbmsparser::{
-    quickbmsParser, quickbmsParserContextType, Function_definitionContext, Integer_literalContext,
-    Print_statementContext, ScriptContext, Set_statementContext, String_literalContext,
-    VariableContext,
+    quickbmsParser, quickbmsParserContextType, Function_call_statementContext,
+    Function_definitionContext, Integer_literalContext, Print_statementContext, ScriptContext,
+    Set_statementContext, String_literalContext, VariableContext,
 };
 use crate::grammar::quickbmsvisitor::quickbmsVisitor;
 
@@ -103,6 +103,7 @@ impl<'i> ParseTreeVisitor<'i, quickbmsParserContextType> for QuickBMSVisitorImpl
             SET => self.keyword(node, location),
             START_FUNCTION => self.keyword(node, location),
             END_FUNCTION => self.keyword(node, location),
+            CALL_FUNCTION => self.keyword(node, location),
             LONG => self.return_stack.push(CompilationUnit::CUType(Type::Long)),
             STRING_LITERAL => {
                 if let Cow::Borrowed(s) = node.symbol.text {
@@ -168,6 +169,28 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
                 location,
             }),
         ));
+    }
+
+    fn visit_function_call_statement(&mut self, ctx: &Function_call_statementContext<'i>) {
+        let location = ctx_location_range![ctx];
+
+        ctx.get_child(0).unwrap().as_ref().accept_dyn(self);
+        let call_function_keyword = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUKeyword(keyword) => keyword,
+            _ => panic!(),
+        };
+
+        let function = ctx.get_child(1).unwrap().get_text();
+
+        let value = FunctionCall {
+            call_function_keyword,
+            function,
+            location,
+        };
+        self.return_stack
+            .push(CompilationUnit::CUStatement(Statement::StmFunctionCall(
+                value,
+            )));
     }
 
     fn visit_print_statement(&mut self, ctx: &Print_statementContext<'i>) {

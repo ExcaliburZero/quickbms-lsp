@@ -11,6 +11,7 @@ pub enum CompilationUnit {
     CUScript(Script),
     CUPrintStatement(PrintStatement),
     CUSetStatement(SetStatement),
+    CUFunctionCall(FunctionCall),
     CUFunctionDefinition(FunctionDefinition),
     CUKeyword(Keyword),
     CUVariable(Variable),
@@ -38,12 +39,21 @@ pub enum TopStatement {
 pub enum Statement {
     StmPrintStatement(PrintStatement),
     StmSetStatement(SetStatement),
+    StmFunctionCall(FunctionCall),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionDefinition {
-    pub name: String,
+    // TODO: track the spelling of the start and end keywords
+    pub name: String,               // TODO: maybe wrap this in an ID class?
     pub statements: Vec<Statement>, // No nested function definitions allowed
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FunctionCall {
+    pub call_function_keyword: Keyword,
+    pub function: String, // TODO: make Function struct
     pub location: LocationRange,
 }
 
@@ -89,7 +99,7 @@ pub struct Keyword {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Variable {
-    pub name: String,
+    pub name: String, // TODO: wrap this in an ID class?
     pub location: LocationRange,
 }
 
