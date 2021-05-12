@@ -1,5 +1,5 @@
 use std::fmt;
-use std::io::{BufRead, Write};
+use std::io::{BufRead, BufReader, Write};
 use std::str::from_utf8;
 use std::sync::{Arc, Mutex};
 
@@ -107,7 +107,7 @@ fn params_to_value(params: Params) -> Value {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 struct Header {
     content_length: u64,
     content_type: Option<String>,
@@ -152,7 +152,7 @@ impl fmt::Display for Header {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 struct Message {
     header: Header,
     content: String,
@@ -187,4 +187,23 @@ impl fmt::Display for Message {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}{}", self.header, self.content)
     }
+}
+
+#[test]
+fn test_message_from_buffered_reader() {
+    let text =
+        "Content-Length: 52\r\n\r\n{\"jsonrpc\":\"2.0\",\"method\":\"initialized\",\"params\":{}}";
+
+    let mut reader = BufReader::new(text.as_bytes());
+
+    let actual = Message::read_from_buffered_reader(&mut reader);
+    let expected = Message {
+        header: Header {
+            content_length: 52,
+            content_type: None,
+        },
+        content: r#"{"jsonrpc":"2.0","method":"initialized","params":{}}"#.to_string(),
+    };
+
+    assert_eq!(expected, actual);
 }
