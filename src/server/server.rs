@@ -5,8 +5,9 @@ use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
-    DidOpenTextDocumentParams, HoverParams, HoverProviderCapability, InitializeParams,
-    InitializeResult, ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind,
+    DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, HoverParams,
+    HoverProviderCapability, InitializeParams, InitializeResult, ServerCapabilities,
+    TextDocumentSyncCapability, TextDocumentSyncKind,
 };
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
@@ -52,6 +53,7 @@ fn setup_handler() -> IoHandler {
                     TextDocumentSyncKind::Full,
                 )),
                 hover_provider: Some(true.into()),
+                definition_provider: Some(lsp_types::OneOf::Left(true)),
                 ..ServerCapabilities::default()
             },
             ..InitializeResult::default()
@@ -79,6 +81,19 @@ fn setup_handler() -> IoHandler {
             None => Ok(Value::Null),
             Some(response) => Ok(to_value(response).unwrap()),
         }
+    });
+
+    let state_c = state.clone();
+    io.add_sync_method("textDocument/definition", move |params| {
+        let value = params_to_value(params);
+        let request = from_value::<GotoDefinitionParams>(value).unwrap();
+
+        let response = match state_c.lock().unwrap().goto_definition(&request) {
+            Some(resp) => resp,
+            None => GotoDefinitionResponse::Array(vec![]),
+        };
+
+        Ok(to_value(response).unwrap())
     });
 
     io

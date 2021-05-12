@@ -1,9 +1,14 @@
-use lsp_types::Position;
+use std::collections::BTreeMap;
+
+use lsp_types::{Location, Position, Range, Url};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct File {
     pub script: Script,
     pub keywords_by_location: Vec<(LocationRange, Keyword)>,
+    //pub function_call_locations: BTreeMap<String, Vec<LocationRange>>,
+    pub function_call_locations: Vec<(LocationRange, Function)>,
+    pub function_definition_locations: BTreeMap<String, LocationRange>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -14,6 +19,7 @@ pub enum CompilationUnit {
     CUFunctionCall(FunctionCall),
     CUFunctionDefinition(FunctionDefinition),
     CUKeyword(Keyword),
+    CUFunction(Function),
     CUVariable(Variable),
     CUExpression(Expression),
     CUStatement(Statement),
@@ -53,7 +59,7 @@ pub struct FunctionDefinition {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionCall {
     pub call_function_keyword: Keyword,
-    pub function: String, // TODO: make Function struct
+    pub function: Function, // TODO: make Function struct
     pub location: LocationRange,
 }
 
@@ -92,6 +98,12 @@ pub struct IntegerLiteral {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Function {
+    pub name: String,
+    pub location: LocationRange,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Keyword {
     pub content: String,
     pub location: LocationRange,
@@ -124,6 +136,17 @@ impl LocationRange {
             panic!()
         }
     }
+
+    pub fn to_location(&self, file: &Url) -> Location {
+        Location::new(file.clone(), self.to_range())
+    }
+
+    pub fn to_range(&self) -> Range {
+        Range::new(
+            self.start.to_position(),
+            self.end.plus_columns(1).to_position(),
+        )
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -133,10 +156,22 @@ pub struct LineColumn {
 }
 
 impl LineColumn {
+    pub fn new(line: isize, column: isize) -> LineColumn {
+        LineColumn { line, column }
+    }
+
     pub fn from_position(position: &Position) -> LineColumn {
         LineColumn {
             line: position.line as isize + 1,
             column: position.character as isize,
         }
+    }
+
+    pub fn to_position(&self) -> Position {
+        Position::new((self.line - 1) as u32, self.column as u32)
+    }
+
+    pub fn plus_columns(&self, num_columns: isize) -> LineColumn {
+        LineColumn::new(self.line, self.column + num_columns)
     }
 }

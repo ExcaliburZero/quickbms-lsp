@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
 use lsp_types::{
-    DidOpenTextDocumentParams, Hover, HoverContents, HoverParams, MarkupContent, MarkupKind, Url,
+    DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
+    HoverParams, MarkupContent, MarkupKind, Url,
 };
 
 use crate::grammar::ast::{File, LineColumn};
@@ -48,6 +49,30 @@ impl ServerState {
                     }),
                     range: None,
                 });
+            }
+        }
+
+        None
+    }
+
+    pub fn goto_definition(
+        &self,
+        request: &GotoDefinitionParams,
+    ) -> Option<GotoDefinitionResponse> {
+        let text_document_position_params = &request.text_document_position_params;
+        let url = &text_document_position_params.text_document.uri;
+
+        let file = self.files.get(url).unwrap();
+
+        // Handle if the user is pointing at a function call
+        let line_column = LineColumn::from_position(&text_document_position_params.position);
+        for (loc_range, function) in file.function_call_locations.iter() {
+            if loc_range.contains(&line_column) {
+                let function_lower = function.name.to_lowercase();
+                return match file.function_definition_locations.get(&function_lower) {
+                    Some(loc) => Some(GotoDefinitionResponse::Scalar(loc.to_location(&url))),
+                    None => None,
+                };
             }
         }
 

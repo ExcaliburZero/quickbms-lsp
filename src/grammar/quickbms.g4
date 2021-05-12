@@ -47,12 +47,13 @@ function_definition: START_FUNCTION ID statement* END_FUNCTION;
 statement:
 	PRINT expression						# print_statement
 	| SET variable type_name? expression	# set_statement
-	| CALL_FUNCTION ID						# function_call_statement;
+	| CALL_FUNCTION function				# function_call_statement;
 expression:
 	STRING_LITERAL		# string_literal
 	| INTEGER_LITERAL	# integer_literal;
 type_name: LONG # long_type;
 variable: ID;
+function: ID;
 
 // Tokens
 STRING_LITERAL: '"' CHARACTER*? '"';
