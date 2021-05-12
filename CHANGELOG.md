@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Message header parsing.
 - Parser support for ignoring block and line comments.
+- Parser support for function definitions and function calls.
+- Function go to definition.
 
 ### Changed
 - Keyword documentation hover message type from markdown to plaintext.
