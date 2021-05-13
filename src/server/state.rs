@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use lsp_types::{
     DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
-    HoverParams, MarkupContent, MarkupKind, Url,
+    HoverParams, Location, MarkupContent, MarkupKind, ReferenceParams, Url,
 };
 
 use crate::grammar::ast::{File, LineColumn};
@@ -76,6 +76,10 @@ impl ServerState {
             }
         }
 
+        None
+    }
+
+    pub fn goto_references(&self, request: &ReferenceParams) -> Option<Vec<Location>> {
         None
     }
 }

@@ -6,8 +6,8 @@ use std::sync::{Arc, Mutex};
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
     DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, HoverParams,
-    HoverProviderCapability, InitializeParams, InitializeResult, ServerCapabilities,
-    TextDocumentSyncCapability, TextDocumentSyncKind,
+    HoverProviderCapability, InitializeParams, InitializeResult, ReferenceParams,
+    ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind,
 };
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
@@ -54,6 +54,7 @@ fn setup_handler() -> IoHandler {
                 )),
                 hover_provider: Some(true.into()),
                 definition_provider: Some(lsp_types::OneOf::Left(true)),
+                references_provider: Some(lsp_types::OneOf::Left(true)),
                 ..ServerCapabilities::default()
             },
             ..InitializeResult::default()
@@ -92,6 +93,16 @@ fn setup_handler() -> IoHandler {
             Some(resp) => resp,
             None => GotoDefinitionResponse::Array(vec![]),
         };
+
+        Ok(to_value(response).unwrap())
+    });
+
+    let state_c = state.clone();
+    io.add_sync_method("textDocument/references", move |params| {
+        let value = params_to_value(params);
+        let request = from_value::<ReferenceParams>(value).unwrap();
+
+        let response = state_c.lock().unwrap().goto_references(&request);
 
         Ok(to_value(response).unwrap())
     });
