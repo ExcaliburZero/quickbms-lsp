@@ -58,7 +58,6 @@ macro_rules! token_location_range {
 struct QuickBMSVisitorImpl {
     return_stack: Vec<CompilationUnit>,
     keywords_by_location: Vec<(LocationRange, Keyword)>,
-    //function_call_locations: BTreeMap<String, Vec<LocationRange>>,
     function_call_locations: Vec<(LocationRange, Function)>,
     function_definition_locations: BTreeMap<String, LocationRange>,
 }

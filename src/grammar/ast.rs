@@ -6,7 +6,6 @@ use lsp_types::{Location, Position, Range, Url};
 pub struct File {
     pub script: Script,
     pub keywords_by_location: Vec<(LocationRange, Keyword)>,
-    //pub function_call_locations: BTreeMap<String, Vec<LocationRange>>,
     pub function_call_locations: Vec<(LocationRange, Function)>,
     pub function_definition_locations: BTreeMap<String, LocationRange>,
 }
@@ -59,7 +58,7 @@ pub struct FunctionDefinition {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionCall {
     pub call_function_keyword: Keyword,
-    pub function: Function, // TODO: make Function struct
+    pub function: Function,
     pub location: LocationRange,
 }
 
