@@ -43,7 +43,8 @@ fragment CHARACTER:
 // Grammar rules
 script: top_statement*;
 top_statement: statement | function_definition;
-function_definition: START_FUNCTION ID statement* END_FUNCTION;
+function_definition:
+	START_FUNCTION function statement* END_FUNCTION;
 statement:
 	PRINT expression						# print_statement
 	| SET variable type_name? expression	# set_statement

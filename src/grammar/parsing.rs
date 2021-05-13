@@ -4,12 +4,12 @@ use std::ops::Deref;
 use std::rc::Rc;
 
 use antlr_rust::common_token_stream::CommonTokenStream;
-
 use antlr_rust::parser_rule_context::ParserRuleContext;
 use antlr_rust::token::Token;
 use antlr_rust::token_factory::ArenaCommonFactory;
 use antlr_rust::tree::{ParseTree, ParseTreeVisitor, TerminalNode, Tree, Visitable, VisitableDyn};
 use antlr_rust::InputStream;
+use multimap::MultiMap;
 
 use crate::grammar::ast::{
     CompilationUnit, Expression, File, Function, FunctionCall, FunctionDefinition, IntegerLiteral,
@@ -58,7 +58,8 @@ macro_rules! token_location_range {
 struct QuickBMSVisitorImpl {
     return_stack: Vec<CompilationUnit>,
     keywords_by_location: Vec<(LocationRange, Keyword)>,
-    function_call_locations: Vec<(LocationRange, Function)>,
+    function_mention_locations: Vec<(LocationRange, Function)>,
+    function_mention_locations_by_name: MultiMap<String, LocationRange>,
     function_definition_locations: BTreeMap<String, LocationRange>,
 }
 
@@ -69,7 +70,10 @@ impl QuickBMSVisitorImpl {
                 CompilationUnit::CUScript(script) => Some(File {
                     script: script.clone(),
                     keywords_by_location: self.keywords_by_location.clone(),
-                    function_call_locations: self.function_call_locations.clone(),
+                    function_mention_locations: self.function_mention_locations.clone(),
+                    function_mention_locations_by_name: self
+                        .function_mention_locations_by_name
+                        .clone(),
                     function_definition_locations: self.function_definition_locations.clone(),
                 }),
                 _ => panic!(),
@@ -191,19 +195,10 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
             _ => panic!(),
         };
 
-        let func_name_lc = function.name.to_lowercase();
-        /*let func_calls = match self.function_call_locations.get_mut(&func_name_lc) {
-            Some(fc) => fc,
-            None => {
-                self.function_call_locations
-                    .insert(func_name_lc.clone(), vec![]);
-                self.function_call_locations.get_mut(&func_name_lc).unwrap()
-            }
-        };
-        func_calls.push(function.location.clone());*/
-
-        self.function_call_locations
-            .push((location.clone(), function.clone()));
+        self.function_mention_locations
+            .push((function.location.clone(), function.clone()));
+        self.function_mention_locations_by_name
+            .insert(function.name.to_lowercase(), function.location.clone());
 
         let value = FunctionCall {
             call_function_keyword,
@@ -316,8 +311,16 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
         };
 
         // Function name
-        let name_token = &children[1];
-        let name = name_token.get_text();
+        ctx.get_child(1).unwrap().as_ref().accept_dyn(self);
+        let function = match self.return_stack.pop().unwrap() {
+            CompilationUnit::CUFunction(function) => function,
+            _ => panic!(),
+        };
+
+        self.function_mention_locations
+            .push((function.location.clone(), function.clone()));
+        self.function_mention_locations_by_name
+            .insert(function.name.to_lowercase(), function.location.clone());
 
         // Function statements
         let mut statements = vec![];
@@ -340,10 +343,10 @@ impl<'i> quickbmsVisitor<'i> for QuickBMSVisitorImpl {
         };
 
         self.function_definition_locations
-            .insert(name.to_lowercase(), location.clone());
+            .insert(function.name.to_lowercase(), location.clone());
 
         let value = FunctionDefinition {
-            name,
+            function,
             statements,
             location,
         };
@@ -364,7 +367,8 @@ pub fn parse_str(contents: &str) -> File {
     let mut visitor = QuickBMSVisitorImpl {
         return_stack: vec![],
         keywords_by_location: vec![],
-        function_call_locations: vec![],
+        function_mention_locations: vec![],
+        function_mention_locations_by_name: MultiMap::new(),
         function_definition_locations: BTreeMap::new(),
     };
     result.accept(&mut visitor);
@@ -386,7 +390,8 @@ fn test_visitor() {
         let mut visitor = QuickBMSVisitorImpl {
             return_stack: vec![],
             keywords_by_location: vec![],
-            function_call_locations: vec![],
+            function_mention_locations: vec![],
+            function_mention_locations_by_name: MultiMap::new(),
             function_definition_locations: BTreeMap::new(),
         };
         result.accept(&mut visitor);
