@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use lsp_types::{
     DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
-    HoverParams, MarkupContent, MarkupKind, Url,
+    HoverParams, Location, MarkupContent, MarkupKind, ReferenceParams, Url,
 };
 
 use crate::grammar::ast::{File, LineColumn};
@@ -66,11 +66,35 @@ impl ServerState {
 
         // Handle if the user is pointing at a function call
         let line_column = LineColumn::from_position(&text_document_position_params.position);
-        for (loc_range, function) in file.function_call_locations.iter() {
+        for (loc_range, function) in file.function_mention_locations.iter() {
             if loc_range.contains(&line_column) {
                 let function_lower = function.name.to_lowercase();
                 return match file.function_definition_locations.get(&function_lower) {
                     Some(loc) => Some(GotoDefinitionResponse::Scalar(loc.to_location(&url))),
+                    None => None,
+                };
+            }
+        }
+
+        None
+    }
+
+    pub fn goto_references(&self, request: &ReferenceParams) -> Option<Vec<Location>> {
+        let text_document_position = &request.text_document_position;
+        let url = &text_document_position.text_document.uri;
+
+        let file = self.files.get(url).unwrap();
+
+        // Handle if the user is pointing at a mention of a function
+        let line_column = LineColumn::from_position(&text_document_position.position);
+        for (loc_range, function) in file.function_mention_locations.iter() {
+            if loc_range.contains(&line_column) {
+                let function_lower = function.name.to_lowercase();
+                return match file
+                    .function_mention_locations_by_name
+                    .get_vec(&function_lower)
+                {
+                    Some(locs) => Some(locs.iter().map(|lr| lr.to_location(&url)).collect()),
                     None => None,
                 };
             }

@@ -1,12 +1,14 @@
 use std::collections::BTreeMap;
 
 use lsp_types::{Location, Position, Range, Url};
+use multimap::MultiMap;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct File {
     pub script: Script,
     pub keywords_by_location: Vec<(LocationRange, Keyword)>,
-    pub function_call_locations: Vec<(LocationRange, Function)>,
+    pub function_mention_locations: Vec<(LocationRange, Function)>,
+    pub function_mention_locations_by_name: MultiMap<String, LocationRange>,
     pub function_definition_locations: BTreeMap<String, LocationRange>,
 }
 
@@ -50,7 +52,7 @@ pub enum Statement {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FunctionDefinition {
     // TODO: track the spelling of the start and end keywords
-    pub name: String,               // TODO: maybe wrap this in an ID class?
+    pub function: Function,
     pub statements: Vec<Statement>, // No nested function definitions allowed
     pub location: LocationRange,
 }
@@ -132,7 +134,7 @@ impl LocationRange {
                 && self.start.column <= line_column.column
                 && line_column.column <= self.end.column
         } else {
-            panic!()
+            panic!("{:?}", self)
         }
     }
 
