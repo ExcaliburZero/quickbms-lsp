@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use tree_sitter::{Language, Parser, Query, QueryCursor, Tree};
+use tree_sitter::{Query, QueryCursor, Tree};
 
 use lsp_types::{
     DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
@@ -41,7 +41,7 @@ impl ServerState {
         let url = &text_document_position_params.text_document.uri;
         let point = text_document_position_params.position.to_point();
 
-        let (source, tree) = self.files.get(url).unwrap();
+        let (_source, tree) = self.files.get(url).unwrap();
 
         let node = tree
             .root_node()

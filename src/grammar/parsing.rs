@@ -1,5 +1,5 @@
 use lsp_types::{Location, Position, Url};
-use tree_sitter::{Language, Parser, Point, Query, QueryCursor, Range, Tree};
+use tree_sitter::{Language, Parser, Point, Range, Tree};
 
 extern "C" {
     fn tree_sitter_quickbms() -> Language;
