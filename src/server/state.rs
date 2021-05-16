@@ -3,8 +3,9 @@ use std::collections::HashMap;
 use tree_sitter::{Query, QueryCursor, Tree};
 
 use lsp_types::{
-    DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
-    HoverParams, Location, MarkupContent, MarkupKind, ReferenceParams, Url,
+    DidChangeTextDocumentParams, DidOpenTextDocumentParams, GotoDefinitionParams,
+    GotoDefinitionResponse, Hover, HoverContents, HoverParams, Location, MarkupContent, MarkupKind,
+    ReferenceParams, Url,
 };
 
 use crate::grammar::parsing::{get_quickbms_language, parse, PointLike, RangeLike};
@@ -31,6 +32,20 @@ impl ServerState {
             Some(t) => {
                 self.files
                     .insert(text_document.uri.clone(), (text_document.text.clone(), t));
+            }
+            None => eprintln!("Parsing failed due to timeout or cancellation flag."),
+        }
+    }
+
+    pub fn did_change(&mut self, request: &DidChangeTextDocumentParams) {
+        let text_document = &request.text_document;
+
+        let text = request.content_changes[0].text.clone();
+        let tree = parse(&text);
+
+        match tree {
+            Some(t) => {
+                self.files.insert(text_document.uri.clone(), (text, t));
             }
             None => eprintln!("Parsing failed due to timeout or cancellation flag."),
         }
