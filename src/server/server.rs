@@ -1,5 +1,5 @@
 use std::fmt;
-use std::io::{BufRead, BufReader, Write};
+use std::io::{BufRead, Write};
 use std::str::from_utf8;
 use std::sync::{Arc, Mutex};
 
@@ -202,6 +202,8 @@ impl fmt::Display for Message {
 
 #[test]
 fn test_message_from_buffered_reader() {
+    use std::io::BufReader;
+
     let text =
         "Content-Length: 52\r\n\r\n{\"jsonrpc\":\"2.0\",\"method\":\"initialized\",\"params\":{}}";
 
