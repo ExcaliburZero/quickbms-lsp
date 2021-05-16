@@ -17,6 +17,8 @@ jobs:
           toolchain: nightly-2021-01-27
           default: true
           components: rustfmt
+      - name: Install tree-sitter
+        run: cd tree-sitter-quickbms && npm install --save-dev tree-sitter-cli
       - name: Construct parser
         run: make grammar
       - name: Test grammar
