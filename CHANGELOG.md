@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Keyword documentation hover message type from markdown to plaintext.
+- Parser generator library from Antlr to tree-sitter.
 
 ## [0.0.1] - 2021-05-08
 ### Added
