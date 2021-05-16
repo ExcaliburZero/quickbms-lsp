@@ -5,9 +5,10 @@ use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
-    DidOpenTextDocumentParams, GotoDefinitionParams, GotoDefinitionResponse, HoverParams,
-    HoverProviderCapability, InitializeParams, InitializeResult, ReferenceParams,
-    ServerCapabilities, TextDocumentSyncCapability, TextDocumentSyncKind,
+    DidChangeTextDocumentParams, DidOpenTextDocumentParams, GotoDefinitionParams,
+    GotoDefinitionResponse, HoverParams, HoverProviderCapability, InitializeParams,
+    InitializeResult, ReferenceParams, ServerCapabilities, TextDocumentSyncCapability,
+    TextDocumentSyncKind,
 };
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
@@ -69,6 +70,14 @@ fn setup_handler() -> IoHandler {
         let notification = from_value::<DidOpenTextDocumentParams>(value).unwrap();
 
         state_c.lock().unwrap().did_open(&notification);
+    });
+
+    let state_c = state.clone();
+    io.add_notification("textDocument/didChange", move |params| {
+        let value = params_to_value(params);
+        let notification = from_value::<DidChangeTextDocumentParams>(value).unwrap();
+
+        state_c.lock().unwrap().did_change(&notification);
     });
 
     let state_c = state.clone();
