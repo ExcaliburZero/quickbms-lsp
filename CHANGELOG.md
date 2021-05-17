@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Message header parsing.
 - Parser support for ignoring block and line comments.
 - Parser support for function definitions and function calls.
+- Parser support for hex literals.
+- Parser support for variables expressions.
 - Function go to definition.
 - Function go to references.
 - Reparsing of document on changes.
