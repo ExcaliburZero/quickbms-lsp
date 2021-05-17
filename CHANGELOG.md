@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.0] - 2021-05-16
 ### Added
 - Message header parsing.
 - Parser support for ignoring block and line comments.
@@ -12,12 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parser support for hex literals.
 - Parser support for variables expressions.
 - Function go to definition.
-- Function go to references.
-- Reparsing of document on changes.
+- Function go to references. (#2, #3)
+- Reparsing of document on changes. (#1, #8)
 
 ### Changed
 - Keyword documentation hover message type from markdown to plaintext.
-- Parser generator library from Antlr to tree-sitter.
+- Parser generator library from Antlr to tree-sitter. (#5, #6)
 
 ## [0.0.1] - 2021-05-08
 ### Added
