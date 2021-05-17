@@ -10,7 +10,7 @@ repository = "https://github.com/ExcaliburZero/quickbms-lsp"
 license = "MIT"
 
 # Need to explicitly define which files to include in the package, since the gitignore file ignores
-# the Antlr generated source code, but we do need to include those files in the package.
+# the tree-sitter generated source code, but we do need to include those files in the package.
 include = [
     "**/*.rs",
     "**/*.txt",
