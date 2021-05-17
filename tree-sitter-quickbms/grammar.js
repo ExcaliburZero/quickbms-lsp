@@ -42,15 +42,8 @@ module.exports = grammar({
     ),
     _expression: $ => choice(
       $.string_literal,
-      $.integer_literal
-    ),
-
-    identifier: $ => /[a-zA-Z0-9]+/,
-    integer_literal: $ => /[0-9]+/,
-    string_literal: $ => seq(
-      '"',
-      repeat(token.immediate(prec(1, /[^\\"\n]+/))),
-      '"',
+      $.integer_literal,
+      $.identifier,
     ),
 
     print: $ => seq(
@@ -68,8 +61,14 @@ module.exports = grammar({
     callfunction: $ => seq(
       $._C, $._A, $._L, $._L, $._F, $._U, $._N, $._C, $._T, $._I, $._O, $._N
     ),
-    long: $ => seq(
-      $._L, $._O, $._N, $._G
+    long: $ => /[Ll][Oo][Nn][Gg]/,
+
+    identifier: $ => /[a-zA-Z]+[a-zA-Z0-9]*/,
+    integer_literal: $ => /(0x)?[0-9a-fA-F]+/,
+    string_literal: $ => seq(
+      '"',
+      repeat(token.immediate(prec(1, /[^\\"\n]+/))),
+      '"',
     ),
 
     comment: $ => token(choice(
