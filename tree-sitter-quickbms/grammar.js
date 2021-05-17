@@ -46,21 +46,11 @@ module.exports = grammar({
       $.identifier,
     ),
 
-    print: $ => seq(
-      $._P, $._R, $._I, $._N, $._T
-    ),
-    set: $ => seq(
-      $._S, $._E, $._T
-    ),
-    startfunction: $ => seq(
-      $._S, $._T, $._A, $._R, $._T, $._F, $._U, $._N, $._C, $._T, $._I, $._O, $._N
-    ),
-    endfunction: $ => seq(
-      $._E, $._N, $._D, $._F, $._U, $._N, $._C, $._T, $._I, $._O, $._N
-    ),
-    callfunction: $ => seq(
-      $._C, $._A, $._L, $._L, $._F, $._U, $._N, $._C, $._T, $._I, $._O, $._N
-    ),
+    print: $ => /[Pp][Rr][Ii][Nn][Tt]/,
+    set: $ => /[Ss][Ee][Tt]/,
+    startfunction: $ => /[Ss][Tt][Aa][Rr][Tt][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
+    endfunction: $ => /[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
+    callfunction: $ => /[Cc][Aa][Ll][Ll][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     long: $ => /[Ll][Oo][Nn][Gg]/,
 
     identifier: $ => /[a-zA-Z]+[a-zA-Z0-9]*/,
@@ -80,34 +70,6 @@ module.exports = grammar({
         '/'
       )
     )),
-
-    // Case insensitivity support since keywords, variables, funcitons, etc. are case insensitive.
-    _A: $ => /[aA]/,
-    _B: $ => /[bB]/,
-    _C: $ => /[cC]/,
-    _D: $ => /[dD]/,
-    _E: $ => /[eE]/,
-    _F: $ => /[fF]/,
-    _G: $ => /[gG]/,
-    _H: $ => /[hH]/,
-    _I: $ => /[iI]/,
-    _J: $ => /[jJ]/,
-    _K: $ => /[kK]/,
-    _L: $ => /[lL]/,
-    _M: $ => /[mM]/,
-    _N: $ => /[nN]/,
-    _O: $ => /[oO]/,
-    _P: $ => /[pP]/,
-    _Q: $ => /[qQ]/,
-    _R: $ => /[rR]/,
-    _S: $ => /[sS]/,
-    _T: $ => /[tT]/,
-    _U: $ => /[uU]/,
-    _V: $ => /[vV]/,
-    _W: $ => /[wW]/,
-    _X: $ => /[xX]/,
-    _Y: $ => /[yY]/,
-    _Z: $ => /[zZ]/,
   }
 });
 
