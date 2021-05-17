@@ -1,6 +1,6 @@
 [package]
 name = "quickbms-lsp"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Christopher Wells <cwellsny@nycap.rr.com>"]
 edition = "2018"
 description = "An experimental language server protocol for the QuickBMS scripting language."
