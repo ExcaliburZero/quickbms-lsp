@@ -1,0 +1,44 @@
+Endian TYPE [VAR]
+
+    It changes the current global endianess of the read/written
+    data, the default one is little endian.
+
+    Arguments:
+      TYPE      - little, intel
+                  0x11223344 is stored as 44 33 22 11
+                - big, network
+                  0x11223344 is stored as 11 22 33 44
+                - swap, change, invert
+                  swap the current endianess, big <-> little
+                - guess
+                  followed by a 32bit number. The function swaps
+                  the number and compares it with the original one
+                  so if the number is 0x04000000 then the swapped
+                  one will be 0x4 and the tool will change the
+                  global endianess and the one of the variable
+                - guess16
+                  followed by a 16bit number
+                - guess64
+                  followed by a 64bit number
+                - guess24
+                  followed by a 24bit number
+                - save, store
+                  stores the current endian in VAR: 1=big, 0=little
+
+    Examples:
+      print "little endian"
+      endian big
+      print "big endian"
+      endian little
+      print "little endian"
+      endian change
+      print "little->big endian"
+      endian guess 0x04000000
+      print "guess endian"
+      endian save CURRENT_ENDIAN
+      if CURRENT_ENDIAN == 0
+        print "little endian"
+      else
+        print "big endian"
+      endif
+      endian set CURRENT_ENDIAN

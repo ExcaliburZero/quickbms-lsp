@@ -22,6 +22,7 @@ module.exports = grammar({
       $.print_statement,
       $.set_statement,
       $.function_call_statement,
+      $.endian_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -37,8 +38,28 @@ module.exports = grammar({
       $.callfunction,
       field("name", $.identifier),
     ),
+    endian_statement: $ => seq(
+      $.endian,
+      field("type", $._endian_type),
+      field("value", optional($._expression)),
+    ),
     type: $ => choice(
       $.long
+    ),
+    _endian_type: $ => choice(
+      $.little,
+      $.intel,
+      $.big,
+      $.network,
+      $.swap,
+      $.change,
+      $.invert,
+      $.guess,
+      $.guess16,
+      $.guess64,
+      $.guess24,
+      $.save,
+      $.store
     ),
     _expression: $ => choice(
       $.string_literal,
@@ -52,8 +73,22 @@ module.exports = grammar({
     endfunction: $ => /[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     callfunction: $ => /[Cc][Aa][Ll][Ll][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     long: $ => /[Ll][Oo][Nn][Gg]/,
+    endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
+    little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
+    intel: $ => /[Ii][Nn][Tt][Ee][Ll]/,
+    big: $ => /[Bb][Ii][Gg]/,
+    network: $ => /[Nn][Ee][Tt][Ww][Oo][Rr][Kk]/,
+    swap: $ => /[Ss][Ww][Aa][Pp]/,
+    change: $ => /[Cc][Hh][Aa][Nn][Gg][Ee]/,
+    invert: $ => /[Ii][Nn][Vv][Ee][Rr][Tt]/,
+    guess: $ => /[Gg][Uu][Ee][Ss][Ss]/,
+    guess16: $ => /[Gg][Uu][Ee][Ss][Ss]16/,
+    guess64: $ => /[Gg][Uu][Ee][Ss][Ss]64/,
+    guess24: $ => /[Gg][Uu][Ee][Ss][Ss]24/,
+    save: $ => /[Ss][Aa][Vv][Ee]/,
+    store: $ => /[Ss][Tt][Oo][Rr][Ee]/,
 
-    identifier: $ => /[a-zA-Z]+[a-zA-Z0-9]*/,
+    identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /(0x)?[0-9a-fA-F]+/,
     string_literal: $ => seq(
       '"',

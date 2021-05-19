@@ -225,6 +225,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "callfunction".to_string(),
             include_str!("keyword_docs/functions.txt").to_string(),
         ),
+        (
+            "endian".to_string(),
+            include_str!("keyword_docs/endian.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
