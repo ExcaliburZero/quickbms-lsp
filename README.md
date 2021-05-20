@@ -5,6 +5,16 @@ This is an experimental language server for the scripting language QuickBMS.
 
 ![An example of the goto references function for a "GreetWorld" function being shown in Visual Studio Code for a functions example script.](images/vscode_references_function_01.png)
 
+## Language server endpoints
+These are the currently supported language server endpoints.
+* `initialize`
+* `textDocument/didOpen`
+* `textDocument/didChange`
+* `textDocument/hover`
+* `textDocument/definition`
+* `textDocument/references`
+    * Currently only for functions
+
 ## QuickBMS commands
 The following QuickBMS commands are currently supported by the langauge server.
 
