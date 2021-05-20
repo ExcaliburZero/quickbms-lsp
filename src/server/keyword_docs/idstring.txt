@@ -1,0 +1,24 @@
+IDString [FILENUM] STRING
+
+    It terminates the program if the magic/signature at the current
+    position of the file differs than the provided string.
+    If the string doesn't match and it's 4 bytes long QuickBMS will
+    automatically swap it and perform the comparison again and
+    change the endianess if it matches. This solution makes most of
+    the scripts written for an architecture (for example PC)
+    virtually compatible with others (for example Xbox360).
+    Pay attention to the FILENUM/VAR order different than other
+    commands, that's a rule of the original BMS syntax.
+
+    Arguments
+      FILENUM   number of the file associated to the archive (0)
+      STRING    string in C notation (cstring), it can also use
+                wildcard bytes like "\x??" (they covers only the
+                first 32 bytes of the string)
+
+    Examples:
+      IDString "PK\x03\x04"
+      IDString " KAP"
+      IDString MEMORY_FILE "hello"
+      IDString 1 "magic_on_file_one"
+      IDString "PK\x??\x??"

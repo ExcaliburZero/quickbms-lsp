@@ -23,6 +23,7 @@ module.exports = grammar({
       $.set_statement,
       $.function_call_statement,
       $.endian_statement,
+      $.idstring_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -42,6 +43,11 @@ module.exports = grammar({
       $.endian,
       field("type", $._endian_type),
       field("value", optional($._expression)),
+    ),
+    idstring_statement: $ => seq(
+      $.idstring,
+      field("filenum", optional($._expression)),
+      field("magic", $.string_literal),
     ),
     type: $ => choice(
       $.long
@@ -87,6 +93,7 @@ module.exports = grammar({
     guess24: $ => /[Gg][Uu][Ee][Ss][Ss]24/,
     save: $ => /[Ss][Aa][Vv][Ee]/,
     store: $ => /[Ss][Tt][Oo][Rr][Ee]/,
+    idstring: $ => /[Ii][Dd][Ss][Tt][Rr][Ii][Nn][Gg]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /(0x)?[0-9a-fA-F]+/,

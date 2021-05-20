@@ -229,6 +229,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "endian".to_string(),
             include_str!("keyword_docs/endian.txt").to_string(),
         ),
+        (
+            "idstring".to_string(),
+            include_str!("keyword_docs/idstring.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
