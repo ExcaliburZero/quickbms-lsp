@@ -11,12 +11,15 @@ cargo publish --dry-run
 ```bash
 cargo clean
 cargo build --release
+cargo build --release --target x86_64-pc-windows-gnu
 ```
+
+* Rename the Linux and Windows binaries.
 
 * Create a new release on GitHub
     * Set a tag name (ex. `0.0.1`)
     * Set the release title (ex. `0.0.1`)
-    * Attach the generated binary and package file
+    * Attach the generated binaries and package file
     * Click publish
 * Create a new release on Crates.io
 
