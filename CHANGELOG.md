@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Parser support for `endian` statements.
 - Parser support for `if`, `elif`, and `else` statements.
+- Document symbols list.
 
 ## [0.1.0] - 2021-05-16
 ### Added
