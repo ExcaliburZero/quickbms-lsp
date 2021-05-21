@@ -37,10 +37,11 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `While VAR COND VAR`
 * [ ] `String VAR OP VAR`
 * [ ] `CleanExit`
-* [ ] `If VAR COND VAR [...]`
-* [ ] `[Elif VAR COND VAR]`
-* [ ] `[Else]`
-* [ ] `EndIf`
+* [x] `If VAR COND VAR [...]`
+    * [ ] Support all comparison operators
+* [x] `[Elif VAR COND VAR]`
+* [x] `[Else]`
+* [x] `EndIf`
 * [ ] `GetCT VAR TYPE CHAR [FILENUM]`
 * [ ] `ComType ALGO [DICT] [DICT_SIZE]`
 * [ ] `ReverseShort VAR [ENDIAN]`
