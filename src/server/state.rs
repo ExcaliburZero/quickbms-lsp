@@ -3,9 +3,10 @@ use std::collections::HashMap;
 use tree_sitter::{Query, QueryCursor, Tree};
 
 use lsp_types::{
-    DidChangeTextDocumentParams, DidOpenTextDocumentParams, GotoDefinitionParams,
-    GotoDefinitionResponse, Hover, HoverContents, HoverParams, Location, MarkupContent, MarkupKind,
-    ReferenceParams, Url,
+    DidChangeTextDocumentParams, DidOpenTextDocumentParams, DocumentSymbolParams,
+    DocumentSymbolResponse, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
+    HoverParams, Location, MarkupContent, MarkupKind, ReferenceParams, SymbolInformation,
+    SymbolKind, Url,
 };
 
 use crate::grammar::parsing::{get_quickbms_language, parse, PointLike, RangeLike};
@@ -49,6 +50,57 @@ impl ServerState {
             }
             None => eprintln!("Parsing failed due to timeout or cancellation flag."),
         }
+    }
+
+    pub fn document_symbol(
+        &self,
+        request: &DocumentSymbolParams,
+    ) -> Option<DocumentSymbolResponse> {
+        let url = &request.text_document.uri;
+
+        let (source, tree) = self.files.get(url).unwrap();
+
+        // Find function definitions
+        let mut functions = vec![];
+        let query = Query::new(
+            get_quickbms_language(),
+            r#"(function_declaration) @declaration"#,
+        )
+        .unwrap();
+
+        let mut query_cursor = QueryCursor::new();
+        let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
+
+        let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
+        for (m, _) in matches {
+            let function_declaration = m.captures[0].node;
+
+            let func_name = function_declaration
+                .child_by_field_name("name")
+                .unwrap()
+                .utf8_text(source.as_bytes())
+                .unwrap()
+                .to_string();
+
+            let location = function_declaration.range().to_location(&url);
+
+            functions.push((func_name, location));
+        }
+
+        // Return symbols
+        let symbols: Vec<SymbolInformation> = functions
+            .iter()
+            .map(|(name, location)| SymbolInformation {
+                name: name.clone(),
+                kind: SymbolKind::Function,
+                tags: None,
+                deprecated: None,
+                location: location.clone(),
+                container_name: None,
+            })
+            .collect();
+
+        Some(DocumentSymbolResponse::Flat(symbols))
     }
 
     pub fn hover(&self, request: &HoverParams) -> Option<Hover> {

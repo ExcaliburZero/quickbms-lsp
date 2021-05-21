@@ -5,10 +5,10 @@ use std::sync::{Arc, Mutex};
 
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
-    DidChangeTextDocumentParams, DidOpenTextDocumentParams, GotoDefinitionParams,
-    GotoDefinitionResponse, HoverParams, HoverProviderCapability, InitializeParams,
-    InitializeResult, ReferenceParams, ServerCapabilities, TextDocumentSyncCapability,
-    TextDocumentSyncKind,
+    DidChangeTextDocumentParams, DidOpenTextDocumentParams, DocumentSymbolParams,
+    GotoDefinitionParams, GotoDefinitionResponse, HoverParams, HoverProviderCapability,
+    InitializeParams, InitializeResult, ReferenceParams, ServerCapabilities,
+    TextDocumentSyncCapability, TextDocumentSyncKind,
 };
 use regex::Regex;
 use serde_json::{self, from_value, to_value, Value};
@@ -56,6 +56,7 @@ fn setup_handler() -> IoHandler {
                 hover_provider: Some(true.into()),
                 definition_provider: Some(lsp_types::OneOf::Left(true)),
                 references_provider: Some(lsp_types::OneOf::Left(true)),
+                document_symbol_provider: Some(lsp_types::OneOf::Left(true)),
                 ..ServerCapabilities::default()
             },
             ..InitializeResult::default()
@@ -78,6 +79,19 @@ fn setup_handler() -> IoHandler {
         let notification = from_value::<DidChangeTextDocumentParams>(value).unwrap();
 
         state_c.lock().unwrap().did_change(&notification);
+    });
+
+    let state_c = state.clone();
+    io.add_sync_method("textDocument/documentSymbol", move |params| {
+        let value = params_to_value(params);
+        let request = from_value::<DocumentSymbolParams>(value).unwrap();
+
+        let response = state_c.lock().unwrap().document_symbol(&request);
+
+        match response {
+            None => Ok(Value::Null),
+            Some(response) => Ok(to_value(response).unwrap()),
+        }
     });
 
     let state_c = state.clone();
