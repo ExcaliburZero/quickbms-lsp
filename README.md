@@ -10,6 +10,7 @@ These are the currently supported language server endpoints.
 * `initialize`
 * `textDocument/didOpen`
 * `textDocument/didChange`
+* `textDocument/documentSymbol`
 * `textDocument/hover`
 * `textDocument/definition`
 * `textDocument/references`
