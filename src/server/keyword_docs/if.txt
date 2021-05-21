@@ -1,0 +1,72 @@
+If VAR COND VAR [...]
+...
+[Elif VAR COND VAR]
+...
+[Else]
+...
+EndIf
+
+    It checks various conditions and performs the needed operation
+    when the condition is verified, in short:
+    - If is ever the first condition
+    - Elif is another condition and can be used endless times
+    - Else is the operation to do when no conditions are met, last
+    - EndIf delimits the If command statement
+    It's also possible to use multiple conditions (max 4) like:
+      if VAR1 < VAR2 && VAR3 > VAR4
+      elif VAR1 != 0 || VAR2 != 0
+    The 'u' added before the condition forces an unsigned
+    comparison with numbers and a case sensitive one with strings.
+    The condition is considered for both strings and numbers, for
+    more technical details check the check_condition() function
+    in the cmd.c source code.
+
+    Arguments:
+      VAR       First part of the condition
+      COND      Valid for both strings and numbers:
+                <   minor, lower, below
+                >   major, greater, above
+                !=  different, <> !==
+                ==  equal, = === strcmp stricmp strcasecmp
+                >=  major/equal
+                <=  minor/equal
+                &   string: var2 is included in var1 (strstr)
+                    number: logical AND
+                ^   string: equal
+                    number: logical XOR
+                |   number: logical OR
+                %   number: modulus
+                /   number: division
+                <<  number: shift left
+                >>  number: shift right
+                !   number: negation, not
+                !!  number: true, use it to know if VAR is non-zero
+                ~   number: complement
+                strncmp     if "mystring" strncmp "myst"
+                ext compares the string after the last dot
+                basename    compares the string before the last dot
+                filepath    compares the part before the filenames,
+                            you can force a folder without filename
+                            by appending a slash: "c:\folder/"
+                            instead of "c:\folder" (will be "c:")
+                any other operation supported by the Math command
+                  (valid only for the numeric variables)
+                use 'u' before COND for forcing the usage of
+                unsigned operations useful with shift, divisions
+                and possibly other operations, if the variables
+                are strings then it will perform an case sensitive
+                comparison instead of the default insensitive one,
+                while the '0' prefix before COND works just like in
+                String performing a binary comparison
+      VAR       Second part of the condition
+
+    Examples:
+      If NAME != ""
+          ...
+      Endif
+      If MASK & 1
+      Elif MASK & 2
+      Elif MASK & 4
+      Elif MASK & 8
+      Else
+      Endif

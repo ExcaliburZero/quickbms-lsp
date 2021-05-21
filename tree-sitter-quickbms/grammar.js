@@ -24,6 +24,7 @@ module.exports = grammar({
       $.function_call_statement,
       $.endian_statement,
       $.idstring_statement,
+      $.if_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -48,6 +49,39 @@ module.exports = grammar({
       $.idstring,
       field("filenum", optional($._expression)),
       field("magic", $.string_literal),
+    ),
+    if_statement: $ => seq(
+      $.if,
+      field("left_expression", $._expression),
+      field("comparison", $.comparison),
+      field("right_expression", $._expression),
+      field("body", repeat($._statement)),
+      field("else_clauses", repeat(choice(
+        $.elif_statement,
+        $.else_statement
+      ))),
+      $.endif
+    ),
+    elif_statement: $ => seq(
+      $.elif,
+      field("left_expression", $._expression),
+      field("comparison", $.comparison),
+      field("right_expression", $._expression),
+      field("body", repeat($._statement)),
+    ),
+    else_statement: $ => seq(
+      $.else,
+      field("body", repeat($._statement)),
+    ),
+    comparison: $ => choice(
+      "<",
+      ">",
+      "!=",
+      "<>",
+      "!==",
+      "==",
+      "=",
+      "==="
     ),
     type: $ => choice(
       $.long
@@ -94,6 +128,10 @@ module.exports = grammar({
     save: $ => /[Ss][Aa][Vv][Ee]/,
     store: $ => /[Ss][Tt][Oo][Rr][Ee]/,
     idstring: $ => /[Ii][Dd][Ss][Tt][Rr][Ii][Nn][Gg]/,
+    if: $ => /[Ii][Ff]/,
+    elif: $ => /[Ee][Ll][Ii][Ff]/,
+    else: $ => /[Ee][Ll][Ss][Ee]/,
+    endif: $ => /[Ee][Nn][Dd][Ii][Ff]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /(0x)?[0-9a-fA-F]+/,

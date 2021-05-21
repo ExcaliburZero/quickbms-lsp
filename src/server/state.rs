@@ -233,6 +233,22 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "idstring".to_string(),
             include_str!("keyword_docs/idstring.txt").to_string(),
         ),
+        (
+            "if".to_string(),
+            include_str!("keyword_docs/if.txt").to_string(),
+        ),
+        (
+            "elif".to_string(),
+            include_str!("keyword_docs/if.txt").to_string(),
+        ),
+        (
+            "else".to_string(),
+            include_str!("keyword_docs/if.txt").to_string(),
+        ),
+        (
+            "endif".to_string(),
+            include_str!("keyword_docs/if.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
