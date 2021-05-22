@@ -1,0 +1,24 @@
+GoTo OFFSET [FILENUM] [TYPE]
+
+    It changes the current position in the file, like fseek in C.
+
+    Arguments:
+      OFFSET    Position to reach.
+                The offset "SEEK_SET" is offset 0.
+                The offset "SEEK_END" is the end of file.
+                If it's a constant negative it will be considered
+                the amount of bytes from the end of the file, so a
+                negative variable is considered as unsigned 32bit.
+                The offset depends also by the TYPE field.
+      FILENUM   number of the file associated to the archive (0)
+      TYPE      - SEEK_SET, absolute offset (default)
+                - SEEK_CUR, relative offset from current position
+                - SEEK_END, amount of bytes from the end, must be
+                  negative or OFFSET will be converted to negative
+
+    Examples:
+      GoTo OFFSET
+      GoTo 0x100
+      GoTo -4           # 4 bytes before the end of the file
+      GoTo SEEK_SET     # like goto 0
+      Goto SEEK_END     # like goto 0 0 SEEK_END

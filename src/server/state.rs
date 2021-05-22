@@ -301,6 +301,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "endif".to_string(),
             include_str!("keyword_docs/if.txt").to_string(),
         ),
+        (
+            "goto".to_string(),
+            include_str!("keyword_docs/goto.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

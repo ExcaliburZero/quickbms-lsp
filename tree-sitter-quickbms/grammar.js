@@ -25,6 +25,7 @@ module.exports = grammar({
       $.endian_statement,
       $.idstring_statement,
       $.if_statement,
+      $.goto_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -73,6 +74,12 @@ module.exports = grammar({
       $.else,
       field("body", repeat($._statement)),
     ),
+    goto_statement: $ => seq(
+      $.goto,
+      field("offset", $._expression),
+      field("file_num", optional($._expression)),
+      field("type", optional($._goto_type)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -82,6 +89,11 @@ module.exports = grammar({
       "==",
       "=",
       "==="
+    ),
+    _goto_type: $ => choice(
+      $.seek_set,
+      $.seek_cur,
+      $.seek_end,
     ),
     type: $ => choice(
       $.long
@@ -132,9 +144,13 @@ module.exports = grammar({
     elif: $ => /[Ee][Ll][Ii][Ff]/,
     else: $ => /[Ee][Ll][Ss][Ee]/,
     endif: $ => /[Ee][Nn][Dd][Ii][Ff]/,
+    goto: $ => /[Gg][Oo][Tt][Oo]/,
+    seek_set: $ => /[Ss][Ee][Ee][Kk]_[Ss][Ee][Tt]/,
+    seek_cur: $ => /[Ss][Ee][Ee][Kk]_[Cc][Uu][Rr]/,
+    seek_end: $ => /[Ss][Ee][Ee][Kk]_[Ee][Nn][Dd]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
-    integer_literal: $ => /(0x)?[0-9a-fA-F]+/,
+    integer_literal: $ => /((0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
     string_literal: $ => seq(
       '"',
       repeat(token.immediate(prec(1, /[^\\"\n]+/))),
