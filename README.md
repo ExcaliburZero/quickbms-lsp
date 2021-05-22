@@ -38,7 +38,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `Do`
 * [ ] `While VAR COND VAR`
 * [ ] `String VAR OP VAR`
-* [ ] `CleanExit`
+* [x] `CleanExit`
 * [x] `If VAR COND VAR [...]`
     * [ ] Support all comparison operators
 * [x] `[Elif VAR COND VAR]`

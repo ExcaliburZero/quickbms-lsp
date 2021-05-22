@@ -1,0 +1,3 @@
+CleanExit
+
+    Terminates the script, it's possible also to use just Exit.

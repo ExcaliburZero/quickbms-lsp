@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parser support for `continue` statements.
 - Parser support for `break` statements.
 - Parser support for `for` loops.
+- Parser support for `cleanexit` statements.
 - Parser support for negative integer literals.
 
 ## [0.1.1] - 2021-05-21
