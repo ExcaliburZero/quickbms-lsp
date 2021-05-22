@@ -25,7 +25,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `Next [VAR] [OP] [VALUE]`
 * [ ] `Get VAR TYPE [FILENUM] [OFFSET]`
 * [ ] `GetDString VAR LENGTH [FILENUM]`
-* [ ] `GoTo OFFSET [FILENUM] [TYPE]`
+* [x] `GoTo OFFSET [FILENUM] [TYPE]`
 * [x] `IDString [FILENUM] STRING`
 * [ ] `Log NAME OFFSET SIZE [FILENUM] [XSIZE]`
 * [ ] `Clog NAME OFFSET ZSIZE SIZE [FILENUM] [XSIZE]`
