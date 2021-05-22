@@ -30,6 +30,7 @@ module.exports = grammar({
       $.continue_statement,
       $.goto_statement,
       $.cleanexit_statement,
+      $.findloc_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -117,6 +118,21 @@ module.exports = grammar({
     cleanexit_statement: $ => seq(
       $.cleanexit
     ),
+    findloc_statement: $ => seq(
+      $.findloc,
+      field("variable", $._expression),
+      field("type", $.type),
+      field("string", $._expression),
+      optional(seq(
+        field("file_num", $._expression),
+        optional(seq(
+          field("error_value", $._expression),
+          optional(seq(
+            field("end_off", $._expression),
+          )),
+        )),
+      )),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -137,7 +153,8 @@ module.exports = grammar({
       $.seek_end,
     ),
     type: $ => choice(
-      $.long
+      $.long,
+      $.string,
     ),
     _endian_type: $ => choice(
       $.little,
@@ -166,6 +183,7 @@ module.exports = grammar({
     endfunction: $ => /[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     callfunction: $ => /[Cc][Aa][Ll][Ll][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     long: $ => /[Ll][Oo][Nn][Gg]/,
+    string: $ => /[Ss][Tt][Rr][Ii][Nn][Gg]/,
     endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
     little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
     intel: $ => /[Ii][Nn][Tt][Ee][Ll]/,
@@ -194,6 +212,7 @@ module.exports = grammar({
     seek_cur: $ => /[Ss][Ee][Ee][Kk]_[Cc][Uu][Rr]/,
     seek_end: $ => /[Ss][Ee][Ee][Kk]_[Ee][Nn][Dd]/,
     cleanexit: $ => /[Cc][Ll][Ee][Aa][Nn][Ee][Xx][Ii][Tt]/,
+    findloc: $ => /[Ff][Ii][Nn][Dd][Ll][Oo][Cc]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /((0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,

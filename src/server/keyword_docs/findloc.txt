@@ -1,0 +1,51 @@
+FindLoc VAR TYPE STRING [FILENUM] [ERR_VALUE] [END_OFF]
+
+    It searches the first occurrence of a given string or number
+    from the current offset of the file, just by scanning it byte
+    per byte.
+    It's used in those cases when the format of the archive is not
+    known or it's a particular text file.
+
+    Arguments:
+      VAR       The variable receiving the offset of the occurrence
+      TYPE      Type of the data we want to search, supported:
+                - string
+                - binary, can include any bytes (NUL too), since
+                  version 0.11 it can also contain wildcards like
+                  "\x??" or "\x**" for a wildcard byte (they covers
+                  only the first 32 bytes of the string)
+                - unicode, the search will be performed as utf16
+                  with the data stored using the current endianess
+                - numeric type (byte, short, long ...), it searches
+                  a number stored using the current endianess
+                - regex, experimental regular expression using a
+                  limited set of features (no grouping and others):
+                  https://github.com/kokke/tiny-regex-c
+                  it also works on binary files (0x00 -> line feed)
+                    findloc OFFSET regex "expression"
+                    findloc OFFSET regex "START.*END"
+      STRING    Must be a number if TYPE is a numeric type, or a
+                string in C notation (cstring) in the other cases
+      FILENUM   Number of the file associated to the archive (0)
+      ERR_VALUE By default FindLoc terminates the script if no
+                string is found, if ERR_VALUE is set this value is
+                assigned to VAR without terminating when there are
+                no other occurrences, the suggested ERR_VALUE is ""
+      END_OFF   Limit the scanning from current offset till this
+                offset, if END_OFF is lower than the current offset
+                then the scanning will be performed backward
+
+    Examples:
+      For
+          FindLoc OFFSET string "filename="
+          ...
+          FindLoc OFFSET string "filename=" 0 ""
+          if OFFSET == ""
+              cleanexit
+          endif
+
+          # scan backward
+          goto 0 0 SEEK_END
+          findloc OFFSET string "filename=" 0 "" 0
+          FindLoc OFFSET string "file\x??am\x??"
+      Next

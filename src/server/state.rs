@@ -325,6 +325,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "cleanexit".to_string(),
             include_str!("keyword_docs/cleanexit.txt").to_string(),
         ),
+        (
+            "findloc".to_string(),
+            include_str!("keyword_docs/findloc.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
