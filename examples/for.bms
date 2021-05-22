@@ -1,0 +1,31 @@
+set FILES 5
+
+For i = 0 < FILES
+  print "%i%"
+next i
+
+For
+  break
+Next
+
+set VAR1 5
+set VAR2 45
+For VAR1 = VAR1 != VAR2
+  # same of using while(VAR1 != VAR2) {...} in C
+  print "%VAR2%"
+Next VAR2 /= 3
+
+For OFFSET = OFFSET != ARCHIVE_SIZE
+  set OFFSET 101
+  if OFFSET > 100
+    break
+  endif
+Next
+
+For i = 0 < FILES
+  If i > 2
+    continue
+  Else
+    print "%i%"
+  EndIf
+next i

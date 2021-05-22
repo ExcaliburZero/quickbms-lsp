@@ -305,6 +305,22 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "goto".to_string(),
             include_str!("keyword_docs/goto.txt").to_string(),
         ),
+        (
+            "for".to_string(),
+            include_str!("keyword_docs/for.txt").to_string(),
+        ),
+        (
+            "next".to_string(),
+            include_str!("keyword_docs/for.txt").to_string(),
+        ),
+        (
+            "break".to_string(),
+            include_str!("keyword_docs/label.txt").to_string(),
+        ),
+        (
+            "continue".to_string(),
+            include_str!("keyword_docs/label.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

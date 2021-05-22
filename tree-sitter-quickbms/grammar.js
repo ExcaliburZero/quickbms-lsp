@@ -25,6 +25,9 @@ module.exports = grammar({
       $.endian_statement,
       $.idstring_statement,
       $.if_statement,
+      $.for_statement,
+      $.break_statement,
+      $.continue_statement,
       $.goto_statement,
     ),
     set_statement: $ => seq(
@@ -74,6 +77,36 @@ module.exports = grammar({
       $.else,
       field("body", repeat($._statement)),
     ),
+    for_statement: $ => seq(
+      $.for,
+      optional(seq(
+        field("variable", $._expression),
+        field("operation", $.operation),
+        field("value", $._expression),
+        field("comparison", $.comparison),
+        field("right_expression", $._expression),
+      )),
+      field("body", repeat($._statement)),
+      $.next_statement,
+    ),
+    next_statement: $ => seq(
+      $.next,
+      optional(seq(
+        field("variable", $._expression),
+        optional(seq(
+          field("operation", $.operation),
+          field("value", $._expression),
+        )),
+      )),
+    ),
+    break_statement: $ => seq(
+      $.break,
+      field("label", optional($._expression)),
+    ),
+    continue_statement: $ => seq(
+      $.continue,
+      field("label", optional($._expression)),
+    ),
     goto_statement: $ => seq(
       $.goto,
       field("offset", $._expression),
@@ -89,6 +122,10 @@ module.exports = grammar({
       "==",
       "=",
       "==="
+    ),
+    operation: $ => choice(
+      "=",
+      "/=",
     ),
     _goto_type: $ => choice(
       $.seek_set,
@@ -144,6 +181,10 @@ module.exports = grammar({
     elif: $ => /[Ee][Ll][Ii][Ff]/,
     else: $ => /[Ee][Ll][Ss][Ee]/,
     endif: $ => /[Ee][Nn][Dd][Ii][Ff]/,
+    for: $ => /[Ff][Oo][Rr]/,
+    next: $ => /[Nn][Ee][Xx][Tt]/,
+    break: $ => /[Bb][Rr][Ee][Aa][Kk]/,
+    continue: $ => /[Cc][Oo][Nn][Tt][Ii][Nn][Uu][Ee]/,
     goto: $ => /[Gg][Oo][Tt][Oo]/,
     seek_set: $ => /[Ss][Ee][Ee][Kk]_[Ss][Ee][Tt]/,
     seek_cur: $ => /[Ss][Ee][Ee][Kk]_[Cc][Uu][Rr]/,

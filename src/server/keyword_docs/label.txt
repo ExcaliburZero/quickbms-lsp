@@ -1,0 +1,16 @@
+NAME:           # it works like the labels in C
+Label NAME      # it works like the labels in C
+Break           # used in cycles
+Break NAME      # it works like goto in C
+Continue        # used in cycles
+Continue NAME   # it works like goto in C
+
+    Example:
+      print "000"
+      test:
+        print "AAA"
+      continue test2
+      print "BBB"
+      label test2     # "test2:" or "label test2" is the same
+        print "CCC"
+      continue test

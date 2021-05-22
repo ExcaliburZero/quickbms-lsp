@@ -21,8 +21,9 @@ The following QuickBMS commands are currently supported by the langauge server.
 
 * [ ] `QuickBMSver VERSION`
 * [ ] `FindLoc VAR TYPE STRING [FILENUM] [ERR_VALUE] [END_OFF]`
-* [ ] `For [VAR] [OP] [VALUE] [COND] [VAR]`
-* [ ] `Next [VAR] [OP] [VALUE]`
+* [x] `For [VAR] [OP] [VALUE] [COND] [VAR]`
+    * [ ] Support all operators
+* [x] `Next [VAR] [OP] [VALUE]`
 * [ ] `Get VAR TYPE [FILENUM] [OFFSET]`
 * [ ] `GetDString VAR LENGTH [FILENUM]`
 * [x] `GoTo OFFSET [FILENUM] [TYPE]`
@@ -80,5 +81,5 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `SLog NAME OFFSET SIZE [TYPE] [FILENUM] [TAG]`
 * [ ] `Reimport [MODE]`
 * [ ] `Label NAME`
-* [ ] `Break [NAME]`
-* [ ] `Continue [NAME]`
+* [x] `Break [NAME]`
+* [x] `Continue [NAME]`

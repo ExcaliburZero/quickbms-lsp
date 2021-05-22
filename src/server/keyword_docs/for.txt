@@ -1,0 +1,48 @@
+For [VAR] [OP] [VALUE] [COND] [VAR]
+...
+Next [VAR] [OP] [VALUE]
+
+    A classical "for" cycle with initializers, conditions and
+    incrementers.
+    There is also the Break instruction available to break the
+    cycle at any moment and the Continue instruction for skipping
+    the remaining part of the cycle.
+    "For" allows to perform an initial operation on a variable and
+    a check in each cycle to ensure a particular condition.
+    "Next" is the command which delimits the cycle and at the same
+    time increments the given variable if specified.
+    It's also possible to use a math operation in Next so that you
+    can increment, decrement or perform any other operation at the
+    end of each cycle.
+    All the parameters are optionals and must be inserted in the
+    specific order, so if there is no initialization you must use:
+      For OFFSET = OFFSET < 1000
+    For the record, there is also a "Prev" variant of the Next
+    command, it just decrements the variable at each cycle.
+
+    Arguments:
+      VAR       Variable on which is performed the first math
+                operation and is checked for the condition
+      OP        Any of the available Math operators (check Math)
+      VALUE     Value to assign to the variable or part of the math
+                operation
+      COND      Condition (check the If command)
+      VAR       Second part of the condition
+
+    Examples:
+      For i = 0 < FILES
+          ...
+      next i
+      For
+         # do what you want here, this is an endless loop
+      Next
+      For VAR1 = VAR1 != VAR2
+         # same of using while(VAR1 != VAR2) {...} in C
+      Next VAR2 /= 3
+      For OFFSET = OFFSET != ARCHIVE_SIZE
+        ...
+        Savepos OFFSET
+        if OFFSET > 100
+          break
+        endif
+      Next
