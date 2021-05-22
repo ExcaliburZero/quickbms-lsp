@@ -1,9 +1,16 @@
 * Update the version number in `Cargo.toml`
 * Update `CHANGELOG.md`
+
+```bash
+git push origin master
+```
+
 * Create a package file for the crate:
 
 ```bash
+rm tree-sitter-quickbms/Cargo.toml
 cargo publish --dry-run
+cargo publish --dry-run --allow-dirty
 ```
 
 * Create a binary for the language server:
