@@ -1,0 +1,84 @@
+Math VAR OP VAR
+
+    Mathematical operation between two variables with the result
+    placed in the first one.
+    Note that due to compatibility all the operations are performed
+    using signed 32 bit numbers by default. It makes the difference
+    with some operations like shift and divisions, pay attention!
+    For unsigned operations add an 'u' before OP.
+    The additional '=' you see in many scripts and in the examples
+    is not needed, programmers are used to add it when the first
+    variable is both input and output, like in C: var += 123;.
+
+    Arguments
+      VAR       Variable which acts as input and output
+      OP        +   sum
+                *   multiplication
+                /   division
+                -   substraction
+                ^   xor
+                &   and
+                |   or
+                %   modulus
+                !   negation of var2 (0 becomes 1 and any other
+                    value becomes 0)
+                ~   complement of var2 (like "xor 0xffffffff")
+                <   shift left (also <<)
+                >   shift right (also >>)
+                l   rotate left (also <<<)
+                r   rotate right (also >>>)
+                s   byte swapping, 2 for reverseshort and 4 for
+                    reverselong
+                w   bit swapping, reverse the amount of bits
+                    specified in var2
+                =   assign var2 to var1
+                n   negative value of var2 (like var1 = -var2)
+                a   absolute value of var2 (-10 = 10 and 10 = 10)
+                v   radix (also //)
+                p   power (also **)
+                x   alignment/padding, examples:
+                    var1=0   var2=16  result=0
+                    var1=1   var2=16  result=16
+                    var1=16  var2=16  result=16
+                    var1=17  var2=16  result=32
+                y   round, like var1=(var1/var2)*var2, examples:
+                    var1=0   var2=16  result=0
+                    var1=1   var2=16  result=0
+                    var1=16  var2=16  result=16
+                    var1=17  var2=16  result=16
+                z   common bitswapping (also <>):
+                    var1=0xab    var2=4  result=0xba
+                    var1=0xabcd  var2=4  result=0xdc
+                    var1=0xabcd  var2=8  result=0xcdab
+                reverselong     swap of 32bit variable
+                reverseshort    swap of 16bit variable
+                reverselonglong swap of 64bit variable
+                binary  convert from binary to decimal
+                octal   convert from octal to decimal
+                hex     convert from hexadecimal to decimal (this
+                        is automatic, use it only if VAR2 doesn't
+                        have a 0x prefix)
+                base*   convert from base* to decimal, so base8 is
+                        octal, base2 is binary, base16 is hex
+                Add a 'u' before or after OP for forcing the usage
+                of unsigned operations useful with shift, divisions
+                and possibly other operations.
+                Any operation starting with a '?' is considered a
+                verbose operator, for example ?add is the same of +.
+                QuickBMS supports also all the functions available in
+                math.h like ?sin, ?cos, ?atan and so on.
+                Unfortunately it's not possible to list them here,
+                please check math_operations() and
+                old_set_math_operator() in the cmd.c source code.
+      VAR       Second input variable
+
+    Examples:
+      Math SIZE * 0x100
+      Math OFFSET << 2
+      Math OFFSET u<< 2
+      Math TMP = SIZE
+      Math TMP ~ TMP
+      Math TMP n TMP
+      Math TMP2 a TMP
+      Math SIZE u/ 5
+      Math RADIX v 2

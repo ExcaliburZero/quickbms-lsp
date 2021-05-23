@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parser support for `cleanexit` statements.
 - Parser support for `findloc` statements.
 - Parser support for `get` statements.
+- Parser support for `math` statements.
 - Parser support for negative integer literals.
 
 ## [0.1.1] - 2021-05-21

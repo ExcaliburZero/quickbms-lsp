@@ -333,6 +333,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "get".to_string(),
             include_str!("keyword_docs/get.txt").to_string(),
         ),
+        (
+            "math".to_string(),
+            include_str!("keyword_docs/math.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
