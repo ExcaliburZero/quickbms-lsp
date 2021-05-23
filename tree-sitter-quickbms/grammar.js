@@ -31,6 +31,7 @@ module.exports = grammar({
       $.goto_statement,
       $.cleanexit_statement,
       $.findloc_statement,
+      $.get_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -133,6 +134,12 @@ module.exports = grammar({
         )),
       )),
     ),
+    get_statement: $ => seq(
+      $.get,
+      field("variable", $._expression),
+      field("type", $.type),
+      field("file_num", optional($._expression)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -213,6 +220,7 @@ module.exports = grammar({
     seek_end: $ => /[Ss][Ee][Ee][Kk]_[Ee][Nn][Dd]/,
     cleanexit: $ => /[Cc][Ll][Ee][Aa][Nn][Ee][Xx][Ii][Tt]/,
     findloc: $ => /[Ff][Ii][Nn][Dd][Ll][Oo][Cc]/,
+    get: $ => /[Gg][Ee][Tt]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /((0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,

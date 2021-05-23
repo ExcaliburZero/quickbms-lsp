@@ -1,0 +1,17 @@
+Get VAR TYPE [FILENUM]
+
+    It reads strings and numbers from the file.
+    It supports many types of input, they are listed at the
+    beginning of this documentat like byte, short, long, string,
+    unicode and so on.
+    The tool automatically terminates when there is no data or
+    partial data to read at the end of the file.
+
+    Arguments:
+      VAR       Variable which will receive the read data
+      TYPE      Check the description of the types explained before
+      FILENUM   Number of the file associated to the archive (0)
+
+    Examples:
+      Get OFFSET long
+      Get NAME string
