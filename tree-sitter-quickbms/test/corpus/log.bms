@@ -1,0 +1,38 @@
+================================================================================
+Log statements
+================================================================================
+
+log MEMORY_FILE 0 SIZE
+Log NAME OFFSET SIZE
+Log "dump.dat" 0 SIZE
+Log "" 0 SIZE
+Log "folder/name.*" 0 SIZE
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (log_statement
+    (log)
+    (identifier)
+    (integer_literal)
+    (identifier))
+  (log_statement
+    (log)
+    (identifier)
+    (identifier)
+    (identifier))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (identifier))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (identifier))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (identifier)))

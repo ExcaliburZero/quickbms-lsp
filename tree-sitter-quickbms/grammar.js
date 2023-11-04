@@ -33,6 +33,7 @@ module.exports = grammar({
       $.findloc_statement,
       $.get_statement,
       $.math_statement,
+      $.log_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -147,6 +148,12 @@ module.exports = grammar({
       field("operation", $.operation),
       field("expression", $._expression),
     ),
+    log_statement: $ => seq(
+      $.log,
+      field("name", $._expression),
+      field("offset", $._expression),
+      field("size", $._expression),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -240,6 +247,7 @@ module.exports = grammar({
     findloc: $ => /[Ff][Ii][Nn][Dd][Ll][Oo][Cc]/,
     get: $ => /[Gg][Ee][Tt]/,
     math: $ => /[Mm][Aa][Tt][Hh]/,
+    log: $ => /[Ll][Oo][Gg]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
     integer_literal: $ => /((0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,

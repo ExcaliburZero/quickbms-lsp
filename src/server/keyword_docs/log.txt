@@ -1,0 +1,42 @@
+Log NAME OFFSET SIZE [FILENUM] [XSIZE]
+
+    It extracts the file, this operation doesn't change the current
+    position of the input file.
+    The content of the extracted file can be automatically
+    decrypted using the Encryption command before it.
+    If NAME is an empty string like "", QuickBMS will assign a
+    sequential hexadecimal number and will try to guess the
+    extension based on the content at the beginning of the file.
+    The extension will be automatically guessed and appended also
+    to all the files that terminate with a dot or an asterisk like
+    ".", "*" or ".*" or if they point to folders like "folder/".
+    NAME can also be a special file like those that we will see
+    later like a socket, a process, an audio device and so on (they
+    require previous authorization by the user via command-line).
+    The filename will be automatically cleaned for dumping the file
+    without problems.
+    NAME can also be a MEMORY_FILE or a TEMPORARY_FILE.
+    If a file with the same name already exists, QuickBMS will ask
+    what action to take, the suggested one is the 'r' choice that
+    will allow to automatically rename all the files with the same
+    name without overwriting them.
+    If you have used the Append command, the data will be appended
+    to the existent file with the same name.
+    Log and Clog share the same code, so the compression is the only
+    difference.
+
+    Arguments:
+      NAME      Name of the output file
+      OFFSET    Position in the archive where is located the file
+      SIZE      Amount of the data to extract
+      FILENUM   Number of the file associated to the archive (0)
+      XSIZE     Used with block encryptions, this value is the aligned
+                amount of data read from the disk, example for AES:
+                   log NAME OFFSET 0x123      0 0x130
+                  clog NAME OFFSET 0x123 SIZE 0 0x130
+
+    Examples:
+      Log NAME OFFSET SIZE
+      Log "dump.dat" 0 SIZE
+      Log "" 0 SIZE
+      Log "folder/name.*" 0 SIZE
