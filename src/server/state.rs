@@ -285,6 +285,47 @@ impl ServerState {
             });
         }
 
+        // Find if statements
+        let query = Query::new(get_quickbms_language(), r#"(if_statement) @if_statement"#).unwrap();
+
+        let mut query_cursor = QueryCursor::new();
+        let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
+
+        let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
+        for (m, _) in matches {
+            let if_statement = m.captures[0].node;
+            let location = if_statement.range().to_location(&url);
+
+            let if_body = if_statement.child_by_field_name("body");
+            if let Some(if_body) = if_body {
+                let if_body_location = if_body.range().to_location(&url);
+
+                // If statement body
+                folding_ranges.push(FoldingRange {
+                    start_line: location.range.start.line,
+                    start_character: None,
+                    end_line: if_body_location.range.end.line,
+                    end_character: None,
+                    kind: Some(FoldingRangeKind::Region),
+                });
+            }
+
+            for else_clause in
+                if_statement.children_by_field_name("else_clauses", &mut if_statement.walk())
+            {
+                let clause_location = else_clause.range().to_location(&url);
+
+                // Else or ElseIf statement body
+                folding_ranges.push(FoldingRange {
+                    start_line: clause_location.range.start.line,
+                    start_character: None,
+                    end_line: clause_location.range.end.line,
+                    end_character: None,
+                    kind: Some(FoldingRangeKind::Region),
+                });
+            }
+        }
+
         Some(folding_ranges)
     }
 }
