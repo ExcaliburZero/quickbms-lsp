@@ -4,6 +4,7 @@ Get statements
 Get OFFSET long
 Get NAME string
 get NAME string 0
+get SIZE asize
 
 --------------------------------------------------------------------------------
 
@@ -23,4 +24,9 @@ get NAME string 0
     (identifier)
     (type
       (string))
-    (integer_literal)))
+    (integer_literal))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (asize))))

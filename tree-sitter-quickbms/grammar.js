@@ -177,6 +177,7 @@ module.exports = grammar({
     ),
     type: $ => choice(
       $.long,
+      $.asize,
       $.string,
     ),
     _endian_type: $ => choice(
@@ -206,6 +207,7 @@ module.exports = grammar({
     endfunction: $ => /[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     callfunction: $ => /[Cc][Aa][Ll][Ll][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     long: $ => /[Ll][Oo][Nn][Gg]/,
+    asize: $ => /[Aa][Ss][Ii][Zz][Ee]/,
     string: $ => /[Ss][Tt][Rr][Ii][Nn][Gg]/,
     endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
     little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
