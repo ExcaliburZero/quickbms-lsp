@@ -6,6 +6,7 @@ use std::sync::{Arc, Mutex};
 use jsonrpc_core::{IoHandler, Params};
 use lsp_types::{
     DidChangeTextDocumentParams, DidOpenTextDocumentParams, DocumentSymbolParams,
+    FoldingProviderOptions, FoldingRangeParams, FoldingRangeProviderCapability,
     GotoDefinitionParams, GotoDefinitionResponse, HoverParams, HoverProviderCapability,
     InitializeParams, InitializeResult, ReferenceParams, ServerCapabilities,
     TextDocumentSyncCapability, TextDocumentSyncKind,
@@ -57,6 +58,9 @@ fn setup_handler() -> IoHandler {
                 definition_provider: Some(lsp_types::OneOf::Left(true)),
                 references_provider: Some(lsp_types::OneOf::Left(true)),
                 document_symbol_provider: Some(lsp_types::OneOf::Left(true)),
+                folding_range_provider: Some(FoldingRangeProviderCapability::FoldingProvider(
+                    FoldingProviderOptions {},
+                )),
                 ..ServerCapabilities::default()
             },
             ..InitializeResult::default()
@@ -128,6 +132,19 @@ fn setup_handler() -> IoHandler {
         let response = state_c.lock().unwrap().goto_references(&request);
 
         Ok(to_value(response).unwrap())
+    });
+
+    let state_c = state.clone();
+    io.add_sync_method("textDocument/foldingRange", move |params| {
+        let value = params_to_value(params);
+        let request = from_value::<FoldingRangeParams>(value).unwrap();
+
+        let response = state_c.lock().unwrap().folding_range(&request);
+
+        match response {
+            None => Ok(Value::Null),
+            Some(response) => Ok(to_value(response).unwrap()),
+        }
     });
 
     io

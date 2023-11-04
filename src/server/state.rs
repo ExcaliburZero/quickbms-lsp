@@ -4,9 +4,9 @@ use tree_sitter::{Query, QueryCursor, Tree};
 
 use lsp_types::{
     DidChangeTextDocumentParams, DidOpenTextDocumentParams, DocumentSymbolParams,
-    DocumentSymbolResponse, GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents,
-    HoverParams, Location, MarkupContent, MarkupKind, ReferenceParams, SymbolInformation,
-    SymbolKind, Url,
+    DocumentSymbolResponse, FoldingRange, FoldingRangeKind, FoldingRangeParams,
+    GotoDefinitionParams, GotoDefinitionResponse, Hover, HoverContents, HoverParams, Location,
+    MarkupContent, MarkupKind, ReferenceParams, SymbolInformation, SymbolKind, Url,
 };
 
 use crate::grammar::parsing::{get_quickbms_language, parse, PointLike, RangeLike};
@@ -252,6 +252,40 @@ impl ServerState {
         }
 
         None
+    }
+
+    pub fn folding_range(&self, request: &FoldingRangeParams) -> Option<Vec<FoldingRange>> {
+        let url = &request.text_document.uri;
+
+        let (_, tree) = self.files.get(url).unwrap();
+
+        let mut folding_ranges = vec![];
+
+        // Find function definitions
+        let query = Query::new(
+            get_quickbms_language(),
+            r#"(function_declaration) @declaration"#,
+        )
+        .unwrap();
+
+        let mut query_cursor = QueryCursor::new();
+        let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
+
+        let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
+        for (m, _) in matches {
+            let function_declaration = m.captures[0].node;
+            let location = function_declaration.range().to_location(&url);
+
+            folding_ranges.push(FoldingRange {
+                start_line: location.range.start.line,
+                start_character: None,
+                end_line: location.range.end.line,
+                end_character: None,
+                kind: Some(FoldingRangeKind::Region),
+            });
+        }
+
+        Some(folding_ranges)
     }
 }
 
