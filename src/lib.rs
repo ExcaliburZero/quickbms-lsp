@@ -1,5 +1,3 @@
-#![feature(try_blocks)]
-
 pub mod grammar {
     pub mod parsing;
 }
