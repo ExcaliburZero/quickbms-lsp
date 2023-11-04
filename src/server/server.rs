@@ -16,7 +16,9 @@ use serde_json::{self, from_value, to_value, Value};
 
 use crate::server::state::ServerState;
 
-pub fn run<R, W>(mut input: R, mut output: W)
+const EXIT_STRING: &str = "quickbms-lsp EXIT (-.-) zzz";
+
+pub fn run<R, W>(mut input: R, mut output: W) -> i32
 where
     R: BufRead,
     W: Write,
@@ -30,6 +32,11 @@ where
 
         let response = io.handle_request_sync(&message.content);
         if let Some(response) = response {
+            // TODO: Do this by using state instead
+            if response.contains(EXIT_STRING) {
+                return 0;
+            }
+
             let response_message = Message::from_content(&response);
             write!(output, "{}", response_message).unwrap();
             output.flush().unwrap();
@@ -147,6 +154,18 @@ fn setup_handler() -> IoHandler {
         }
     });
 
+    // let state_c = state.clone();
+    io.add_sync_method("shutdown", move |_| {
+        eprintln!("Shutting down...");
+        Ok(Value::Null)
+    });
+
+    // let state_c = state.clone();
+    io.add_sync_method("exit", move |_| {
+        eprintln!("Exiting...");
+        Ok(Value::String(EXIT_STRING.to_string()))
+    });
+
     io
 }
 
@@ -182,7 +201,7 @@ impl Header {
     }
 
     fn parse_content_length(line: &str) -> u64 {
-        let re = Regex::new(r"^Content-Length: (\d+)\r\n").unwrap();
+        let re = Regex::new(r"^Content-Length: (\d+)").unwrap();
         let length_string = re.captures(line).unwrap()[1].to_string();
 
         length_string.parse::<u64>().unwrap()
