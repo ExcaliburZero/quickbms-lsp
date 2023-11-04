@@ -19,11 +19,15 @@ jobs:
           components: rustfmt
       - name: Install tree-sitter
         run: cd tree-sitter-quickbms && npm install --save-dev tree-sitter-cli
+      - name: Install pytest
+        run: pip install pytest
       - name: Construct parser
         run: make grammar
       - name: Test grammar
-        run: make test
+        run: make test-grammar
       - name: Build
         run: cargo build --verbose
       - name: Run tests
         run: cargo test --verbose
+      - name: Run regression tests
+        run: make regression-test
