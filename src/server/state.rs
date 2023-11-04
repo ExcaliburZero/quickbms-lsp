@@ -341,6 +341,18 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "log".to_string(),
             include_str!("keyword_docs/log.txt").to_string(),
         ),
+        (
+            "asize".to_string(),
+            include_str!("keyword_docs/asize.txt").to_string(),
+        ),
+        (
+            "long".to_string(),
+            include_str!("keyword_docs/long.txt").to_string(),
+        ),
+        (
+            "string".to_string(),
+            include_str!("keyword_docs/string.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

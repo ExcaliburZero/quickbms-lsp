@@ -1,0 +1,4 @@
+ASIZE
+
+special type used to return the size of the opened file, used only
+with the GET command 

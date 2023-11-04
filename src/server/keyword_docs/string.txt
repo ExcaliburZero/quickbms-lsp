@@ -1,0 +1,3 @@
+STRING
+
+NUL delimited string (one byte for each char)
