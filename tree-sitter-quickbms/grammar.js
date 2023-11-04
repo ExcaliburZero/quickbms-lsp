@@ -48,6 +48,7 @@ module.exports = grammar({
     function_call_statement: $ => seq(
       $.callfunction,
       field("name", $.identifier),
+      field("keep_var", optional($.integer_literal)),
     ),
     endian_statement: $ => seq(
       $.endian,

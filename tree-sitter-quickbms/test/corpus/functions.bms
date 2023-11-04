@@ -31,6 +31,12 @@ EndFunction*/
 #CallFunction NestingFunc
 #CallFunction NestedFunc
 
+startfunction POLYNOMIAL_DB
+    math POLYNOMIAL_DB_IDX = 0
+endfunction
+
+callfunction POLYNOMIAL_DB 1
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -51,4 +57,17 @@ EndFunction*/
     (identifier))
   (comment)
   (comment)
-  (comment))
+  (comment)
+  (function_declaration
+    (startfunction)
+    (identifier)
+    (math_statement
+      (math)
+      (identifier)
+      (operation)
+      (integer_literal))
+    (endfunction))
+  (function_call_statement
+    (callfunction)
+    (identifier)
+    (integer_literal)))

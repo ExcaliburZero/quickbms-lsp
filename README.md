@@ -69,6 +69,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `SortArray ARRAY [ALL]`
 * [ ] `SearchArray VAR ARRAY VAR`
 * [x] `CallFunction NAME [KEEP_VAR] [ARG1] [ARG2] ... [ARGn]`
+    * [ ] Add support for arguments
 * [x] `StartFunction NAME`
 * [x] `EndFunction`
 * [ ] `ScanDir PATH NAME SIZE [FILTER]`
