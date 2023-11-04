@@ -1,0 +1,88 @@
+================================================================================
+Variable set and access
+================================================================================
+
+set MyVar long 0
+set MyVar2 1
+set MyVar3 "Hello, World!"
+print "MyVar = %MyVar%"
+print "MyVar2 = %MyVar2%"
+print "MyVar3 = %MyVar3%"
+
+set MyVar2 "Goodbye, World!"
+print "MyVar2 = %MyVar2%"
+
+set MyVar 0x00
+set MyVar 0xff
+set MyVar 0xAf
+set MyVar 0xffffff99
+
+print MyVar
+
+SET MyVar LONG 0
+set MyVar long long
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (long))
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (string_literal))
+  (print_statement
+    (print)
+    (string_literal))
+  (print_statement
+    (print)
+    (string_literal))
+  (print_statement
+    (print)
+    (string_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (string_literal))
+  (print_statement
+    (print)
+    (string_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (print_statement
+    (print)
+    (identifier))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (long))
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (long))
+    (identifier)))

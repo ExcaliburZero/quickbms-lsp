@@ -1,0 +1,130 @@
+================================================================================
+For loops
+================================================================================
+
+set FILES 5
+
+For i = 0 < FILES
+  print "%i%"
+next i
+
+For
+  break
+Next
+
+set VAR1 5
+set VAR2 45
+For VAR1 = VAR1 != VAR2
+  # same of using while(VAR1 != VAR2) {...} in C
+  print "%VAR2%"
+Next VAR2 /= 3
+
+For OFFSET = OFFSET != ARCHIVE_SIZE
+  set OFFSET 101
+  if OFFSET > 100
+    break
+  endif
+Next
+
+For i = 0 < FILES
+  If i > 2
+    continue
+  Else
+    print "%i%"
+  EndIf
+next i
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (print_statement
+      (print)
+      (string_literal))
+    (next_statement
+      (next)
+      (identifier)))
+  (for_statement
+    (for)
+    (break_statement
+      (break))
+    (next_statement
+      (next)))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (integer_literal))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (identifier)
+    (comparison)
+    (identifier)
+    (comment)
+    (print_statement
+      (print)
+      (string_literal))
+    (next_statement
+      (next)
+      (identifier)
+      (operation)
+      (integer_literal)))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (identifier)
+    (comparison)
+    (identifier)
+    (set_statement
+      (set)
+      (identifier)
+      (integer_literal))
+    (if_statement
+      (if)
+      (identifier)
+      (comparison)
+      (integer_literal)
+      (break_statement
+        (break))
+      (endif))
+    (next_statement
+      (next)))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (if_statement
+      (if)
+      (identifier)
+      (comparison)
+      (integer_literal)
+      (continue_statement
+        (continue))
+      (else_statement
+        (else)
+        (print_statement
+          (print)
+          (string_literal)))
+      (endif))
+    (next_statement
+      (next)
+      (identifier))))

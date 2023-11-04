@@ -1,0 +1,30 @@
+================================================================================
+IDString statements
+================================================================================
+
+IDString "PK"
+IDString " KAP"
+IDString MEMORY_FILE "hello"
+IDString 1 "magic_on_file_one"
+IDString "PK"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (idstring_statement
+    (idstring)
+    (string_literal))
+  (idstring_statement
+    (idstring)
+    (string_literal))
+  (idstring_statement
+    (idstring)
+    (identifier)
+    (string_literal))
+  (idstring_statement
+    (idstring)
+    (integer_literal)
+    (string_literal))
+  (idstring_statement
+    (idstring)
+    (string_literal)))

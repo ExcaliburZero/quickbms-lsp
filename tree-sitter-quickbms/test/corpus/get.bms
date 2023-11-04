@@ -1,0 +1,26 @@
+================================================================================
+Get statements
+================================================================================
+Get OFFSET long
+Get NAME string
+get NAME string 0
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (long)))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (string)))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (string))
+    (integer_literal)))

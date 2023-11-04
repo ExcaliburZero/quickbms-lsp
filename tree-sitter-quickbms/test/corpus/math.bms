@@ -1,0 +1,69 @@
+================================================================================
+Math statements
+================================================================================
+
+Math SIZE * 0x100
+Math OFFSET << 2
+Math OFFSET u<< 2
+Math TMP = SIZE
+Math TMP ~ TMP
+Math TMP n TMP
+Math TMP2 a TMP
+Math SIZE u/ 5
+Math RADIX v 2
+
+math i += 1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal)))

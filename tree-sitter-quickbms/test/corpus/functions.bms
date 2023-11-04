@@ -1,0 +1,54 @@
+================================================================================
+Function definitions and calls
+================================================================================
+
+StartFunction GreetWorld
+    print "Hello, World!"
+EndFunction
+
+// When multiple function definitions with the same name exist, the first one in the file is used. No error is emitted.
+/*StartFunction GreetWorld
+    print "Hello, World! 2"
+EndFunction
+
+CallFunction GreetWorld*/
+
+CallFunction GreetWorld
+CallFunction greetworld
+
+/*CallFunction GreetWorld
+CallFunction GreetWorld
+
+StartFunction PrintValue
+    print "%PrintValue_ARG1%"
+EndFunction
+
+CallFunction PrintValue 0 "Hi, there!"
+
+StartFunction NestingFunc
+EndFunction*/
+
+#CallFunction NestingFunc
+#CallFunction NestedFunc
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (function_declaration
+    (startfunction)
+    (identifier)
+    (print_statement
+      (print)
+      (string_literal))
+    (endfunction))
+  (comment)
+  (comment)
+  (function_call_statement
+    (callfunction)
+    (identifier))
+  (function_call_statement
+    (callfunction)
+    (identifier))
+  (comment)
+  (comment)
+  (comment))

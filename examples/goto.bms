@@ -1,7 +1,0 @@
-GoTo OFFSET
-GoTo 0x100
-GoTo -4           # 4 bytes before the end of the file
-GoTo SEEK_SET     # like goto 0
-Goto SEEK_END     # like goto 0 0 SEEK_END
-goto 0 0 SEEK_END
-goto 0 SEEK_CUR

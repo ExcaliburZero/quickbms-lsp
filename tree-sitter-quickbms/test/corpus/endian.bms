@@ -1,0 +1,72 @@
+================================================================================
+Endian statements
+================================================================================
+
+endian little 
+endian intel
+endian big
+endian network
+endian swap
+endian change
+endian invert
+
+endian guess 0x04000000
+endian guess16 0x04000000
+endian guess64 0x04000000
+endian guess24 0x04000000
+endian save CURRENT_ENDIAN
+endian store CURRENT_ENDIAN
+
+ENDIAN big
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (endian_statement
+    (endian)
+    (little))
+  (endian_statement
+    (endian)
+    (intel))
+  (endian_statement
+    (endian)
+    (big))
+  (endian_statement
+    (endian)
+    (network))
+  (endian_statement
+    (endian)
+    (swap))
+  (endian_statement
+    (endian)
+    (change))
+  (endian_statement
+    (endian)
+    (invert))
+  (endian_statement
+    (endian)
+    (guess)
+    (integer_literal))
+  (endian_statement
+    (endian)
+    (guess16)
+    (integer_literal))
+  (endian_statement
+    (endian)
+    (guess64)
+    (integer_literal))
+  (endian_statement
+    (endian)
+    (guess24)
+    (integer_literal))
+  (endian_statement
+    (endian)
+    (save)
+    (identifier))
+  (endian_statement
+    (endian)
+    (store)
+    (identifier))
+  (endian_statement
+    (endian)
+    (big)))

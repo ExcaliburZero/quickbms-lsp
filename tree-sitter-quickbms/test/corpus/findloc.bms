@@ -1,0 +1,61 @@
+================================================================================
+FindLoc statements
+================================================================================
+
+FindLoc OFFSET string "filename="
+FindLoc OFFSET string "filename=" 0 ""
+if OFFSET == ""
+    cleanexit
+endif
+
+# scan backward
+goto 0 0 SEEK_END
+findloc OFFSET string "filename=" 0 "" 0
+FindLoc OFFSET string "file"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (findloc_statement
+    (findloc)
+    (identifier)
+    (type
+      (string))
+    (string_literal))
+  (findloc_statement
+    (findloc)
+    (identifier)
+    (type
+      (string))
+    (string_literal)
+    (integer_literal)
+    (string_literal))
+  (if_statement
+    (if)
+    (identifier)
+    (comparison)
+    (string_literal)
+    (cleanexit_statement
+      (cleanexit))
+    (endif))
+  (comment)
+  (goto_statement
+    (goto)
+    (integer_literal)
+    (integer_literal)
+    (seek_end))
+  (findloc_statement
+    (findloc)
+    (identifier)
+    (type
+      (string))
+    (string_literal)
+    (integer_literal)
+    (string_literal)
+    (integer_literal))
+  (findloc_statement
+    (findloc)
+    (identifier)
+    (type
+      (string))
+    (string_literal)))

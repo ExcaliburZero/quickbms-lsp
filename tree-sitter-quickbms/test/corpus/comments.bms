@@ -1,0 +1,19 @@
+================================================================================
+Comments
+================================================================================
+
+# This is a line comment
+// This is also a line comment
+/* This is a block comment */
+/*
+This is also a block comment
+
+*/
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (comment)
+  (comment)
+  (comment))

@@ -1,0 +1,80 @@
+================================================================================
+If statements
+================================================================================
+
+If 3 == 3
+Endif
+
+If 3 == 3
+    print "Yes"
+Endif
+
+If 3 == 3
+    print "Yes"
+Elif 2 == 2
+    print "Yes 2"
+Else
+    print "No"
+Endif
+
+If 3 == 3
+    If 4 == 4
+        print "Yes"
+    Endif
+Endif
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_statement
+    (if)
+    (integer_literal)
+    (comparison)
+    (integer_literal)
+    (endif))
+  (if_statement
+    (if)
+    (integer_literal)
+    (comparison)
+    (integer_literal)
+    (print_statement
+      (print)
+      (string_literal))
+    (endif))
+  (if_statement
+    (if)
+    (integer_literal)
+    (comparison)
+    (integer_literal)
+    (print_statement
+      (print)
+      (string_literal))
+    (elif_statement
+      (elif)
+      (integer_literal)
+      (comparison)
+      (integer_literal)
+      (print_statement
+        (print)
+        (string_literal)))
+    (else_statement
+      (else)
+      (print_statement
+        (print)
+        (string_literal)))
+    (endif))
+  (if_statement
+    (if)
+    (integer_literal)
+    (comparison)
+    (integer_literal)
+    (if_statement
+      (if)
+      (integer_literal)
+      (comparison)
+      (integer_literal)
+      (print_statement
+        (print)
+        (string_literal))
+      (endif))
+    (endif)))
