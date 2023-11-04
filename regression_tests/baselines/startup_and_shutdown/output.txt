@@ -1,0 +1,7 @@
+Content-Length: 202
+
+{"jsonrpc":"2.0","result":{"capabilities":{"definitionProvider":true,"documentSymbolProvider":true,"foldingRangeProvider":{},"hoverProvider":true,"referencesProvider":true,"textDocumentSync":1}},"id":0}Content-Length: 77
+
+{"jsonrpc":"2.0","error":{"code":-32601,"message":"Method not found"},"id":1}Content-Length: 38
+
+{"jsonrpc":"2.0","result":null,"id":2}

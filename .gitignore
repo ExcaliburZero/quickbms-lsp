@@ -1,5 +1,6 @@
 /target
 /lib
+/regression_tests/work_dirs
 
 # Files generate by antlr
 .antlr/
