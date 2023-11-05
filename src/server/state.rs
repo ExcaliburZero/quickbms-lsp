@@ -16,6 +16,12 @@ pub struct ServerState {
     keyword_docs: HashMap<String, String>,
 }
 
+impl Default for ServerState {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ServerState {
     pub fn new() -> ServerState {
         ServerState {
@@ -82,7 +88,7 @@ impl ServerState {
                 .unwrap()
                 .to_string();
 
-            let location = function_declaration.range().to_location(&url);
+            let location = function_declaration.range().to_location(url);
 
             functions.push((func_name, location));
         }
@@ -171,7 +177,7 @@ impl ServerState {
                     .to_lowercase();
                 if decl_func_name_lc == function_name_lc {
                     return Some(GotoDefinitionResponse::Scalar(
-                        function_declaration.range().to_location(&url),
+                        function_declaration.range().to_location(url),
                     ));
                 }
             }
@@ -219,7 +225,7 @@ impl ServerState {
                     .unwrap()
                     .to_lowercase();
                 if decl_func_name_lc == function_name_lc {
-                    function_references.push(decl_name.range().to_location(&url));
+                    function_references.push(decl_name.range().to_location(url));
                 }
             }
 
@@ -243,7 +249,7 @@ impl ServerState {
                     .unwrap()
                     .to_lowercase();
                 if call_func_name_lc == function_name_lc {
-                    function_references.push(call_name.range().to_location(&url));
+                    function_references.push(call_name.range().to_location(url));
                 }
             }
 
@@ -274,7 +280,7 @@ impl ServerState {
         let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
         for (m, _) in matches {
             let function_declaration = m.captures[0].node;
-            let location = function_declaration.range().to_location(&url);
+            let location = function_declaration.range().to_location(url);
 
             folding_ranges.push(FoldingRange {
                 start_line: location.range.start.line,
@@ -294,11 +300,11 @@ impl ServerState {
         let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
         for (m, _) in matches {
             let if_statement = m.captures[0].node;
-            let location = if_statement.range().to_location(&url);
+            let location = if_statement.range().to_location(url);
 
             let if_body = if_statement.child_by_field_name("body");
             if let Some(if_body) = if_body {
-                let if_body_location = if_body.range().to_location(&url);
+                let if_body_location = if_body.range().to_location(url);
 
                 // If statement body
                 folding_ranges.push(FoldingRange {
@@ -313,7 +319,7 @@ impl ServerState {
             for else_clause in
                 if_statement.children_by_field_name("else_clauses", &mut if_statement.walk())
             {
-                let clause_location = else_clause.range().to_location(&url);
+                let clause_location = else_clause.range().to_location(url);
 
                 // Else or ElseIf statement body
                 folding_ranges.push(FoldingRange {
@@ -336,11 +342,11 @@ impl ServerState {
         let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
         for (m, _) in matches {
             let for_statement = m.captures[0].node;
-            let location = for_statement.range().to_location(&url);
+            let location = for_statement.range().to_location(url);
 
             let bottom_location = for_statement
                 .children_by_field_name("body", &mut for_statement.walk())
-                .map(|c| c.range().to_location(&url))
+                .map(|c| c.range().to_location(url))
                 .max_by_key(|l| l.range.end.line);
             if let Some(bottom_location) = bottom_location {
                 // For statement body
