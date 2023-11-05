@@ -327,7 +327,8 @@ impl ServerState {
         }
 
         // Find for loops
-        let query = Query::new(get_quickbms_language(), r#"(for_statement) @for_statement"#).unwrap();
+        let query =
+            Query::new(get_quickbms_language(), r#"(for_statement) @for_statement"#).unwrap();
 
         let mut query_cursor = QueryCursor::new();
         let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
@@ -337,21 +338,21 @@ impl ServerState {
             let for_statement = m.captures[0].node;
             let location = for_statement.range().to_location(&url);
 
-            let for_body = for_statement.child_by_field_name("body");
-            if let Some(for_body) = for_body {
-                let for_body_location = for_body.range().to_location(&url);
-
-                // If statement body
+            let bottom_location = for_statement
+                .children_by_field_name("body", &mut for_statement.walk())
+                .map(|c| c.range().to_location(&url))
+                .max_by_key(|l| l.range.end.line);
+            if let Some(bottom_location) = bottom_location {
+                // For statement body
                 folding_ranges.push(FoldingRange {
                     start_line: location.range.start.line,
                     start_character: None,
-                    end_line: for_body_location.range.end.line,
+                    end_line: bottom_location.range.end.line,
                     end_character: None,
                     kind: Some(FoldingRangeKind::Region),
                 });
             }
         }
-
 
         Some(folding_ranges)
     }
