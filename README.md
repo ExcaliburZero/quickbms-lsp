@@ -21,7 +21,8 @@ These are the currently supported language server endpoints.
 ## QuickBMS commands
 The following QuickBMS commands are currently supported by the langauge server.
 
-* [ ] `QuickBMSver VERSION`
+* [x] `QuickBMSver VERSION`
+    * [ ] Support version numbers that are not specified as strings
 * [x] `FindLoc VAR TYPE STRING [FILENUM] [ERR_VALUE] [END_OFF]`
 * [x] `For [VAR] [OP] [VALUE] [COND] [VAR]`
     * [ ] Support all operators

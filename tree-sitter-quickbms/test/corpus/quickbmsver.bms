@@ -1,0 +1,18 @@
+================================================================================
+QuickBMSver statements
+================================================================================
+
+# QuickBMSver 0.2.4
+QuickBMSver "0.5.14 -9"
+QuickBMSver "-I -9"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (quickbmsver_statement
+    (quickbmsver)
+    (string_literal))
+  (quickbmsver_statement
+    (quickbmsver)
+    (string_literal)))

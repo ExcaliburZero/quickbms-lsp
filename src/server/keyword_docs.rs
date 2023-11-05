@@ -53,6 +53,7 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
         keyword!("while", "keyword_docs/do.txt"),
         keyword!("short", "keyword_docs/short.txt"),
         keyword!("open", "keyword_docs/open.txt"),
+        keyword!("quickbmsver", "keyword_docs/quickbmsver.txt"),
     ]
     .iter()
     .cloned()

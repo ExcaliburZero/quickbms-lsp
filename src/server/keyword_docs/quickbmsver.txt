@@ -1,0 +1,37 @@
+QuickBMSver VERSION
+
+    Checks if the current version of QuickBMS is recent enough to
+    support the script. Mainly for scripts created after the
+    introduction of a new feature or an important fix.
+    The instruction also enables some command-line options.
+
+    Arguments:
+      VERSION   Oldest version of QuickBMS for which the script was
+                created the script, it's just the version displayed
+                at runtime by the tool.
+                It's possible to add some command-line options too:
+                  -64   force quickbms_4gb_files.exe
+                  -9    disable the safe memory allocator
+                  -I    makes the variables case sensitive
+                  -.    useful in reimport mode with data builders
+                  -N    decimal names: 00000000.dat -> 0.dat
+                  -q    quiet
+                  -T    keep the temporary file if generated
+                  -d    useful with some formats and scripts
+                  -D    useful with some formats and scripts
+                  -e    doesn't quit if compression fails
+                  -J    all the strings are considered cstring
+                  -32   checks if the user is using quickbms.exe
+                  -F    filter the input files
+                  -x    hexadecimal notation in myitoa (debug)
+                  -j    force UTF16 output in some functions
+                  -b C  use C (char or hex) as filler in reimport
+                        if the new file is smaller
+                  -c    this is NOT related to the -c option at
+                        command-line, it's a way to avoid being
+                        prompted when using C structures in the bms
+
+    Examples:
+      QuickBMSver 0.2.4
+      QuickBMSver "0.5.14 -9"
+      QuickBMSver "-I -9"

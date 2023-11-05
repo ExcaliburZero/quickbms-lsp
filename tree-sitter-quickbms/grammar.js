@@ -52,6 +52,7 @@ module.exports = grammar({
       $.getdstring_statement,
       $.do_statement,
       $.open_statement,
+      $.quickbmsver_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -311,6 +312,10 @@ module.exports = grammar({
         ),
       )),
     ),
+    quickbmsver_statement: $ => seq(
+      $.quickbmsver,
+      field("version", $._expression),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -459,6 +464,7 @@ module.exports = grammar({
     do: $ => /[Dd][Oo]/,
     while: $ => /[Ww][Hh][Ii][Ll][Ee]/,
     open: $ => /[Oo][Pp][Ee][Nn]/,
+    quickbmsver: $ => /[Qq][Uu][Ii][Cc][Kk][Bb][Mm][Ss][Vv][Ee][Rr]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.\/]+[a-zA-Z0-9_\-\\\.\/]*/,
