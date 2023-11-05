@@ -363,6 +363,36 @@ impl ServerState {
             }
         }
 
+        // Find do while loops
+        let query = Query::new(get_quickbms_language(), r#"(do_statement) @do_statement"#).unwrap();
+
+        let mut query_cursor = QueryCursor::new();
+        let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
+
+        let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
+        for (m, _) in matches {
+            let do_statement = m.captures[0].node;
+            let location = do_statement.range().to_location(url);
+
+            eprintln!("Do statement: {:?}", do_statement.to_sexp());
+
+            let bottom_location = do_statement
+                .children_by_field_name("body", &mut do_statement.walk())
+                .map(|c| c.range().to_location(url))
+                .max_by_key(|l| l.range.end.line);
+            eprintln!("bottom: {:?}", bottom_location);
+            if let Some(bottom_location) = bottom_location {
+                // For statement body
+                folding_ranges.push(FoldingRange {
+                    start_line: location.range.start.line,
+                    start_character: None,
+                    end_line: bottom_location.range.end.line,
+                    end_character: None,
+                    kind: Some(FoldingRangeKind::Region),
+                });
+            }
+        }
+
         Some(folding_ranges)
     }
 }

@@ -13,7 +13,7 @@ These are the currently supported language server endpoints.
 * `textDocument/didChange`
 * `textDocument/documentSymbol`
 * `textDocument/foldingRange`
-    * Currently only for function declarations and `if/else if/else`` statements
+    * Currently only for function declarations, `If/ElseIf/Else` statements, and `Do/While` loops
 * `textDocument/hover`
 * `textDocument/references`
     * Currently only for functions

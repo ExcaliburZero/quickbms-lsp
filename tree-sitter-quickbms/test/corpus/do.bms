@@ -6,11 +6,40 @@ Do
     print "Hello"
 While OFFSET < MAX_OFFSET
 
+Do
+    print "Hello"
+    print "Hello"
+    print "Hello"
+    print "Hello"
+    print "Hello"
+While OFFSET < MAX_OFFSET
+
 --------------------------------------------------------------------------------
 
 (source_file
   (do_statement
     (do)
+    (print_statement
+      (print)
+      (string_literal))
+    (while)
+    (identifier)
+    (comparison)
+    (identifier))
+  (do_statement
+    (do)
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
     (print_statement
       (print)
       (string_literal))
