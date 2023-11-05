@@ -1,187 +1,58 @@
 use std::collections::HashMap;
 
+macro_rules! keyword {
+    ($a: expr, $b: expr) => {
+        ($a.to_string(), include_str!($b).to_string())
+    };
+}
+
 pub fn get_keyword_docs() -> HashMap<String, String> {
     [
-        (
-            "print".to_string(),
-            include_str!("keyword_docs/print.txt").to_string(),
-        ),
-        (
-            "set".to_string(),
-            include_str!("keyword_docs/set.txt").to_string(),
-        ),
-        (
-            "startfunction".to_string(),
-            include_str!("keyword_docs/functions.txt").to_string(),
-        ),
-        (
-            "endfunction".to_string(),
-            include_str!("keyword_docs/functions.txt").to_string(),
-        ),
-        (
-            "callfunction".to_string(),
-            include_str!("keyword_docs/functions.txt").to_string(),
-        ),
-        (
-            "endian".to_string(),
-            include_str!("keyword_docs/endian.txt").to_string(),
-        ),
-        (
-            "idstring".to_string(),
-            include_str!("keyword_docs/idstring.txt").to_string(),
-        ),
-        (
-            "if".to_string(),
-            include_str!("keyword_docs/if.txt").to_string(),
-        ),
-        (
-            "elif".to_string(),
-            include_str!("keyword_docs/if.txt").to_string(),
-        ),
-        (
-            "else".to_string(),
-            include_str!("keyword_docs/if.txt").to_string(),
-        ),
-        (
-            "endif".to_string(),
-            include_str!("keyword_docs/if.txt").to_string(),
-        ),
-        (
-            "goto".to_string(),
-            include_str!("keyword_docs/goto.txt").to_string(),
-        ),
-        (
-            "for".to_string(),
-            include_str!("keyword_docs/for.txt").to_string(),
-        ),
-        (
-            "next".to_string(),
-            include_str!("keyword_docs/for.txt").to_string(),
-        ),
-        (
-            "break".to_string(),
-            include_str!("keyword_docs/label.txt").to_string(),
-        ),
-        (
-            "continue".to_string(),
-            include_str!("keyword_docs/label.txt").to_string(),
-        ),
-        (
-            "cleanexit".to_string(),
-            include_str!("keyword_docs/cleanexit.txt").to_string(),
-        ),
-        (
-            "findloc".to_string(),
-            include_str!("keyword_docs/findloc.txt").to_string(),
-        ),
-        (
-            "get".to_string(),
-            include_str!("keyword_docs/get.txt").to_string(),
-        ),
-        (
-            "math".to_string(),
-            include_str!("keyword_docs/math.txt").to_string(),
-        ),
-        (
-            "log".to_string(),
-            include_str!("keyword_docs/log.txt").to_string(),
-        ),
-        (
-            "asize".to_string(),
-            include_str!("keyword_docs/asize.txt").to_string(),
-        ),
-        (
-            "long".to_string(),
-            include_str!("keyword_docs/long.txt").to_string(),
-        ),
-        (
-            "string".to_string(),
-            include_str!("keyword_docs/string.txt").to_string(),
-        ),
-        (
-            "getarray".to_string(),
-            include_str!("keyword_docs/getarray.txt").to_string(),
-        ),
-        (
-            "putarray".to_string(),
-            include_str!("keyword_docs/getarray.txt").to_string(),
-        ),
-        (
-            "encryption".to_string(),
-            include_str!("keyword_docs/encryption.txt").to_string(),
-        ),
-        (
-            "reverseshort".to_string(),
-            include_str!("keyword_docs/reverseshort.txt").to_string(),
-        ),
-        (
-            "reverselong".to_string(),
-            include_str!("keyword_docs/reverselong.txt").to_string(),
-        ),
-        (
-            "reverselonglong".to_string(),
-            include_str!("keyword_docs/reverselonglong.txt").to_string(),
-        ),
-        (
-            "filexor".to_string(),
-            include_str!("keyword_docs/filexor.txt").to_string(),
-        ),
-        (
-            "append".to_string(),
-            include_str!("keyword_docs/append.txt").to_string(),
-        ),
-        (
-            "getvarchr".to_string(),
-            include_str!("keyword_docs/getvarchr.txt").to_string(),
-        ),
-        (
-            "putvarchr".to_string(),
-            include_str!("keyword_docs/putvarchr.txt").to_string(),
-        ),
-        (
-            "byte".to_string(),
-            include_str!("keyword_docs/byte.txt").to_string(),
-        ),
-        (
-            "comtype".to_string(),
-            include_str!("keyword_docs/comtype.txt").to_string(),
-        ),
-        (
-            "clog".to_string(),
-            include_str!("keyword_docs/clog.txt").to_string(),
-        ),
-        (
-            "padding".to_string(),
-            include_str!("keyword_docs/padding.txt").to_string(),
-        ),
-        (
-            "savepos".to_string(),
-            include_str!("keyword_docs/savepos.txt").to_string(),
-        ),
-        (
-            "extension".to_string(),
-            include_str!("keyword_docs/extension.txt").to_string(),
-        ),
-        (
-            "getdstring".to_string(),
-            include_str!("keyword_docs/getdstring.txt").to_string(),
-        ),
-        (
-            "do".to_string(),
-            include_str!("keyword_docs/do.txt").to_string(),
-        ),
-        (
-            "while".to_string(),
-            include_str!("keyword_docs/do.txt").to_string(),
-        ),
-        (
-            "short".to_string(),
-            include_str!("keyword_docs/short.txt").to_string(),
-        ),
-        (
-            "open".to_string(),
-            include_str!("keyword_docs/open.txt").to_string(),
-        ),
+        keyword!("print", "keyword_docs/print.txt"),
+        keyword!("set", "keyword_docs/set.txt"),
+        keyword!("startfunction", "keyword_docs/functions.txt"),
+        keyword!("endfunction", "keyword_docs/functions.txt"),
+        keyword!("callfunction", "keyword_docs/functions.txt"),
+        keyword!("endian", "keyword_docs/endian.txt"),
+        keyword!("idstring", "keyword_docs/idstring.txt"),
+        keyword!("if", "keyword_docs/if.txt"),
+        keyword!("elif", "keyword_docs/if.txt"),
+        keyword!("else", "keyword_docs/if.txt"),
+        keyword!("endif", "keyword_docs/if.txt"),
+        keyword!("goto", "keyword_docs/goto.txt"),
+        keyword!("for", "keyword_docs/for.txt"),
+        keyword!("next", "keyword_docs/for.txt"),
+        keyword!("break", "keyword_docs/label.txt"),
+        keyword!("continue", "keyword_docs/label.txt"),
+        keyword!("cleanexit", "keyword_docs/cleanexit.txt"),
+        keyword!("findloc", "keyword_docs/findloc.txt"),
+        keyword!("get", "keyword_docs/get.txt"),
+        keyword!("math", "keyword_docs/math.txt"),
+        keyword!("log", "keyword_docs/log.txt"),
+        keyword!("asize", "keyword_docs/asize.txt"),
+        keyword!("long", "keyword_docs/long.txt"),
+        keyword!("string", "keyword_docs/string.txt"),
+        keyword!("getarray", "keyword_docs/getarray.txt"),
+        keyword!("putarray", "keyword_docs/getarray.txt"),
+        keyword!("encryption", "keyword_docs/encryption.txt"),
+        keyword!("reverseshort", "keyword_docs/reverseshort.txt"),
+        keyword!("reverselong", "keyword_docs/reverselong.txt"),
+        keyword!("reverselonglong", "keyword_docs/reverselonglong.txt"),
+        keyword!("filexor", "keyword_docs/filexor.txt"),
+        keyword!("append", "keyword_docs/append.txt"),
+        keyword!("getvarchr", "keyword_docs/getvarchr.txt"),
+        keyword!("putvarchr", "keyword_docs/putvarchr.txt"),
+        keyword!("byte", "keyword_docs/byte.txt"),
+        keyword!("comtype", "keyword_docs/comtype.txt"),
+        keyword!("clog", "keyword_docs/clog.txt"),
+        keyword!("padding", "keyword_docs/padding.txt"),
+        keyword!("savepos", "keyword_docs/savepos.txt"),
+        keyword!("extension", "keyword_docs/extension.txt"),
+        keyword!("getdstring", "keyword_docs/getdstring.txt"),
+        keyword!("do", "keyword_docs/do.txt"),
+        keyword!("while", "keyword_docs/do.txt"),
+        keyword!("short", "keyword_docs/short.txt"),
+        keyword!("open", "keyword_docs/open.txt"),
     ]
     .iter()
     .cloned()
