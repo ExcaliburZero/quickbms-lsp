@@ -1,0 +1,10 @@
+SavePos VAR [FILENUM]
+
+    Current position of the file, like ftell in C.
+
+    Arguments:
+      VAR       Variable which will contain the offset
+      FILENUM   Number of the file associated to the archive (0)
+
+    Examples:
+      SavePos OFFSET

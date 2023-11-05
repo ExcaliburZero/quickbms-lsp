@@ -484,6 +484,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "padding".to_string(),
             include_str!("keyword_docs/padding.txt").to_string(),
         ),
+        (
+            "savepos".to_string(),
+            include_str!("keyword_docs/savepos.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
