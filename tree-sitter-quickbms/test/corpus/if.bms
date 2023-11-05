@@ -23,6 +23,23 @@ If 3 == 3
     Endif
 Endif
 
+If 3 == 3
+    print "1"
+    print "2"
+    print "3"
+    print "4"
+    print "5"
+Elif 2 == 2
+    print "1"
+    print "2"
+    print "3"
+Else
+    print "1"
+    print "2"
+    print "3"
+    print "4"
+Endif
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -77,4 +94,53 @@ Endif
         (print)
         (string_literal))
       (endif))
+    (endif))
+  (if_statement
+    (if)
+    (integer_literal)
+    (comparison)
+    (integer_literal)
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (print_statement
+      (print)
+      (string_literal))
+    (elif_statement
+      (elif)
+      (integer_literal)
+      (comparison)
+      (integer_literal)
+      (print_statement
+        (print)
+        (string_literal))
+      (print_statement
+        (print)
+        (string_literal))
+      (print_statement
+        (print)
+        (string_literal)))
+    (else_statement
+      (else)
+      (print_statement
+        (print)
+        (string_literal))
+      (print_statement
+        (print)
+        (string_literal))
+      (print_statement
+        (print)
+        (string_literal))
+      (print_statement
+        (print)
+        (string_literal)))
     (endif)))

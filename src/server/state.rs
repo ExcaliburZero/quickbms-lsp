@@ -304,15 +304,16 @@ impl ServerState {
             let if_statement = m.captures[0].node;
             let location = if_statement.range().to_location(url);
 
-            let if_body = if_statement.child_by_field_name("body");
-            if let Some(if_body) = if_body {
-                let if_body_location = if_body.range().to_location(url);
-
+            let if_bottom_location = if_statement
+                .children_by_field_name("body", &mut if_statement.walk())
+                .map(|c| c.range().to_location(url))
+                .max_by_key(|l| l.range.end.line);
+            if let Some(if_bottom_location) = if_bottom_location {
                 // If statement body
                 folding_ranges.push(FoldingRange {
                     start_line: location.range.start.line,
                     start_character: None,
-                    end_line: if_body_location.range.end.line,
+                    end_line: if_bottom_location.range.end.line,
                     end_character: None,
                     kind: Some(FoldingRangeKind::Region),
                 });
