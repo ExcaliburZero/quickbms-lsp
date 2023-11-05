@@ -1,0 +1,9 @@
+ReverseShort VAR [ENDIAN]
+
+    Classical swap that inverts a 16bit variable from 0x2211 to
+    0x1122
+     and vice versa.
+
+    Arguments:
+      VAR       variable to flip
+      ENDIAN    desired endianess like little or big

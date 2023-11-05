@@ -440,6 +440,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "encryption".to_string(),
             include_str!("keyword_docs/encryption.txt").to_string(),
         ),
+        (
+            "reverseshort".to_string(),
+            include_str!("keyword_docs/reverseshort.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

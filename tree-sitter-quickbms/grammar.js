@@ -38,6 +38,7 @@ module.exports = grammar({
       $.putarray_statement,
       $.string_statement,
       $.encryption_statement,
+      $.reverseshort_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -195,6 +196,11 @@ module.exports = grammar({
         ),
       )),
     ),
+    reverseshort_statement: $ => seq(
+      $.reverseshort,
+      field("variable", $._expression),
+      field("endian", optional($._endian_type)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -298,6 +304,7 @@ module.exports = grammar({
     getarray: $ => /[Gg][Ee][Tt][Aa][Rr][Rr][Aa][Yy]/,
     putarray: $ => /[Pp][Uu][Tt][Aa][Rr][Rr][Aa][Yy]/,
     encryption: $ => /[Ee][Nn][Cc][Rr][Yy][Pp][Tt][Ii][Oo][Nn]/,
+    reverseshort: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ss][Hh][Oo][Rr][Tt]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,
