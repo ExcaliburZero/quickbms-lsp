@@ -20,6 +20,8 @@ math BYTESWAP << 4
 math BYTESWAP2 >> 4
 math BYTESWAP + BYTESWAP2
 
+math ZSIZE -= 8
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -97,4 +99,9 @@ math BYTESWAP + BYTESWAP2
     (math)
     (identifier)
     (operation)
-    (identifier)))
+    (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal)))

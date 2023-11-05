@@ -278,6 +278,7 @@ module.exports = grammar({
     operation: $ => choice(
       "=",
       "+=",
+      "-=",
       "/=",
       "^=",
       "*",
