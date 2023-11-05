@@ -108,6 +108,10 @@ class TestOpenDocument(Util.TestRegression):
     name = "open_document"
 
 
+class TestDocumentSymbolFunctions(Util.TestRegression):
+    name = "document_symbol_functions"
+
+
 def update_baselines(tests: List[type[Util.TestRegression]]) -> None:
     for test in tests:
         print(f"Updating baseline: {test.name}")

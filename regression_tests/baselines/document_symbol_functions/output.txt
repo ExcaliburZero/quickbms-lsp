@@ -1,0 +1,7 @@
+Content-Length: 202
+
+{"jsonrpc":"2.0","result":{"capabilities":{"definitionProvider":true,"documentSymbolProvider":true,"foldingRangeProvider":{},"hoverProvider":true,"referencesProvider":true,"textDocumentSync":1}},"id":0}Content-Length: 480
+
+{"jsonrpc":"2.0","result":[{"kind":12,"location":{"range":{"end":{"character":11,"line":2},"start":{"character":0,"line":0}},"uri":"file:///home/cwells/Code/quickbms-lsp/tree-sitter-quickbms/test/corpus/functions%20copy.bms"},"name":"GreetWorld"},{"kind":12,"location":{"range":{"end":{"character":11,"line":31},"start":{"character":0,"line":29}},"uri":"file:///home/cwells/Code/quickbms-lsp/tree-sitter-quickbms/test/corpus/functions%20copy.bms"},"name":"POLYNOMIAL_DB"}],"id":1}Content-Length: 38
+
+{"jsonrpc":"2.0","result":null,"id":2}
