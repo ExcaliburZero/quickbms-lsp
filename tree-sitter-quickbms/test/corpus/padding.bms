@@ -1,0 +1,24 @@
+================================================================================
+Padding statements
+================================================================================
+
+Get NAME string
+Padding 4
+get OFFSET long
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (string)))
+  (padding_statement
+    (padding)
+    (integer_literal))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (long))))

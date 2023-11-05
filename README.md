@@ -64,7 +64,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [x] `GetVarChr VAR VAR OFFSET [TYPE]`
 * [x] `PutVarChr VAR OFFSET VAR [TYPE]`
 * [ ] `Debug [MODE]`
-* [ ] `Padding VAR [FILENUM] [BASE_OFF]`
+* [x] `Padding VAR [FILENUM] [BASE_OFF]`
 * [x] `Append [DIRECTION]`
 * [x] `Encryption ALGO KEY [IVEC] [MODE] [KEYLEN]`
 * [x] `Print MESSAGE`

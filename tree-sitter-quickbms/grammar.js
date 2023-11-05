@@ -47,6 +47,7 @@ module.exports = grammar({
       $.putvarchr_statement,
       $.comtype_statement,
       $.clog_statement,
+      $.padding_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -263,6 +264,17 @@ module.exports = grammar({
         ),
       )),
     ),
+    padding_statement: $ => seq(
+      $.padding,
+      field("variable", $._expression),
+      optional(choice(
+        field("file_number", $._expression),
+        seq(
+          field("file_number", $._expression),
+          field("base_offset", $._expression),
+        ),
+      )),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -388,6 +400,7 @@ module.exports = grammar({
     putvarchr: $ => /[Pp][Uu][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     comtype: $ => /[Cc][Oo][Mm][Tt][Yy][Pp][Ee]/,
     clog: $ => /[Cc][Ll][Oo][Gg]/,
+    padding: $ => /[Pp][Aa][Dd][Dd][Ii][Nn][Gg]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.]+[a-zA-Z0-9_\-\\\.]*/,

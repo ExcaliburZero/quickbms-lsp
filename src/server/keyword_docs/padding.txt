@@ -1,0 +1,19 @@
+Padding VAR [FILENUM] [BASE_OFF]
+
+    When called it performs an automatic GoTo to the next position
+    of the file skipping the aligned data.
+    Imagine to have a file where it's used an alignment of 4 bytes
+    and your current file offset is 0x39, if you use Padding 4 the
+    offset will be automatically changed to 0x3c.
+    By default the padding is referred to the beginning of the file
+    (offset 0).
+
+    Arguments:
+      VAR       Size of the alignment, like 4 or 16 and so on
+      FILENUM   Number of the file associated to the archive (0)
+      BASE_OFF  base offset from where calculating the padding (0)
+
+    Examples:
+      Get NAME string
+      Padding 4
+      get OFFSET long
