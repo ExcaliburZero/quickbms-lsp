@@ -104,6 +104,10 @@ class TestStartupAndShutdown(Util.TestRegression):
     name = "startup_and_shutdown"
 
 
+class TestOpenDocument(Util.TestRegression):
+    name = "open_document"
+
+
 def update_baselines(tests: List[type[Util.TestRegression]]) -> None:
     for test in tests:
         print(f"Updating baseline: {test.name}")
@@ -122,4 +126,3 @@ if __name__ == "__main__":
             tests.append(obj)
 
     update_baselines(tests)
-
