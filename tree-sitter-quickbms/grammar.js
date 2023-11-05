@@ -380,6 +380,13 @@ module.exports = grammar({
       $.string_literal,
       $.integer_literal,
       $.identifier,
+      $.array_access_expression,
+    ),
+    array_access_expression: $ => seq(
+      field("array", $._expression),
+      "[",
+      field("index", $._expression),
+      "]",
     ),
     array_size_expression: $ => seq(
       field("length", $._expression),

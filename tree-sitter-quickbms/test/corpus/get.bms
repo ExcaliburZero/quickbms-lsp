@@ -12,6 +12,8 @@ get NAME filename
 get EXT EXTENSION
 get WIDTH short
 
+get FILESTART[i] long
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -61,4 +63,11 @@ get WIDTH short
     (get)
     (identifier)
     (type
-      (short))))
+      (short)))
+  (get_statement
+    (get)
+    (array_access_expression
+      (identifier)
+      (identifier))
+    (type
+      (long))))
