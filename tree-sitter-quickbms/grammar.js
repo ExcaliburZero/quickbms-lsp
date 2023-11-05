@@ -216,6 +216,8 @@ module.exports = grammar({
     comparison: $ => choice(
       "<",
       ">",
+      "<=",
+      ">=",
       "!=",
       "<>",
       "!==",

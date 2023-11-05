@@ -34,6 +34,10 @@ For i = 0 < FILES
   EndIf
 next i
 
+for i = 0 <= SUPPORTED_CRC_ENGINES
+    putarray OPERATION_DB_IDX i i
+next i
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -125,6 +129,21 @@ next i
           (print)
           (string_literal)))
       (endif))
+    (next_statement
+      (next)
+      (identifier)))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (putarray_statement
+      (putarray)
+      (identifier)
+      (identifier)
+      (identifier))
     (next_statement
       (next)
       (identifier))))
