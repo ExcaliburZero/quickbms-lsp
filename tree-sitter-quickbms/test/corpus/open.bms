@@ -1,0 +1,44 @@
+================================================================================
+Open statements
+================================================================================
+
+Open FDDE DAT 0
+Open FDDE IDX 1
+Open FDSE "myfile.zip"
+Open "." TEMPORARY_FILE 1
+
+open FDSE TEX1FILENAME 0
+open FDSE TEX2FILENAME 1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (open_statement
+    (open)
+    (identifier)
+    (identifier)
+    (integer_literal))
+  (open_statement
+    (open)
+    (identifier)
+    (identifier)
+    (integer_literal))
+  (open_statement
+    (open)
+    (identifier)
+    (string_literal))
+  (open_statement
+    (open)
+    (string_literal)
+    (identifier)
+    (integer_literal))
+  (open_statement
+    (open)
+    (identifier)
+    (identifier)
+    (integer_literal))
+  (open_statement
+    (open)
+    (identifier)
+    (identifier)
+    (integer_literal)))

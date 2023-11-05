@@ -1,0 +1,42 @@
+Open FOLDER NAME [FILENUM] [EXISTS]
+
+    It opens a file, basically it assigns a file number/id to an
+    existent file that you want to use.
+    If NAME is '?':
+    - and FOLDER is FDDE the user must type the extension of the
+      file to load, the name is the same of the one currently open
+    - and FOLDER is FDSE the user must type the name of the file
+      loaded from the same folder
+    - the user must type the full name of the file to load
+    From version 0.9 QuickBMS has introduced the emulated file
+    number 0, if you use "open MEMORY_FILE" or "open 1" then any
+    operation on the current file will be performed on the chosen
+    file, use "open 0" to restore it.
+
+    Arguments:
+      FOLDER    FDDE, means that you want to open the file in the
+                  same location of the input one which has the
+                  extension provided with NAME, so FDDE is for the
+                  extension only
+                FDSE, it will consider NAME as a file located in
+                  the same folder of the input file (very useful)
+                FDDE2, like FDDE forcing the original input folder
+                FDSE2, like FDSE forcing the original input folder
+                any other value is considered the folder where is
+                  located the file to load so use "." for the
+                  current output folder
+      NAME      Read above, NAME can also be a ? in which case
+                QuickBMS will ask the user to insert the name of
+                the file to open manually if NAME is "" then will
+                be performed a flush operation that could be useful
+                (or not?) only in write mode (debug)
+      FILENUM   Number of the file associated to the archive (0)
+      EXISTS    If the file doesn't exist this variable will be set
+                to 0 or 1 if it exists. By default QuickBMS
+                terminates with an error if the file doesn't exist.
+
+    Examples:
+      Open FDDE DAT 0
+      Open FDDE IDX 1
+      Open FDSE "myfile.zip"
+      Open "." TEMPORARY_FILE 1

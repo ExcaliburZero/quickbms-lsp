@@ -51,6 +51,7 @@ module.exports = grammar({
       $.savepos_statement,
       $.getdstring_statement,
       $.do_statement,
+      $.open_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -298,6 +299,18 @@ module.exports = grammar({
       field("length", choice($._expression, $.array_size_expression)),
       field("file_number", optional($._expression)),
     ),
+    open_statement: $ => seq(
+      $.open,
+      field("folder", $._expression),
+      field("name", $._expression),
+      optional(choice(
+        field("file_number", $._expression),
+        seq(
+          field("file_number", $._expression),
+          field("exists", $._expression),
+        ),
+      )),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -438,6 +451,7 @@ module.exports = grammar({
     getdstring: $ => /[Gg][Ee][Tt][Dd][Ss][Tt][Rr][Ii][Nn][Gg]/,
     do: $ => /[Dd][Oo]/,
     while: $ => /[Ww][Hh][Ii][Ll][Ee]/,
+    open: $ => /[Oo][Pp][Ee][Nn]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.\/]+[a-zA-Z0-9_\-\\\.\/]*/,

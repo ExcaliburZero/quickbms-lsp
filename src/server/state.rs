@@ -508,6 +508,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "short".to_string(),
             include_str!("keyword_docs/short.txt").to_string(),
         ),
+        (
+            "open".to_string(),
+            include_str!("keyword_docs/open.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

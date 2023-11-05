@@ -37,7 +37,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [x] `Math VAR OP VAR`
     * [ ] Support all operators
 * [ ] `XMath VAR INSTR`
-* [ ] `Open FOLDER NAME [FILENUM] [EXISTS]`
+* [x] `Open FOLDER NAME [FILENUM] [EXISTS]`
 * [x] `SavePos VAR [FILENUM]`
 * [x] `Set VAR [TYPE] VAR`
 * [x] `Do`
