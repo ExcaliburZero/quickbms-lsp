@@ -43,6 +43,7 @@ module.exports = grammar({
       $.reverselonglong_statement,
       $.filexor_statement,
       $.append_statement,
+      $.getvarchr_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -179,9 +180,9 @@ module.exports = grammar({
     ),
     string_statement: $ => seq(
       $.string,
-      field("variable", $._expression),
+      field("left_variable", $._expression),
       field("operation", $.operation),
-      field("variable", $._expression),
+      field("right_variable", $._expression),
     ),
     encryption_statement: $ => seq(
       $.encryption,
@@ -224,6 +225,14 @@ module.exports = grammar({
     append_statement: $ => seq(
       $.append,
       field("direction", optional(choice("-1", "0", "1", "2"))),
+    ),
+    getvarchr_statement: $ => seq(
+      $.getvarchr,
+      field("left_variable", $._expression),
+      field("right_variable", $._expression),
+      field("offset", $._expression),
+      field("type", optional($.type)),
+      "\n", // Note: needed to avoid a conflict with a string statement following a getvarchr statement that does not have a type
     ),
     comparison: $ => choice(
       "<",
@@ -335,6 +344,7 @@ module.exports = grammar({
     reverselonglong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg][Ll][Oo][Nn][Gg]/,
     filexor: $ => /[Ff][Ii][Ll][Ee][Xx][Oo][Rr]/,
     append: $ => /[Aa][Pp][Pp][Ee][Nn][Dd]/,
+    getvarchr: $ => /[Gg][Ee][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

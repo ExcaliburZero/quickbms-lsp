@@ -1,0 +1,50 @@
+================================================================================
+GetVarChr statements
+================================================================================
+
+For i = 0 < SIZE
+    GetVarChr TMP MEMORY_FILE i
+    GetVarChr TMP MEMORY_FILE i long
+    # GetVarChr TMP MEMORY_FILE i string
+Next i
+
+GetVarChr TMP MEMORY_FILE i # hello
+string NAME - 4
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (getvarchr_statement
+      (getvarchr)
+      (identifier)
+      (identifier)
+      (identifier))
+    (getvarchr_statement
+      (getvarchr)
+      (identifier)
+      (identifier)
+      (identifier)
+      (type
+        (long)))
+    (comment)
+    (next_statement
+      (next)
+      (identifier)))
+  (getvarchr_statement
+    (getvarchr)
+    (identifier)
+    (identifier)
+    (identifier)
+    (comment))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (integer_literal)))

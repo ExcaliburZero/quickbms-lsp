@@ -60,7 +60,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `FileRot SEQ [OFFSET] [FILENUM]`
 * [ ] `FileCrypt SEQ [OFFSET] [FILENUM]`
 * [ ] `Strlen VAR VAR [SIZE]`
-* [ ] `GetVarChr VAR VAR OFFSET [TYPE]`
+* [x] `GetVarChr VAR VAR OFFSET [TYPE]`
 * [ ] `PutVarChr VAR OFFSET VAR [TYPE]`
 * [ ] `Debug [MODE]`
 * [ ] `Padding VAR [FILENUM] [BASE_OFF]`

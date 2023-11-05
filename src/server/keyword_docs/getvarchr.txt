@@ -1,0 +1,28 @@
+GetVarChr VAR VAR OFFSET [TYPE]
+
+    A particular and sometimes very useful command which works
+    exactly like accessing an array of elements contained in the
+    second variable, for example a string or a memory file.
+    It can be compared to C as: var1 = var2[offset];
+    This simple and effective method allows the manipulation of
+    strings and variables for creating custom headers (like a DDS)
+    and moreover for performing operations on a piece of the
+    memory, like a custom encryption algorithm.
+    Some real examples are my Deer Hunter 2004/2005 scripts.
+
+    Arguments:
+      VAR       Destination variable that will contain the element
+      VAR       Variable or memory file from which you want to get
+                the element
+      OFFSET    Position of the element in the second variable
+      TYPE      Type of the element to read and assign to the first
+                variable, if not specified it's a BYTE (8bit).
+                You can specify most of the available datatypes
+                like short, long, longlong and so on
+
+    Examples:
+      For i = 0 < SIZE
+          GetVarChr TMP MEMORY_FILE i
+          GetVarChr TMP MEMORY_FILE i long
+          # GetVarChr TMP MEMORY_FILE i string
+      Next i

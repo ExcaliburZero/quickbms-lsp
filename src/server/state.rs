@@ -460,6 +460,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "append".to_string(),
             include_str!("keyword_docs/append.txt").to_string(),
         ),
+        (
+            "getvarchr".to_string(),
+            include_str!("keyword_docs/getvarchr.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()
