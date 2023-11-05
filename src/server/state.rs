@@ -448,6 +448,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "reverselong".to_string(),
             include_str!("keyword_docs/reverselong.txt").to_string(),
         ),
+        (
+            "reverselonglong".to_string(),
+            include_str!("keyword_docs/reverselonglong.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

@@ -54,7 +54,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `ComType ALGO [DICT] [DICT_SIZE]`
 * [x] `ReverseShort VAR [ENDIAN]`
 * [x] `ReverseLong VAR [ENDIAN]`
-* [ ] `ReverseLongLong VAR [ENDIAN]`
+* [x] `ReverseLongLong VAR [ENDIAN]`
 * [x] `Endian TYPE [VAR]`
 * [ ] `FileXOR SEQ [OFFSET] [FILENUM]`
 * [ ] `FileRot SEQ [OFFSET] [FILENUM]`

@@ -40,6 +40,7 @@ module.exports = grammar({
       $.encryption_statement,
       $.reverseshort_statement,
       $.reverselong_statement,
+      $.reverselonglong_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -207,6 +208,11 @@ module.exports = grammar({
       field("variable", $._expression),
       field("endian", optional($._endian_type)),
     ),
+    reverselonglong_statement: $ => seq(
+      $.reverselonglong,
+      field("variable", $._expression),
+      field("endian", optional($._endian_type)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -312,6 +318,7 @@ module.exports = grammar({
     encryption: $ => /[Ee][Nn][Cc][Rr][Yy][Pp][Tt][Ii][Oo][Nn]/,
     reverseshort: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ss][Hh][Oo][Rr][Tt]/,
     reverselong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg]/,
+    reverselonglong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg][Ll][Oo][Nn][Gg]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

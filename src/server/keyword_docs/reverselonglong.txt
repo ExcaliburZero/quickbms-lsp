@@ -1,0 +1,9 @@
+ReverseLongLong VAR [ENDIAN]
+
+    Classical swap that inverts a 32bit variable from
+    0x8877665544332211 to 0x1122334455667788 and vice versa.
+    This command works only with quickbms_4gb_files.exe
+
+    Arguments:
+      VAR       variable to flip
+      ENDIAN    desired endianess like little or big
