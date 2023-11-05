@@ -13,6 +13,8 @@ string NAME - 4
 #string FULLPATH s "c:\folder\%04x%04x.dat" VAR1 VAR2 # output
 
 string NAME += .dec # Note: I'm a little bit surprised this is allowed, but I saw it in a script
+string NAME + "_deXOR."
+string NAME + EXT
 
 --------------------------------------------------------------------------------
 
@@ -46,4 +48,14 @@ string NAME += .dec # Note: I'm a little bit surprised this is allowed, but I sa
     (identifier)
     (operation)
     (identifier))
-  (comment))
+  (comment)
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (string_literal))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (identifier)))

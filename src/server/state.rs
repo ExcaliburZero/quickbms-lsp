@@ -488,6 +488,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "savepos".to_string(),
             include_str!("keyword_docs/savepos.txt").to_string(),
         ),
+        (
+            "extension".to_string(),
+            include_str!("keyword_docs/extension.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

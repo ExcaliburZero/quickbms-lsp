@@ -9,6 +9,7 @@ get SIZE asize
 get SIZE asize MEMORY_FILE
 get NAME basename
 get NAME filename
+get EXT EXTENSION
 
 --------------------------------------------------------------------------------
 
@@ -49,4 +50,9 @@ get NAME filename
     (get)
     (identifier)
     (type
-      (filename))))
+      (filename)))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (extension))))

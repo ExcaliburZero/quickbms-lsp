@@ -327,6 +327,7 @@ module.exports = grammar({
       $.byte,
       $.basename,
       $.filename,
+      $.extension,
     ),
     _endian_type: $ => choice(
       $.little,
@@ -362,6 +363,7 @@ module.exports = grammar({
     byte: $ => /[Bb][Yy][Tt][Ee]/,
     basename: $ => /[Bb][Aa][Ss][Ee][Nn][Aa][Mm][Ee]/,
     filename: $ => /[Ff][Ii][Ll][Ee][Nn][Aa][Mm][Ee]/,
+    extension: $ => /[Ee][Xx][Tt][Ee][Nn][Ss][Ii][Oo][Nn]/,
     endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
     little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
     intel: $ => /[Ii][Nn][Tt][Ee][Ll]/,

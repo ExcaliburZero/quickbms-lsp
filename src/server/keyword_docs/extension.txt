@@ -1,0 +1,4 @@
+EXTENSION
+
+special type used to return the extension of the opened
+file like "zip", used only with the GET command
