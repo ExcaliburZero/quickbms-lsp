@@ -3,6 +3,7 @@ pub mod grammar {
 }
 
 pub mod server {
+    pub mod keyword_docs;
     pub mod server;
     pub mod state;
 }
