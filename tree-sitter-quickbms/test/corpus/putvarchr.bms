@@ -1,0 +1,38 @@
+================================================================================
+PutVarChr statements
+================================================================================
+
+For i = 0 < SIZE
+    GetVarChr TMP MEMORY_FILE i
+    Math TMP ^= 0xff
+    PutVarChr MEMORY_FILE i TMP
+Next i
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (getvarchr_statement
+      (getvarchr)
+      (identifier)
+      (identifier)
+      (identifier))
+    (math_statement
+      (math)
+      (identifier)
+      (operation)
+      (integer_literal))
+    (putvarchr_statement
+      (putvarchr)
+      (identifier)
+      (identifier)
+      (identifier))
+    (next_statement
+      (next)
+      (identifier))))

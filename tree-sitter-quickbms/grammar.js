@@ -44,6 +44,7 @@ module.exports = grammar({
       $.filexor_statement,
       $.append_statement,
       $.getvarchr_statement,
+      $.putvarchr_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -234,6 +235,14 @@ module.exports = grammar({
       field("type", optional($.type)),
       "\n", // Note: needed to avoid a conflict with a string statement following a getvarchr statement that does not have a type
     ),
+    putvarchr_statement: $ => seq(
+      $.putvarchr,
+      field("left_variable", $._expression),
+      field("offset", $._expression),
+      field("right_variable", $._expression),
+      field("type", optional($.type)),
+      "\n", // Note: needed to avoid a conflict with a string statement following a getvarchr statement that does not have a type
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -250,6 +259,7 @@ module.exports = grammar({
       "=",
       "+=",
       "/=",
+      "^=",
       "*",
       "<<",
       "u<<",
@@ -350,6 +360,7 @@ module.exports = grammar({
     filexor: $ => /[Ff][Ii][Ll][Ee][Xx][Oo][Rr]/,
     append: $ => /[Aa][Pp][Pp][Ee][Nn][Dd]/,
     getvarchr: $ => /[Gg][Ee][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
+    putvarchr: $ => /[Pp][Uu][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

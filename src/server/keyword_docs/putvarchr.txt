@@ -1,0 +1,35 @@
+PutVarChr VAR OFFSET VAR [TYPE]
+
+    The "write-mode" alternative of the previous command which
+    allows to perform various complex operations with custom
+    algorithms (like in my Deer Hunter 2004/2005 scripts).
+    It can be compared to C as: var1[offset] = var2;
+    Note that PutVarChr can be also used as an allocator of memory
+    that is often useful in the implementation of custom
+    decompression algorithms or, moreover, for pre-allocating a
+    MEMORY_FILE for storing chunks. This is useful to avoid wasting
+    time and memory with the incremental allocation, remember only
+    to use the command "Log MEMORY_FILE 0 0" after it for resetting
+    the position of the MEMORY_FILE.
+
+    arguments
+      VAR       Variable or memory file in which you want to put
+                the element
+      OFFSET    Position of the output where placing the element,
+                it can also be negative in which case it will work
+                from the end of the variable (may not work in some
+                conditions)
+      VAR       Source variable which will contain the element to
+                write, it's also possible to store the address of
+                the variable which may be useful with external DLLs
+      TYPE      Type of the element to read and assign to the first
+                variable, if not specified it's a BYTE (8bit).
+                You can specify most of the available datatypes
+                like short, long, longlong and so on.
+
+    Examples:
+      For i = 0 < SIZE
+          GetVarChr TMP MEMORY_FILE i
+          Math TMP ^= 0xff
+          PutVarChr MEMORY_FILE i TMP
+      Next i

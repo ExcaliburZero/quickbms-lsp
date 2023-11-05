@@ -465,6 +465,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             include_str!("keyword_docs/getvarchr.txt").to_string(),
         ),
         (
+            "putvarchr".to_string(),
+            include_str!("keyword_docs/putvarchr.txt").to_string(),
+        ),
+        (
             "byte".to_string(),
             include_str!("keyword_docs/byte.txt").to_string(),
         ),
