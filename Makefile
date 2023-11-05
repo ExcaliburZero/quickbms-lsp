@@ -10,7 +10,7 @@ grammar:
 	export PATH=$$PATH:./node_modules/.bin && cd tree-sitter-quickbms && tree-sitter generate
 
 test-grammar:
-	export PATH=$$PATH:./node_modules/.bin && cd tree-sitter-quickbms && tree-sitter test
+	export PATH=$$PATH:./node_modules/.bin && cd tree-sitter-quickbms && tree-sitter generate && tree-sitter test
 
 update-grammar-tests:
-	export PATH=$$PATH:./node_modules/.bin && cd tree-sitter-quickbms && tree-sitter test --update
+	export PATH=$$PATH:./node_modules/.bin && cd tree-sitter-quickbms && tree-sitter generate && tree-sitter test --update
