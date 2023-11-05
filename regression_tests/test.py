@@ -116,6 +116,10 @@ class TestFoldingRangeFunctions(Util.TestRegression):
     name = "folding_range_functions"
 
 
+class TestFoldingRangeForLoops(Util.TestRegression):
+    name = "folding_range_for_loops"
+
+
 def update_baselines(tests: List[type[Util.TestRegression]]) -> None:
     for test in tests:
         print(f"Updating baseline: {test.name}")
