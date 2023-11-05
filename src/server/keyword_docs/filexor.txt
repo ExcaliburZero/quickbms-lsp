@@ -1,0 +1,52 @@
+FileXOR SEQ [OFFSET] [FILENUM]
+
+    Any read operation (Get, *Log and so on) on any file will
+    also perform the XORing of the read data with the numbers
+    contained in the given string or in the given variable.
+    The OFFSET field by default is zero which means that if the
+    data must be xored with more than one byte (a "xor key") the
+    first byte of the key is the first byte at OFFSET which is 0
+    by default (beginning of the file).
+    Recap: the FileXOR command works with ANY file access.
+
+    Arguments:
+      SEQ       Sequence of space-separated 8bit numbers, like:
+                - asequence of bytes separated by space like 0x12
+                  or "0x12 0x34 0x56" or directly a C hex string
+                  like "\x12\x34\x56" (NOT a C notation!)
+                - a numeric variable like MYXORKEY
+                - a string not starting with numbers, '\' or '-'
+                Currently it's not possible to use a key in string
+                mode and use the Encryption command for doing it,
+                so if you have a string convert it to a numeric
+                sequence first or be sure that it doesn't start
+                with the chars shown above.
+                Set it to 0 or "" for disabling the xor.
+                Note that SEQ can be also a 32bit signed number
+                like filexor 0x11223344 but the size is decided by
+                value so 0x00000022 is 8 bit and not 32, while
+                -0x20 is considered 8bit and 0x80112233 a 32bit.
+      OFFSET    Needed only for the xor key offset.
+                If the archive is xored with a xor key from its
+                beginning (so first byte of the archive xored with
+                the first one of the key) this argument is usually
+                not necessary
+                Instead if only the file to extract is xored, this
+                argument must have the same offset of the file (so
+                just reuse the same OFFSET used in Log)
+      FILENUM   By default FileXOR is applied to ALL the files and
+                OFFSET (if specified) is referred to file 0.
+                When FILENUM is specified, it will only be applied
+                to that specific file.
+
+    Examples:
+      filexor 0xff
+      filexor -0x20
+      filexor 0x1122    # 32bit
+      filexor -0x1122   # 32bit
+      filexor "0x12 0x34 123 255"
+      filexor MYXORBYTE
+      saepos OFFSET
+      filexor "0x12 0x34 123 255" OFFSET
+      filexor "\x12\x34\x7b\xff"
+      Log NAME OFFSET SIZE

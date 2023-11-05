@@ -41,6 +41,7 @@ module.exports = grammar({
       $.reverseshort_statement,
       $.reverselong_statement,
       $.reverselonglong_statement,
+      $.filexor_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -213,6 +214,12 @@ module.exports = grammar({
       field("variable", $._expression),
       field("endian", optional($._endian_type)),
     ),
+    filexor_statement: $ => seq(
+      $.filexor,
+      field("sequence", $._expression),
+      field("offset", optional($._expression)),
+      // field("file_number", optional($._expression)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -321,6 +328,7 @@ module.exports = grammar({
     reverseshort: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ss][Hh][Oo][Rr][Tt]/,
     reverselong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg]/,
     reverselonglong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg][Ll][Oo][Nn][Gg]/,
+    filexor: $ => /[Ff][Ii][Ll][Ee][Xx][Oo][Rr]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

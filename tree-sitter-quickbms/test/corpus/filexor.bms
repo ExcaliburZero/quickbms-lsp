@@ -1,0 +1,51 @@
+================================================================================
+FileXOR statements
+================================================================================
+
+filexor 0xff
+filexor -0x20
+filexor 0x1122    # 32bit
+filexor -0x1122   # 32bit
+filexor "0x12 0x34 123 255"
+filexor MYXORBYTE
+# saepos OFFSET # Is this a valid command?
+filexor "0x12 0x34 123 255" OFFSET
+filexor "\x12\x34\x7b\xff"
+Log NAME OFFSET SIZE
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (filexor_statement
+    (filexor)
+    (integer_literal))
+  (filexor_statement
+    (filexor)
+    (integer_literal))
+  (filexor_statement
+    (filexor)
+    (integer_literal))
+  (comment)
+  (filexor_statement
+    (filexor)
+    (integer_literal))
+  (comment)
+  (filexor_statement
+    (filexor)
+    (string_literal))
+  (filexor_statement
+    (filexor)
+    (identifier))
+  (comment)
+  (filexor_statement
+    (filexor)
+    (string_literal)
+    (identifier))
+  (filexor_statement
+    (filexor)
+    (string_literal))
+  (log_statement
+    (log)
+    (identifier)
+    (identifier)
+    (identifier)))
