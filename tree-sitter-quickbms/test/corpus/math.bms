@@ -21,6 +21,7 @@ math BYTESWAP2 >> 4
 math BYTESWAP + BYTESWAP2
 
 math ZSIZE -= 8
+math SWIZZLE *= 2
 
 --------------------------------------------------------------------------------
 
@@ -100,6 +101,11 @@ math ZSIZE -= 8
     (identifier)
     (operation)
     (identifier))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
   (math_statement
     (math)
     (identifier)
