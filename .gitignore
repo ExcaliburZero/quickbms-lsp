@@ -2,6 +2,8 @@
 /lib
 /regression_tests/work_dirs
 
+/tree-sitter-quickbms/test/corpus/crc_scan.bms
+
 # Files generate by antlr
 .antlr/
 /src/grammar/*.interp
