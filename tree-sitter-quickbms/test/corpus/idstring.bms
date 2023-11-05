@@ -7,6 +7,7 @@ IDString " KAP"
 IDString MEMORY_FILE "hello"
 IDString 1 "magic_on_file_one"
 IDString "PK"
+idstring FZIP
 
 --------------------------------------------------------------------------------
 
@@ -27,4 +28,7 @@ IDString "PK"
     (string_literal))
   (idstring_statement
     (idstring)
-    (string_literal)))
+    (string_literal))
+  (idstring_statement
+    (idstring)
+    (identifier)))

@@ -70,7 +70,7 @@ module.exports = grammar({
     idstring_statement: $ => seq(
       $.idstring,
       field("filenum", optional($._expression)),
-      field("magic", $.string_literal),
+      field("magic", $._expression),
     ),
     if_statement: $ => seq(
       $.if,
