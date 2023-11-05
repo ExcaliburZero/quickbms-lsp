@@ -45,6 +45,7 @@ module.exports = grammar({
       $.append_statement,
       $.getvarchr_statement,
       $.putvarchr_statement,
+      $.comtype_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -243,6 +244,10 @@ module.exports = grammar({
       field("type", optional($.type)),
       "\n", // Note: needed to avoid a conflict with a string statement following a getvarchr statement that does not have a type
     ),
+    comtype_statement: $ => seq(
+      $.comtype,
+      field("algorithm", $._expression),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -363,6 +368,7 @@ module.exports = grammar({
     append: $ => /[Aa][Pp][Pp][Ee][Nn][Dd]/,
     getvarchr: $ => /[Gg][Ee][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     putvarchr: $ => /[Pp][Uu][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
+    comtype: $ => /[Cc][Oo][Mm][Tt][Yy][Pp][Ee]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

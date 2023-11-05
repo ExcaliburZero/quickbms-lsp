@@ -51,7 +51,8 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [x] `[Else]`
 * [x] `EndIf`
 * [ ] `GetCT VAR TYPE CHAR [FILENUM]`
-* [ ] `ComType ALGO [DICT] [DICT_SIZE]`
+* [x] `ComType ALGO [DICT] [DICT_SIZE]`
+    * [ ] Support optional arguments
 * [x] `ReverseShort VAR [ENDIAN]`
 * [x] `ReverseLong VAR [ENDIAN]`
 * [x] `ReverseLongLong VAR [ENDIAN]`
