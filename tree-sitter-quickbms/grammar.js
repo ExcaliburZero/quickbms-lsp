@@ -260,6 +260,9 @@ module.exports = grammar({
       "v",
       "+",
       "-",
+      "&",
+      "<<",
+      ">>",
     ),
     _goto_type: $ => choice(
       $.seek_set,

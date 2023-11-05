@@ -14,6 +14,12 @@ Math RADIX v 2
 
 math i += 1
 
+math BYTESWAP & 0x0F
+math BYTESWAP2 & 0xF0
+math BYTESWAP << 4
+math BYTESWAP2 >> 4
+math BYTESWAP + BYTESWAP2
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -66,4 +72,29 @@ math i += 1
     (math)
     (identifier)
     (operation)
-    (integer_literal)))
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (math_statement
+    (math)
+    (identifier)
+    (operation)
+    (identifier)))
