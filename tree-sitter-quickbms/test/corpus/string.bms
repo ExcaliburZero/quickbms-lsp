@@ -1,0 +1,41 @@
+================================================================================
+String statements
+================================================================================
+
+string FULLPATH + NAME
+string FULLPATH + \
+string NAME - ".zip"
+string NAME - 4
+
+# Not supporting these yet, since they look like they might be tricky
+#string PATH R "." "/"
+#string FULLPATH p "c:\folder\%04x%04x.dat" VAR1 VAR2 # input
+#string FULLPATH s "c:\folder\%04x%04x.dat" VAR1 VAR2 # output
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (identifier))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (identifier))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (string_literal))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (integer_literal))
+  (comment)
+  (comment)
+  (comment)
+  (comment))

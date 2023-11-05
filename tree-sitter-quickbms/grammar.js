@@ -36,6 +36,7 @@ module.exports = grammar({
       $.log_statement,
       $.getarray_statement,
       $.putarray_statement,
+      $.string_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -169,6 +170,12 @@ module.exports = grammar({
       field("index", $._expression),
       field("variable", $._expression),
     ),
+    string_statement: $ => seq(
+      $.string,
+      field("variable", $._expression),
+      field("operation", $.operation),
+      field("variable", $._expression),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -191,6 +198,8 @@ module.exports = grammar({
       "a",
       "u/",
       "v",
+      "+",
+      "-",
     ),
     _goto_type: $ => choice(
       $.seek_set,
@@ -266,7 +275,7 @@ module.exports = grammar({
     getarray: $ => /[Gg][Ee][Tt][Aa][Rr][Rr][Aa][Yy]/,
     putarray: $ => /[Pp][Uu][Tt][Aa][Rr][Rr][Aa][Yy]/,
 
-    identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
+    identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,
     integer_literal: $ => /(\-?(0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
     string_literal: $ => seq(
       '"',

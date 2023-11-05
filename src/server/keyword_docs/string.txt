@@ -1,3 +1,171 @@
-STRING
+String VAR OP VAR
 
-NUL delimited string (one byte for each char)
+    The equivalent of the Math command for the strings.
+    The first variable can be an input and output or only an output
+    depending by the operator.
+    You can use also a textual OP, this value is the one in the
+    first line of the operator seen below ("equal" is '=').
+    The string searching operators are quite confusing because the
+    tool didn't have this feature and they were implemented in the
+    String command later as experimental features.
+    The variables are used as NUL-delimited strings by default, but
+    from QuickBMS 0.11 you can use them in binary mode by prefixing
+    the operator with a zero ("0").
+
+    Arguments:
+      VAR       Input and output variable
+      OP        The following examples are based on these values:
+                  VAR1      "MyStringExampleString!" (22 bytes)
+                  1 VAR2    "STRING"
+                  2 NUM2    3
+                  3 NUM2    -3
+                =   just a copy, if var2 is a number it's used as a
+                    raw string, good for Long to String conversions:
+                      var2="0x44434241", result="ABCD"
+                +   append
+                      MyStringExampleString!STRING
+                      MyStringExampleString!3
+                      MyStringExampleString!-3
+                -   remove, truncate
+                      MyExample!
+                      MyStringExampleStri
+                      MyS
+                ^   xor
+                      .-.=<.=3.1/*#87.:5::5h
+                      ~J`GAZ]TvKR^C_V`GAZ]T.
+                      `J~G_ZCThKL^]_H`YAD]J.
+                <   strrstr + var2 (before)
+                      MyStringExampleString
+                      tringExampleString!
+                      ng!
+                *   replicate
+                      MyString
+                      MyStringExampleString!MyStringExampleString!MyStringExampleString!
+                      MyStringExampleString!MyS
+                %   strstr (before), truncate, mod
+                      My
+                      M
+                      MyStringExampleString!
+                &   strstr
+                      StringExampleString!
+                      MyStringExampleString!
+                      MyStringExampleString!
+                |   strstr + var2
+                      ExampleString!
+                      MyStringExampleString!
+                      MyStringExampleString!
+                $   strrstr
+                      String!
+                      MyStringExampleString!
+                      MyStringExampleString!
+                !   strrstr + var2
+                      !
+                      MyStringExampleString!
+                      MyStringExampleString!
+                >   strrstr (before)
+                      MyStringExample
+                      MyStringExampleStri
+                      MyStringExampleString!
+                r   reverse
+                    reversed string, "abcd" -> "dcba"
+                b   byte2hex
+                    byte2hex of var2: var2="abc", result="616263"
+                B   byte2hex_string
+                    as above but var2 is a NUL delimited string
+                h   hex2byte
+                    hex2byte of var2: var2="616263", result="abc"
+                e   encrypt, encryption
+                    experimental, based on the Encryption command
+                E   encrypt_string
+                    as above but var2 is a NUL delimited string
+                c   compress, compression, comtype
+                    experimental, based on the ComType command
+                C   compress_string
+                    as above but var2 is a NUL delimited string
+                u   toupper
+                    var2="hello", result="HELLO"
+                l   tolower
+                    var2="HELLO", result="hello"
+                R   replace
+                    replace chars: var1="helloworld", var2="world", var3="me", result="hellome"
+                p   printf, sprintf
+                    a printf-like experimental work-around
+                    the format for float (f) and double (g) works
+                    only for one element, so:
+                      get VAR_LONG long
+                      String TMP p "%10.10f" VAR_LONG # no VAR2 or VAR3
+                      print "%TMP%"
+                P   QuickBMS Print
+                    same output of the Print command, for example:
+                      string VAR P "hello %VAR1% test %VAR2|x%"
+                s   sscanf
+                    a sscanf-like experimental work-around, only
+                    for numeric 32bit values
+                      string "123:456" s "%d:%d" VAR1 VAR2
+                S   split
+                    it's like a sscanf for strings, both ' and "
+                    are handled as quotes:
+                    string ELEMENTS S "string1 \"string 2\" 'string3'" VAR1 VAR2 VAR3
+                x   cstring
+                    convert a C string (cstring) to the relative
+                    string/binary:
+                      string VAR x "\x78\x7a"
+                H   string to cstring, all bytes escaped if with
+                    "0" prefix
+                      string VAR 0H "hello" # VAR = "\x68\x65\x6c\x6c\x6f"
+                f   filter
+                    filter the non alphanumeric chars by replacing
+                    them with '_'
+                m   math, xmath
+                    math and xmath operation just like those in the
+                    Encryption command
+                    so #INPUT#+1 means that 0x01 will be added to each char of VAR
+                    quick example:  string VAR m "#INPUT#+1"    # xmath if there is INPUT
+                                    string VAR m "+ 1"          # math
+                w   hex2uri
+                    var2="%2fhello&amp;", result="/hello&"
+                W   uri2hex
+                    var2="hello<>", result="hello%3c%3e"
+                t   very basic html/xml tags remover, de_html
+                T   html/xml, one tag or text per line, html_easy
+                _   trim, removes spaces from the beginning and end
+                J   JSON formatter, json_viewer
+                X   experimental parser for XML, JSON and other
+                    formats (use option -9), xml_json_parser:
+                      https://zenhax.com/viewtopic.php?t=4887&p=26349#p26349
+                    currently it automatically escapes backslashes
+                    and HTML tags (backslashes added in 0.11, in
+                    theory the HTML tags are not in the standard)
+                    nested elements are stored as variables: VAR[i]
+                    so remember to use the "i" index to read them:
+                      string RET X INPUT
+                      for i = 0 < NAME[]
+                        print "%NAME[i]%"
+                      next i
+                v   CSV with custom separators like "," or ",|;"
+                      string ELEMENTS v "arg1,arg2,  arg 3 , arg4" "," ARG1 ARG2 ARG3 ARG4
+                n   byte2num
+                    var2="abc", result="97 98 99"
+                N   num2byte
+                    var2="97 98 99" result="abc"
+                U   base64/uudecode
+                Use an additional zero ("0") to return "" in case
+                of errors like when the operators that search
+                strings can't find the pattern (in which case will
+                be returned the original string by default), this
+                is very useful while playing with strings, so
+                "string VAR1 0strchr VAR2" will return "" if VAR2
+                is not found in VAR1 (instead of leaving VAR1
+                unchanged), another example: String VAR1 0$ VAR2
+                From version 0.11 the "0" prefix is also used for
+                working with binary strings.
+      VAR       The second variable or string
+
+    Examples:
+      string FULLPATH + NAME
+      string FULLPATH + \
+      string NAME - ".zip"
+      string NAME - 4
+      string PATH R "." "/"
+      string FULLPATH p "c:\folder\%04x%04x.dat" VAR1 VAR2 # input
+      string FULLPATH s "c:\folder\%04x%04x.dat" VAR1 VAR2 # output
