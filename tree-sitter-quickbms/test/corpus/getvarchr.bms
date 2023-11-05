@@ -11,6 +11,8 @@ Next i
 GetVarChr TMP MEMORY_FILE i # hello
 string NAME - 4
 
+GetVarChr BYTESWAP MEMORY_FILE x byte
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -47,4 +49,11 @@ string NAME - 4
     (string)
     (identifier)
     (operation)
-    (integer_literal)))
+    (integer_literal))
+  (getvarchr_statement
+    (getvarchr)
+    (identifier)
+    (identifier)
+    (identifier)
+    (type
+      (byte))))
