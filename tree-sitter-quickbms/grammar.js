@@ -50,6 +50,7 @@ module.exports = grammar({
       $.padding_statement,
       $.savepos_statement,
       $.getdstring_statement,
+      $.do_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -120,6 +121,14 @@ module.exports = grammar({
           field("value", $._expression),
         )),
       )),
+    ),
+    do_statement: $ => seq(
+      $.do,
+      field("body", repeat($._statement)),
+      $.while,
+      field("left_expression", $._expression),
+      field("comparison", $.comparison),
+      field("right_expression", $._expression),
     ),
     break_statement: $ => seq(
       $.break,
@@ -424,6 +433,8 @@ module.exports = grammar({
     padding: $ => /[Pp][Aa][Dd][Dd][Ii][Nn][Gg]/,
     savepos: $ => /[Ss][Aa][Vv][Ee][Pp][Oo][Ss]/,
     getdstring: $ => /[Gg][Ee][Tt][Dd][Ss][Tt][Rr][Ii][Nn][Gg]/,
+    do: $ => /[Dd][Oo]/,
+    while: $ => /[Ww][Hh][Ii][Ll][Ee]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.]+[a-zA-Z0-9_\-\\\.]*/,

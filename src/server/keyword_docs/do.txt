@@ -1,0 +1,17 @@
+Do
+...
+While VAR COND VAR
+
+    A less useful type of cycle where the check of the condition is
+    performed at the end of the cycle... really rarely used.
+    If you need a C-like "while(...) {...}" use the For command.
+
+    Arguments:
+      VAR       first part of the condition
+      COND      condition, check the If command below for more info
+      VAR       second part of the condition
+
+    Examples:
+      Do
+          ...
+      While OFFSET < MAX_OFFSET

@@ -40,8 +40,8 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `Open FOLDER NAME [FILENUM] [EXISTS]`
 * [x] `SavePos VAR [FILENUM]`
 * [x] `Set VAR [TYPE] VAR`
-* [ ] `Do`
-* [ ] `While VAR COND VAR`
+* [x] `Do`
+* [x] `While VAR COND VAR`
 * [x] `String VAR OP VAR`
     * [ ] Support all operators
 * [x] `CleanExit`
