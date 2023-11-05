@@ -53,7 +53,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `GetCT VAR TYPE CHAR [FILENUM]`
 * [ ] `ComType ALGO [DICT] [DICT_SIZE]`
 * [x] `ReverseShort VAR [ENDIAN]`
-* [ ] `ReverseLong VAR [ENDIAN]`
+* [x] `ReverseLong VAR [ENDIAN]`
 * [ ] `ReverseLongLong VAR [ENDIAN]`
 * [x] `Endian TYPE [VAR]`
 * [ ] `FileXOR SEQ [OFFSET] [FILENUM]`

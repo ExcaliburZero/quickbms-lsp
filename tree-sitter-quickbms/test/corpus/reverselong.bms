@@ -1,0 +1,22 @@
+================================================================================
+ReverseLong statements
+================================================================================
+
+reverselong REVERSE_CRC
+reverselong REVERSE_CRC little
+reverselong REVERSE_CRC big
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (reverselong_statement
+    (reverselong)
+    (identifier))
+  (reverselong_statement
+    (reverselong)
+    (identifier)
+    (little))
+  (reverselong_statement
+    (reverselong)
+    (identifier)
+    (big)))
