@@ -15,6 +15,7 @@ string NAME - 4
 string NAME += .dec # Note: I'm a little bit surprised this is allowed, but I saw it in a script
 string NAME + "_deXOR."
 string NAME + EXT
+string PATH += /
 
 --------------------------------------------------------------------------------
 
@@ -54,6 +55,11 @@ string NAME + EXT
     (identifier)
     (operation)
     (string_literal))
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (identifier))
   (string_statement
     (string)
     (identifier)

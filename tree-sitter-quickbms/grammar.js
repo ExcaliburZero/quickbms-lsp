@@ -440,7 +440,7 @@ module.exports = grammar({
     while: $ => /[Ww][Hh][Ii][Ll][Ee]/,
     question_mark: $ => /\?/,
 
-    identifier: $ => /[a-zA-Z_\\\.]+[a-zA-Z0-9_\-\\\.]*/,
+    identifier: $ => /[a-zA-Z_\\\.\/]+[a-zA-Z0-9_\-\\\.\/]*/,
     integer_literal: $ => /(\-?(0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
     string_literal: $ => seq(
       '"',
