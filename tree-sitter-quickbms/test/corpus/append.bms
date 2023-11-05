@@ -1,0 +1,35 @@
+================================================================================
+Append statements
+================================================================================
+
+append
+Log "dump.dat" 0 0x10
+Log "dump.dat" 0x10 0x100
+append -1
+append 0
+append 1
+append 2
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (append_statement
+    (append))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (integer_literal))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (integer_literal))
+  (append_statement
+    (append))
+  (append_statement
+    (append))
+  (append_statement
+    (append))
+  (append_statement
+    (append)))

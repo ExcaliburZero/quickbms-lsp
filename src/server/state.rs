@@ -456,6 +456,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "filexor".to_string(),
             include_str!("keyword_docs/filexor.txt").to_string(),
         ),
+        (
+            "append".to_string(),
+            include_str!("keyword_docs/append.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

@@ -42,6 +42,7 @@ module.exports = grammar({
       $.reverselong_statement,
       $.reverselonglong_statement,
       $.filexor_statement,
+      $.append_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -220,6 +221,10 @@ module.exports = grammar({
       field("offset", optional($._expression)),
       // field("file_number", optional($._expression)),
     ),
+    append_statement: $ => seq(
+      $.append,
+      field("direction", optional(choice("-1", "0", "1", "2"))),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -329,6 +334,7 @@ module.exports = grammar({
     reverselong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg]/,
     reverselonglong: $ => /[Rr][Ee][Vv][Ee][Rr][Ss][Ee][Ll][Oo][Nn][Gg][Ll][Oo][Nn][Gg]/,
     filexor: $ => /[Ff][Ii][Ll][Ee][Xx][Oo][Rr]/,
+    append: $ => /[Aa][Pp][Pp][Ee][Nn][Dd]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,

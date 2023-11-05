@@ -8,6 +8,7 @@ Log "dump.dat" 0 SIZE
 Log "" 0 SIZE
 Log "folder/name.*" 0 SIZE
 Log "redecrypted_file.dat" 0 SIZE MEMORY_FILE
+Log "dump.dat" 0 0x10
 
 --------------------------------------------------------------------------------
 
@@ -42,4 +43,9 @@ Log "redecrypted_file.dat" 0 SIZE MEMORY_FILE
     (string_literal)
     (integer_literal)
     (identifier)
-    (identifier)))
+    (identifier))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (integer_literal)))

@@ -1,0 +1,54 @@
+Append [DIRECTION]
+
+    Command to enable the append mode in the *Log commands, so if
+    the output filename already exists it will not be overwritten,
+    the new content is concatenated (appended) to the existent one.
+    Note that with real files (not memory files) the user may be
+    prompted before writing the output file if it already existed
+    before the running of the script.
+    Note that the reimport mode may not work correctly when you use
+    a combo of MEMORY_FILE and Append, so the direct and more
+    simple Log to file + Append is suggested.
+    Note that from QuickBMS 0.11 the Append command also affects
+    the Put* commands (Put/PutDString/PutCT).
+
+    Arguments:
+      DIRECTION This is a new optional argument that allows to
+                specify where placing the new content:
+                -1  prefix:
+                    a negative value means that the new content
+                    will be placed before the current file, so the
+                    old content will be appended to the new one
+                0   append:
+                    the new content will be appended to the current
+                    one (default, just like without DIRECTION)
+                1   overwrite:
+                    the new content will overwrite the current one
+                    without changing the file size if the new one
+                    is smaller, use goto to set the offset where
+                    placing the new content.
+                2   insert:
+                    the new content will be inserted in the current
+                    position (size = position + data + remaining)
+
+    Examples:
+      append
+      Log "dump.dat" 0 0x10
+      Log "dump.dat" 0x10 0x100
+
+    The following is a particular example for allocating a
+    MEMORY_FILE and using it instead of TEMPORARY_FILE saving space
+    on the disk and performances:
+
+      math TMP = CHUNKS
+      math TMP *= 0x8000
+      log MEMORY_FILE 0 0
+      putvarchr MEMORY_FILE TMP 0   # pre-allocation for speed
+      log MEMORY_FILE 0 0           # reset the position and size
+      append
+      for i = 0 < CHUNKS
+          ...
+          clog MEMORY_FILE OFFSET ZSIZE 0x8000
+      next i
+      append
+      get SIZE asize MEMORY_FILE
