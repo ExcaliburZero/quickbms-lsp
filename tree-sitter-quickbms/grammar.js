@@ -286,6 +286,7 @@ module.exports = grammar({
       $.binary,
       $.unicode,
       $.byte,
+      $.basename,
     ),
     _endian_type: $ => choice(
       $.little,
@@ -319,6 +320,7 @@ module.exports = grammar({
     binary: $ => /[Bb][Ii][Nn][Aa][Rr][Yy]/,
     unicode: $ => /[Uu][Nn][Ii][Cc][Oo][Dd][Ee]/,
     byte: $ => /[Bb][Yy][Tt][Ee]/,
+    basename: $ => /[Bb][Aa][Ss][Ee][Nn][Aa][Mm][Ee]/,
     endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
     little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
     intel: $ => /[Ii][Nn][Tt][Ee][Ll]/,

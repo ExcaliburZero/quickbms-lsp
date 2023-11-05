@@ -6,6 +6,9 @@ Get NAME string
 get NAME string 0
 get SIZE asize
 
+get SIZE asize MEMORY_FILE
+get NAME basename
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -29,4 +32,15 @@ get SIZE asize
     (get)
     (identifier)
     (type
-      (asize))))
+      (asize)))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (asize))
+    (identifier))
+  (get_statement
+    (get)
+    (identifier)
+    (type
+      (basename))))
