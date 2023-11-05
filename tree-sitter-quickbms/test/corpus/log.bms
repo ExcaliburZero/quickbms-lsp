@@ -7,6 +7,7 @@ Log NAME OFFSET SIZE
 Log "dump.dat" 0 SIZE
 Log "" 0 SIZE
 Log "folder/name.*" 0 SIZE
+Log "redecrypted_file.dat" 0 SIZE MEMORY_FILE
 
 --------------------------------------------------------------------------------
 
@@ -35,4 +36,10 @@ Log "folder/name.*" 0 SIZE
     (log)
     (string_literal)
     (integer_literal)
+    (identifier))
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (identifier)
     (identifier)))

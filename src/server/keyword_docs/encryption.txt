@@ -1,0 +1,613 @@
+Encryption ALGO KEY [IVEC] [MODE] [KEYLEN]
+
+    One of the most interesting commands which allows to set a
+    decryption algorithm used for the Log and CLog command.
+    QuickBMS supports also the hashing algorithms of OpenSSL, the
+    binary hash will be placed in the variable QUICKBMS_HASH while
+    the hexadecimal hash in QUICKBMS_HEXHASH (capital letters) and
+    QUICKBMS_HEXHASHL (low).
+    Note that the hashing algorithms don't need a key, but you can
+    use that field for performing a direct hash operation on the
+    provided key without using the log command, eg: encryption sha1
+    "mystring".
+    You can also specify the size in case it's a binary variable,
+    eg: encryption md5 "mystring" "" 0 8
+    For the HMAC hash algorithm you must use the IVEC field, anyway
+    remember that this feature is just optional.
+    Regarding the OpenSSL algorithms, it's possible to enable the
+    "Final" mode by using one of the following prefixes:
+    CipherFinal, DecryptFinal or EncryptFinal (it's a way used by
+    OpenSSL to get the original size from block-cipher data).
+
+    Arguments:
+      ALGO      aes, Rijndael
+                blowfish, you should try also bf_ecb if the result
+                  is not the expected one
+                des
+                3des-112
+                3des-168
+                rc4
+                tea, use IVEC to specify custom delta, sum, endian
+                  (0/1), cycles and if_invert_delta_operation
+                xtea, use IVEC to specify custom delta, endian
+                  (0/1), cycles and if_invert_delta_operation
+                xxtea, use IVEC to specify custom delta, endian
+                  (0/1), cycles and if_invert_delta_operation
+                idea
+                swap, use the bytes to swap as key, it works just
+                  like reverseshort and reverselong:
+                  encryption swap 2: 2211 -> 1122
+                reverseshort, swap 2
+                reverselong, swap 4
+                math, exactly like the bms command plus the size of
+                  the numbers:
+                    encryption math "^u= 0x11223344 1" 32
+                    encryption math "n #INPUT#" # decrypt = -encrypt
+                  it means that this encryption can do tons of
+                  operations including xor, rot, rotate and so on.
+                  the "1" after the math operation means if we want
+                  to respect the exact size of each element like a
+                  sort of AND SIZE (default ignore).
+                  ivec is the size of each element (8bits default)
+                xmath, key is the operation to perform for each
+                  element, ivec is the size of each element (8 bits
+                  default)
+                  use #INPUT# to identify the element in the data:
+                    encryption xmath "((#INPUT# + 1) << 2) + #INPUT#" 8
+                random, pseudo random incrementer (Linear
+                  congruential generator) xored with the input key
+                  contains a number corresponding to the algorithms
+                  listed on
+                  http://en.wikipedia.org/wiki/Linear%5Fcongruential%5Fgenerator#Parameters_in_common_use
+                  (0 is the first one) plus other algorithms like
+                  mersenne and so on.
+                  the second parameter in the key is the seed.
+                  the third one is the mask of bits of the key to
+                  use for the operation.
+                  ivec is the size of each element (8bits default).
+                    encryption random "0 0x12345678"
+                    encryption random "0 0x12345678" 32         # 32bit values
+                    encryption random "0 0x12345678 0x7fff0000" # value ^ ((key >> 16) & 0x7fff)
+                  you must check the src\myenc.c source code to
+                  have the full list, currently over 17 implemented
+                xor
+                rot
+                rotate, an 8/16/32/64bit ror or any other bit as
+                  key, element size as ivec
+                reverse, flip the file from the end to beginning
+                flip, flip the bits of input file, reverse flip 8
+                incremental,
+                    # 8bit xor incremented by 1 each time
+                  encryption "incremental xor" 0 0x01
+                    # 32bit rot starting from 0x100 incremented by
+                    # 0x11223344 each time, if the initial value
+                    # is <= 0xffff it's a 16bit, <= 0xff is 8bit,
+                    # the increment is checked too for guessing
+                  encryption "incremental rot"   0x12345 0x11223344
+                    # forced 32bit
+                  encryption "incremental rot32" 0x12345 0x11223344
+                charset, the substitution algorithm which uses a
+                  charset of 256 chars
+                charset2, as above but substitution is inverted
+                twofish
+                cast5
+                seed
+                serpent
+                ice
+                icecrypt, ICE algorithm with key implemented as in
+                  the homonym program, the difference with "ice" is
+                  ONLY in the key
+                rotor, ivec contains the number of rotors (6 by
+                  default, it was 12 till version 0.10.0)
+                ssc, Leverage SSC
+                wincrypt, aka cryptdecrypt or cryptencrypt
+                  use the ivec field to specify:
+                  (only those you need, not all are necessary):
+                  - the hashing algorithm - CryptCreateHash, you
+                    can find the key here
+                  - the encryption algorithm - CryptDeriveKey
+                  - the provider type - CryptAcquireContext
+                  - Microsoft provider name, like MS_DEF_DH_SCHANNEL_PROV
+                  - CryptDeriveKey flags, like CRYPT_CREATE_SALT
+                  - CryptDecrypt flags, like CRYPT_OAEP
+                  example:
+                    encryption CryptDecrypt "mykey" "CALG_MD5 CALG_RC4 PROV_RSA_FULL"
+                    encryption CryptDecrypt "1111" "CALG_MD5 CALG_RC4 PROV_RSA_FULL CRYPT_CREATE_SALT CRYPT_OAEP"
+                cryptunprotect, key is used to specify the entropy
+                  so the default is ""
+                zipcrypto, the first 12 bytes are the encryption
+                  header set the ivec to 1 for automatically
+                  cutting the first 12 bytes
+                md_null, from OpenSSL (does nothing)
+                md2, from OpenSSL (not available)
+                md4, from OpenSSL
+                md5, from OpenSSL
+                sha, from OpenSSL
+                sha1, from OpenSSL
+                dss, from OpenSSL
+                dss1, from OpenSSL
+                ecdsa, from OpenSSL
+                sha224, from OpenSSL
+                sha256, from OpenSSL
+                sha384, from OpenSSL
+                sha512, from OpenSSL
+                mdc2, from OpenSSL
+                ripemd160, from OpenSSL
+                whirlpool, from OpenSSL
+                hmac ..., hmac plus an OpenSSL hash algorithm, it's
+                  an encrypted hash so you must provide a key.
+                  example for a hmac sha1 on the fly:
+                    encryption "hmac sha1" "mykey" "mydata"
+                  or
+                    encryption "hmac sha1" "mykey"
+                    log MEMORY_FILE 0 SIZE
+                    print "%QUICKBMS_HEXHASH%"
+                enc_null, from OpenSSL (does nothing)
+                des_ecb, from OpenSSL
+                des_ede, from OpenSSL
+                des_ede3, from OpenSSL
+                des_ede_ecb, from OpenSSL
+                des_ede3_ecb, from OpenSSL
+                des_cfb64, from OpenSSL
+                des_cfb1, from OpenSSL
+                des_cfb8, from OpenSSL
+                des_ede_cfb64, from OpenSSL
+                des_ede_cfb1, from OpenSSL
+                des_ede_cfb8, from OpenSSL
+                des_ede3_cfb64, from OpenSSL
+                des_ede3_cfb1, from OpenSSL
+                des_ede3_cfb8, from OpenSSL
+                des_ofb, from OpenSSL
+                des_ede_ofb, from OpenSSL
+                des_ede3_ofb, from OpenSSL
+                des_cbc, from OpenSSL
+                des_ede_cbc, from OpenSSL
+                des_ede3_cbc, from OpenSSL
+                desx_cbc, from OpenSSL
+                dev_crypto_des_ede3_cbc, from OpenSSL
+                dev_crypto_rc4, from OpenSSL
+                dev_crypto_md5, from OpenSSL
+                rc4, from OpenSSL
+                rc4_40, from OpenSSL
+                idea_ecb, from OpenSSL
+                idea_cfb64, from OpenSSL
+                idea_ofb, from OpenSSL
+                idea_cbc, from OpenSSL
+                rc2_ecb, from OpenSSL
+                rc2_cbc, from OpenSSL
+                rc2_40_cbc, from OpenSSL
+                rc2_64_cbc, from OpenSSL
+                rc2_cfb64, from OpenSSL
+                rc2_ofb, from OpenSSL
+                bf_ecb, from OpenSSL (bf stands for blowfish)
+                  the result is different than the "blowfish" type
+                  because the other uses big endian, try both
+                bf_cbc, from OpenSSL
+                bf_cfb64, from OpenSSL
+                bf_ofb, from OpenSSL
+                cast5_ecb, from OpenSSL
+                cast5_cbc, from OpenSSL
+                cast5_cfb64, from OpenSSL
+                cast5_ofb, from OpenSSL
+                rc5_32_12_16_cbc, from OpenSSL (not available)
+                rc5_32_12_16_ecb, from OpenSSL (not available)
+                rc5_32_12_16_cfb64, from OpenSSL (not available)
+                rc5_32_12_16_ofb, from OpenSSL (not available)
+                aes_128_ecb, from OpenSSL
+                aes_128_cbc, from OpenSSL
+                aes_128_cfb1, from OpenSSL
+                aes_128_cfb8, from OpenSSL
+                aes_128_cfb128, from OpenSSL
+                aes_128_ofb, from OpenSSL
+                aes_128_ctr, from OpenSSL
+                aes_192_ecb, from OpenSSL
+                aes_192_cbc, from OpenSSL
+                aes_192_cfb1, from OpenSSL
+                aes_192_cfb8, from OpenSSL
+                aes_192_cfb128, from OpenSSL
+                aes_192_ofb, from OpenSSL
+                aes_192_ctr, from OpenSSL
+                aes_256_ecb, from OpenSSL
+                aes_256_cbc, from OpenSSL
+                aes_256_cfb1, from OpenSSL
+                aes_256_cfb8, from OpenSSL
+                aes_256_cfb128, from OpenSSL
+                aes_256_ofb, from OpenSSL
+                aes_256_ctr, from OpenSSL
+                camellia_128_ecb, from OpenSSL
+                camellia_128_cbc, from OpenSSL
+                camellia_128_cfb1, from OpenSSL
+                camellia_128_cfb8, from OpenSSL
+                camellia_128_cfb128, from OpenSSL
+                camellia_128_ofb, from OpenSSL
+                camellia_192_ecb, from OpenSSL
+                camellia_192_cbc, from OpenSSL
+                camellia_192_cfb1, from OpenSSL
+                camellia_192_cfb8, from OpenSSL
+                camellia_192_cfb128, from OpenSSL
+                camellia_192_ofb, from OpenSSL
+                camellia_256_ecb, from OpenSSL
+                camellia_256_cbc, from OpenSSL
+                camellia_256_cfb1, from OpenSSL
+                camellia_256_cfb8, from OpenSSL
+                camellia_256_cfb128, from OpenSSL
+                camellia_256_ofb, from OpenSSL
+                seed_ecb, from OpenSSL
+                seed_cbc, from OpenSSL
+                seed_cfb128, from OpenSSL
+                seed_ofb, from OpenSSL
+                mcrypt blowfish
+                mcrypt des
+                mcrypt tripledes
+                mcrypt threeway
+                mcrypt gost
+                mcrypt safer-sk64
+                mcrypt safer-sk128
+                mcrypt cast-128
+                mcrypt xtea
+                mcrypt rc2
+                mcrypt twofish
+                mcrypt cast-256
+                mcrypt saferplus
+                mcrypt loki97
+                mcrypt serpent
+                mcrypt rijndael-128
+                mcrypt rijndael-192
+                mcrypt rijndael-256
+                mcrypt enigma
+                mcrypt arcfour
+                mcrypt wake
+                  note that for the algorithms supported by mcrypt
+                  you can force their loading by preceeding ALGO
+                  with "mcrypt" like "mcrypt_enigma" and you can
+                  decide also their mode like "mcrypt_enigma_ecb"
+                  or "mcrypt_enigma_cbc", list:
+                  cbc, ecb, cfb, ofb and nofb
+                3way
+                skipjack
+                anubis
+                aria
+                crypton
+                frog
+                gost
+                lucifer
+                mars
+                misty1
+                noekeon
+                seal
+                safer
+                kirk, used in PSP eboot encryption, use the ivec to
+                  specify the keys/encryption (default is 1, refer
+                  to libkirk for more information)
+                pc1, automatic 128/256 bit selection on key length
+                blake224
+                blake256
+                blake384
+                blake512
+                bmw224
+                bmw256
+                bmw384
+                bmw512
+                cubehash224
+                cubehash256
+                cubehash384
+                cubehash512
+                echo224
+                echo256
+                echo384
+                echo512
+                fugue224
+                fugue256
+                fugue384
+                fugue512
+                groestl224
+                groestl256
+                groestl384
+                groestl512
+                hamsi224
+                hamsi256
+                hamsi384
+                hamsi512
+                haval128_3
+                haval128_4
+                haval128_5
+                haval160_3
+                haval160_4
+                haval160_5
+                haval192_3
+                haval192_4
+                haval192_5
+                haval224_3
+                haval224_4
+                haval224_5
+                haval256_3
+                haval256_4
+                haval256_5
+                jh224
+                jh256
+                jh384
+                jh512
+                keccak224
+                keccak256
+                keccak384
+                keccak512
+                luffa224
+                luffa256
+                luffa384
+                luffa512
+                md2
+                md4
+                md5
+                panama
+                radiogatun32
+                radiogatun64
+                ripemd
+                ripemd128
+                ripemd160
+                sha0
+                sha1
+                sha224
+                sha256
+                sha384
+                sha512
+                shabal192
+                shabal224
+                shabal256
+                shabal384
+                shabal512
+                shavite224
+                shavite256
+                shavite384
+                shavite512
+                simd224
+                simd256
+                simd384
+                simd512
+                skein224
+                skein256
+                skein384
+                skein512
+                tiger
+                tiger2
+                whirlpool
+                whirlpool0
+                whirlpool1
+                sph
+                mpq
+                rc6
+                xor_prev    < data[i] ^= data[i - 1]    use key + or - to use operations
+                                                        different than xor and the value to
+                                                        use for the last byte, "^ 0x8e"
+                xor_prev2   < data[i] ^= data[i + 1]    "
+                xor_next    > data[i] ^= data[i - 1]    "
+                xor_next2   > data[i] ^= data[i + 1]    "
+                PKCS5_PBKDF2_HMAC, example PKCS5_PBKDF2_HMAC_sha1
+                Rfc2898DeriveBytes
+                BytesToKey, example "BytesToKey_sha1 aes"
+                ZIP_AES followed by 128, 192 or 256 (gladman cwc)
+                rsa
+                rsa_tomcrypt
+                modpow, just a simple RSA BN_mod_exp performed on
+                  chunks of 256 bytes
+                modpow_zed
+                abc
+                achterbahn
+                achterbahn128
+                cryptmt
+                dicing
+                dragon
+                edon80
+                ffcsr8
+                fubuki
+                grain
+                grain128
+                hc128
+                hc256
+                hermes128
+                hermes80
+                lex
+                mag
+                mickey
+                mickey128
+                mir1
+                mosquito
+                moustique
+                nls
+                polarbear
+                pomaranch
+                py
+                rabbit
+                salsa20
+                sfinks
+                sosemanuk
+                sss
+                trivium
+                tsc3
+                tsc4
+                wg
+                yamb
+                aes_ige
+                aes_bi_ige
+                aes_heat, used in the game Heat Online
+                isaac
+                isaac_vernam
+                isaac_caesar
+                hsel
+                rng, just random data, useful with filecrypt for
+                  generating (read/write) random fields, currently
+                  key is ignored so use ""
+                bcrypt, it supports various options like:
+                  encryption "bcrypt aes cbc block_padding" KEY IVEC
+                molebox
+                replace, replace the bytes of KEY with IVEC
+                  (currently must be smaller or equal)
+                rc4_nokey, the specified key will be used directly
+                  as the 256-bytes context
+                d3des
+                spookyhash, 32/64/128
+                murmurhash, qhashfnv1_32, qhashfnv1_64,
+                  qhashmurmur3_32, qhashmurmur3_128
+                xxhash, XXH32, XXH3_64bits_withSecret,
+                  XXH3_128bits_withSecret, XXH3_128bits_withSecret,
+                  XXH128, XXH3_64bits_withSecret, XXH64
+                tomcrypt
+                  modes: ecb, cfb, ofb, cbc, ctr, lrw, f8, xts,
+                    hmac, omac, pmac, eax, ocb3, ocb, ccm, gcm,
+                    pelican, xcbc, f9, poly1305, chacha20poly1305,
+                    blake2smac, blake2bmac
+                  encryptions: blowfish, rc5, rc6, rc2, saferp,
+                    safer_k64, safer_k128, safer_sk64, safer_sk128,
+                    rijndael, aes, rijndael_enc, aes_enc, xtea,
+                    twofish, des, des3, cast5, noekeon, skipjack,
+                    khazad, anubis, kseed, kasumi, camellia
+                  hashing: multi2, chc, whirlpool, sha512,
+                    sha512-256, sha512-224, sha384, sha256, sha224,
+                    sha1, md5, md4, md2, tiger, rmd128, rmd160,
+                    rmd256, rmd320
+                  example:
+                    Encryption "tomcrypt rijndael ecb" "0123456789abcdef"
+                PBKDF1
+                PBKDF1_openssl
+                PBKDF2
+                crc, a complete and powerful checksum function that
+                  can be fully configured:
+                  - key is the polynomial ("" for crc32 0x77073096)
+                  - ivec contains:
+                    - size of the crc (8/16/32/64)
+                    - initial value (like -1)
+                    - final xor value (-1, the complement)
+                    - type, many types listed in crc_calc in crc.c,
+                      it also includes qhashmurmur3_32, qhashfnv1_32,
+                      qhashfnv1_64, jenkins_one_at_a_time_hash,
+                      XXH32, XXH64, xPear16, CityHash32, CityHash64,
+                      CityHash64WithSeed, StormHash,
+                      jenkins_hashlittle, adler32, fnv32, UHash,
+                      spookyhash_32, spookyhash_64
+                    - reverse/reflect mode for generating the table
+                      (0 or 1)
+                    - bitmask_side (0 or 1, latter is most used)
+                  default values: 0xedb88320 32 -1 -1 0 0 1
+                  if you need the classical crc16 (0xc0c1) use:
+                    encryption crc 0xa001 "16 0 0 0 0 1"
+                  or
+                    encryption crc "" 16
+                  the result is placed in the variable QUICKBMS_CRC
+                  example for type 39:
+                    encryption crc 0 "0 0 0 39 0 1"
+                  for additional info:
+                    http://aluigi.org/bms/quickbms_crc_engine.txt
+                  for technical information about the operations
+                  check the crc_calc function in crc.c, it's quite
+                  easy to understand because it contains the simple
+                  operations performed in each cycle, copy below:
+                    0   table[(BYTE ^ CRC) & 0xff] ^ (CRC >> 8)
+                    1   table[(BYTE ^ (CRC >> (bits - 8))) & 0xff] ^ (CRC << 8)
+                    2   ((CRC << 8) | BYTE) ^ table[(CRC >> (bits - 8)) & 0xff]
+                    3   ((CRC >> 1) + ((CRC & 1) << (bits - 1))) + BYTE
+                    4   crc_in_cksum(CRC)
+                    5   CRC ^ BYTE
+                    6   CRC + BYTE    // lose lose
+                    7   table[(BYTE ^ CRC) & 0xff] ^ CRC
+                    8   table[(BYTE ^ CRC) & 0xff] ^ (CRC >> (bits - 8))
+                    9   (CRC << 1)  ^ BYTE
+                    10  (CRC << 1)  + BYTE
+                    11  rol(CRC, 1, 0) ^ BYTE
+                    12  rol(CRC, 1, 0) + BYTE
+                    13  ror(CRC, 1, 0) ^ BYTE
+                    14  ror(CRC, 1, 0) + BYTE
+                    15  (CRC << 5) + CRC + BYT) // djb2 5381
+                    16  (CRC * poly) + BYTE // djb2 and sdbm
+                    17  (CRC * poly) ^ BYTE // djb2 and FNV-1
+                    18  (CRC ^ BYTE) * poly) // FNV-1a
+                    19  BYTE + (CRC << 6) + (CRC << 16) - CRC // sdbm 65599
+                    20  poly * (CRC + BYTE * (i + 1))
+                    21  qhashmurmur3_32
+                    22  qhashfnv1_32
+                    23  qhashfnv1_64
+                    24  XXH32(poly)
+                    25  XXH64(, poly)
+                    26  jenkins_one_at_a_time_hash
+                    27  xPear16
+                    28  CityHash32
+                    29  CityHash64
+                    30  CityHash64WithSeed(poly)
+                    31  StormHash(MPQ_HASH_TABLE_INDEX)
+                    32  StormHash(MPQ_HASH_NAME_A)
+                    33  StormHash(MPQ_HASH_NAME_B)
+                    34  StormHash(MPQ_HASH_FILE_KEY)
+                    35  StormHash(MPQ_HASH_KEY2_MIX)
+                    36  jenkins_hashlittle(poly)
+                    37  adler32
+                    38  fnv32(crc ? crc : 0x811c9dc5)
+                    39  UHash(crc, poly, 0x7fffffff)
+                    40  spookyhash_32(poly)
+                    41  spookyhash_64(poly)
+                    42  XXH3_64bits
+                    43  XXH3_64bits_withSeed(poly)
+                  note that some crc types use the polynomial value
+                  as constant in each cycle
+                  crc64 and 64bit crc are only supported by
+                  quickbms_4gb_files.exe
+                  if you are a dev and need the generated table,
+                  use the following command with quickbms -V or -v:
+                    print "%QUICKBMS_CRC_TABLE%"
+                EXECUTE:
+                  use KEY to specify the command to execute with
+                  #INPUT# instead of input filename and #OUTPUT#
+                  for the output one, you can also specify a
+                  variable by using the %VAR% notation.
+                  IMPORTANT NOTE: do NOT use "encryption execute"
+                  if the output will be bigger than the input, use
+                  Clog in that case!
+                  example:
+                    encryption EXECUTE "mycrypt.exe d #INPUT# #OUTPUT#"
+                  another full example:
+                    get SIZE asize
+                    encryption EXECUTE "lame.exe -V 4 #INPUT# #OUTPUT#"
+                    log "newfile.mp3" 0 SIZE
+                    encryption EXECUTE "otherprog.exe #INPUT# #OUTPUT# %SIZE%"
+                    log "newfile2.mp3" 0 SIZE
+                CALLDLL:
+                  exactly as above except that the variables don't
+                  need to be specified within '%' because calldll
+                  already handles them, but don't worry because even
+                  if you do that the result should not change:
+                    encryption calldll "test.dll myfunction cdecl RET #INPUT# #INPUT_SIZE# MYVAR"
+                    get SIZE asize
+                    log "newfile.mp3" 0 SIZE
+                  full support also for pointers using the '&' or
+                  '*' prefix like &MEMORY_FILE, &VAR, &#INPUT#,
+                  &INPUT_SIZE
+                "" "", disable the encryption
+      KEY       The key to use with escapes like "\x11\x22\x33\x44"
+                or "this is my key" (cstring)
+                This value can be also a variable or a memory file
+                set ALGO and KEY to "" for disabling the encryption
+      IVEC      The ivec to use in C notation (cstring), an ivec is
+                an additional key used for increasing the security
+                of encryption algorithms that are usually defined
+                as ECB without ivec and CBC (and others) with ivec
+      MODE      0 for decryption (default), 1 for forcing the
+                encryption mode, if no ivec is used remember to
+                place a "" at its place
+      KEYLEN    Forces the usage of a certain length of the key,
+                this one has been introduced only for avoiding the
+                problem of using a variable as KEY containing
+                zeroes in it and for the non-block ciphers when you
+                use KEY as a variable in which a certain length is
+                used and not strlen. KEYLEN is also necessary with
+                some algorithms when you set the key as a "string"
+                variable (Set KEY string "blah"), that's because
+                QuickBMS will pass a different larger length to the
+                algorithm
+
+    Examples:
+      Encryption aes "0123456789abcdef" "" 1 # encrypt without ivec
+      Log MEMORY_FILE 0 SIZE
+      Encryption aes "0123456789abcdef"      # decrypt without ivec
+      Log "redecrypted_file.dat" 0 SIZE MEMORY_FILE
+      Encryption aes "\x12\x34\x56\x78"
+      set MEMORY_FILE binary "\x12\x34\x56\x78"
+      Encryption aes MEMORY_FILE
+      Encryption aes MY_VARIABLE
+      Encryption md5 ""

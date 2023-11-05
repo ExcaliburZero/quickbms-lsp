@@ -436,6 +436,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "putarray".to_string(),
             include_str!("keyword_docs/getarray.txt").to_string(),
         ),
+        (
+            "encryption".to_string(),
+            include_str!("keyword_docs/encryption.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

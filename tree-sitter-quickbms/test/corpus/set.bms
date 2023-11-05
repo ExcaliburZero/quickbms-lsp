@@ -1,0 +1,49 @@
+================================================================================
+Set statements
+================================================================================
+
+Set i long 0
+Set TMP long SIZE
+Set TMPNAME NAME
+Set MEMORY_FILE binary "\x12\x34\x56\x78"
+Set ASCII_VAR unicode UNICODE_VAR # from unicode to string
+Set VAR ? ?   # the user is prompted to insert a filename
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (long))
+    (integer_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (long))
+    (identifier))
+  (set_statement
+    (set)
+    (identifier)
+    (identifier))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (binary))
+    (string_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (unicode))
+    (identifier))
+  (comment)
+  (set_statement
+    (set)
+    (identifier)
+    (question_mark)
+    (question_mark))
+  (comment))

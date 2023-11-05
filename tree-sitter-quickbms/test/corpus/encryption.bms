@@ -1,0 +1,62 @@
+================================================================================
+Encryption statements
+================================================================================
+
+Encryption aes "0123456789abcdef" "" 1 # encrypt without ivec
+Log MEMORY_FILE 0 SIZE
+Encryption aes "0123456789abcdef"      # decrypt without ivec
+Log "redecrypted_file.dat" 0 SIZE MEMORY_FILE
+Encryption aes "\x12\x34\x56\x78"
+set MEMORY_FILE binary "\x12\x34\x56\x78"
+Encryption aes MEMORY_FILE
+Encryption aes MY_VARIABLE
+Encryption md5 ""
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (string_literal)
+    (string_literal)
+    (integer_literal))
+  (comment)
+  (log_statement
+    (log)
+    (identifier)
+    (integer_literal)
+    (identifier))
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (string_literal))
+  (comment)
+  (log_statement
+    (log)
+    (string_literal)
+    (integer_literal)
+    (identifier)
+    (identifier))
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (string_literal))
+  (set_statement
+    (set)
+    (identifier)
+    (type
+      (binary))
+    (string_literal))
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (identifier))
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (identifier))
+  (encryption_statement
+    (encryption)
+    (identifier)
+    (string_literal)))

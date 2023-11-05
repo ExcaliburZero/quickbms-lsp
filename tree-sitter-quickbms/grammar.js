@@ -37,12 +37,13 @@ module.exports = grammar({
       $.getarray_statement,
       $.putarray_statement,
       $.string_statement,
+      $.encryption_statement,
     ),
     set_statement: $ => seq(
       $.set,
       field("variable", $.identifier),
-      field("type", optional($.type)),
-      field("value", $._expression),
+      field("type", optional(choice($.type, $.question_mark))),
+      field("value", choice($._expression, $.question_mark)),
     ),
     print_statement: $ => seq(
       $.print,
@@ -157,6 +158,7 @@ module.exports = grammar({
       field("name", $._expression),
       field("offset", $._expression),
       field("size", $._expression),
+      field("file_number", optional($._expression)),
     ),
     getarray_statement: $ => seq(
       $.getarray,
@@ -175,6 +177,23 @@ module.exports = grammar({
       field("variable", $._expression),
       field("operation", $.operation),
       field("variable", $._expression),
+    ),
+    encryption_statement: $ => seq(
+      $.encryption,
+      field("algorithm", $.identifier),
+      field("key", $._expression),
+      optional(choice(
+        field("ivec", $._expression),
+        seq(
+          field("ivec", $._expression),
+          field("mode", $._expression),
+        ),
+        seq(
+          field("ivec", $._expression),
+          field("mode", $._expression),
+          field("key_length", $._expression),
+        ),
+      )),
     ),
     comparison: $ => choice(
       "<",
@@ -210,6 +229,8 @@ module.exports = grammar({
       $.long,
       $.asize,
       $.string,
+      $.binary,
+      $.unicode,
     ),
     _endian_type: $ => choice(
       $.little,
@@ -240,6 +261,8 @@ module.exports = grammar({
     long: $ => /[Ll][Oo][Nn][Gg]/,
     asize: $ => /[Aa][Ss][Ii][Zz][Ee]/,
     string: $ => /[Ss][Tt][Rr][Ii][Nn][Gg]/,
+    binary: $ => /[Bb][Ii][Nn][Aa][Rr][Yy]/,
+    unicode: $ => /[Uu][Nn][Ii][Cc][Oo][Dd][Ee]/,
     endian: $ => /[Ee][Nn][Dd][Ii][Aa][Nn]/,
     little: $ => /[Ll][Ii][Tt][Tt][Ll][Ee]/,
     intel: $ => /[Ii][Nn][Tt][Ee][Ll]/,
@@ -274,12 +297,14 @@ module.exports = grammar({
     log: $ => /[Ll][Oo][Gg]/,
     getarray: $ => /[Gg][Ee][Tt][Aa][Rr][Rr][Aa][Yy]/,
     putarray: $ => /[Pp][Uu][Tt][Aa][Rr][Rr][Aa][Yy]/,
+    encryption: $ => /[Ee][Nn][Cc][Rr][Yy][Pp][Tt][Ii][Oo][Nn]/,
+    question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\]+[a-zA-Z0-9_\-\\]*/,
     integer_literal: $ => /(\-?(0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
     string_literal: $ => seq(
       '"',
-      repeat(token.immediate(prec(1, /[^\\"\n]+/))),
+      repeat(token.immediate(prec(1, /[^"\n]+/))),
       '"',
     ),
 
