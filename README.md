@@ -66,8 +66,8 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [ ] `Append [DIRECTION]`
 * [ ] `Encryption ALGO KEY [IVEC] [MODE] [KEYLEN]`
 * [x] `Print MESSAGE`
-* [ ] `GetArray VAR ARRAY VAR_IDX`
-* [ ] `PutArray ARRAY VAR_IDX VAR`
+* [x] `GetArray VAR ARRAY VAR_IDX`
+* [x] `PutArray ARRAY VAR_IDX VAR`
 * [ ] `SortArray ARRAY [ALL]`
 * [ ] `SearchArray VAR ARRAY VAR`
 * [x] `CallFunction NAME [KEEP_VAR] [ARG1] [ARG2] ... [ARGn]`

@@ -428,6 +428,14 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "string".to_string(),
             include_str!("keyword_docs/string.txt").to_string(),
         ),
+        (
+            "getarray".to_string(),
+            include_str!("keyword_docs/getarray.txt").to_string(),
+        ),
+        (
+            "putarray".to_string(),
+            include_str!("keyword_docs/getarray.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

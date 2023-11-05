@@ -1,0 +1,56 @@
+================================================================================
+GetArray and PutArray
+================================================================================
+
+PutArray 0 0 FIRST_VAR
+PutArray 0 1 SECOND_VAR
+GetArray FIRST_VAR 0 0
+GetArray SECOND_VAR 0 1
+getarray FILES 0 -0x80000000
+for i = 0 < FILES
+  putarray 0 -1 VAR
+next i
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (putarray_statement
+    (putarray)
+    (integer_literal)
+    (integer_literal)
+    (identifier))
+  (putarray_statement
+    (putarray)
+    (integer_literal)
+    (integer_literal)
+    (identifier))
+  (getarray_statement
+    (getarray)
+    (identifier)
+    (integer_literal)
+    (integer_literal))
+  (getarray_statement
+    (getarray)
+    (identifier)
+    (integer_literal)
+    (integer_literal))
+  (getarray_statement
+    (getarray)
+    (identifier)
+    (integer_literal)
+    (integer_literal))
+  (for_statement
+    (for)
+    (identifier)
+    (operation)
+    (integer_literal)
+    (comparison)
+    (identifier)
+    (putarray_statement
+      (putarray)
+      (integer_literal)
+      (integer_literal)
+      (identifier))
+    (next_statement
+      (next)
+      (identifier))))

@@ -34,6 +34,8 @@ module.exports = grammar({
       $.get_statement,
       $.math_statement,
       $.log_statement,
+      $.getarray_statement,
+      $.putarray_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -155,6 +157,18 @@ module.exports = grammar({
       field("offset", $._expression),
       field("size", $._expression),
     ),
+    getarray_statement: $ => seq(
+      $.getarray,
+      field("variable", $._expression),
+      field("array", $._expression),
+      field("index", $._expression),
+    ),
+    putarray_statement: $ => seq(
+      $.putarray,
+      field("array", $._expression),
+      field("index", $._expression),
+      field("variable", $._expression),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -249,9 +263,11 @@ module.exports = grammar({
     get: $ => /[Gg][Ee][Tt]/,
     math: $ => /[Mm][Aa][Tt][Hh]/,
     log: $ => /[Ll][Oo][Gg]/,
+    getarray: $ => /[Gg][Ee][Tt][Aa][Rr][Rr][Aa][Yy]/,
+    putarray: $ => /[Pp][Uu][Tt][Aa][Rr][Rr][Aa][Yy]/,
 
     identifier: $ => /[a-zA-Z_]+[a-zA-Z0-9_\-]*/,
-    integer_literal: $ => /((0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
+    integer_literal: $ => /(\-?(0x)?[0-9a-fA-F]+)|(\-?[0-9]+)/,
     string_literal: $ => seq(
       '"',
       repeat(token.immediate(prec(1, /[^\\"\n]+/))),

@@ -1,0 +1,42 @@
+GetArray VAR ARRAY VAR_IDX
+...
+PutArray ARRAY VAR_IDX VAR
+
+    Commands to store variables in bidimensional arrays.
+    They work on a dynamic array where it's possible to store the
+    variables. Something like a temporary place or a stack.
+    It's highly suggested to pre-allocate the array if you know
+    the max value, example: PutArray 0 FILES 0
+    If the array index (VAR_IDX) is negative like -1:
+    - getarray will take the element located at that position from
+      the end of the array, so "getarray VAR 0 -1" will take the
+      last element while "getarray VAR 0 -2" will take the one
+      before
+    - putarray will ever append the element at the end of the
+      array, currently there is no difference if you use VAR_IDX
+      -1, -2, -1000
+    - getarray will return the number of elements in the array if
+      the negative amount is bigger than the elements... a sort of
+      work-around like: getarray ELEMENTS 0 -0x80000000
+
+    Examples:
+      PutArray 0 0 FIRST_VAR
+      PutArray 0 1 SECOND_VAR
+      GetArray FIRST_VAR 0 0
+      GetArray SECOND_VAR 0 1
+      getarray FILES 0 -0x80000000
+      for i = 0 < FILES
+        putarray 0 -1 VAR
+      next i
+
+    Note: since quickbms 0.11 both getarray and putarray also
+      support multiple variables, for example:
+        putarray 0 i NAME OFFSET SIZE
+        getarray NAME OFFSET SIZE 0 i
+      it's the same of:
+        putarray 0 i NAME
+        putarray 1 i OFFSET
+        putarray 2 i SIZE
+        getarray NAME   0 i
+        getarray OFFSET 1 i
+        getarray SIZE   2 i
