@@ -3,10 +3,15 @@ ComType statements
 ================================================================================
 
 comtype COMP_UNZIP_DYNAMIC
+comtype lzss "12 4 2 2 0"
 
 --------------------------------------------------------------------------------
 
 (source_file
   (comtype_statement
     (comtype)
-    (identifier)))
+    (identifier))
+  (comtype_statement
+    (comtype)
+    (identifier)
+    (string_literal)))

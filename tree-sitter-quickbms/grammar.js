@@ -250,6 +250,7 @@ module.exports = grammar({
     comtype_statement: $ => seq(
       $.comtype,
       field("algorithm", $._expression),
+      field("dictionary", optional($._expression)),
     ),
     clog_statement: $ => seq(
       $.clog,
