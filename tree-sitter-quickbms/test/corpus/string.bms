@@ -12,6 +12,8 @@ string NAME - 4
 #string FULLPATH p "c:\folder\%04x%04x.dat" VAR1 VAR2 # input
 #string FULLPATH s "c:\folder\%04x%04x.dat" VAR1 VAR2 # output
 
+string NAME += .dec # Note: I'm a little bit surprised this is allowed, but I saw it in a script
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -38,4 +40,10 @@ string NAME - 4
   (comment)
   (comment)
   (comment)
+  (comment)
+  (string_statement
+    (string)
+    (identifier)
+    (operation)
+    (identifier))
   (comment))
