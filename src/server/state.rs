@@ -326,6 +326,33 @@ impl ServerState {
             }
         }
 
+        // Find for loops
+        let query = Query::new(get_quickbms_language(), r#"(for_statement) @for_statement"#).unwrap();
+
+        let mut query_cursor = QueryCursor::new();
+        let text_callback = |node: tree_sitter::Node| format!("{:?}", node); // TODO: placeholder
+
+        let matches = query_cursor.captures(&query, tree.root_node(), text_callback);
+        for (m, _) in matches {
+            let for_statement = m.captures[0].node;
+            let location = for_statement.range().to_location(&url);
+
+            let for_body = for_statement.child_by_field_name("body");
+            if let Some(for_body) = for_body {
+                let for_body_location = for_body.range().to_location(&url);
+
+                // If statement body
+                folding_ranges.push(FoldingRange {
+                    start_line: location.range.start.line,
+                    start_character: None,
+                    end_line: for_body_location.range.end.line,
+                    end_character: None,
+                    kind: Some(FoldingRangeKind::Region),
+                });
+            }
+        }
+
+
         Some(folding_ranges)
     }
 }
