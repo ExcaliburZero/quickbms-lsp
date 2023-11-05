@@ -33,7 +33,7 @@ The following QuickBMS commands are currently supported by the langauge server.
 * [x] `IDString [FILENUM] STRING`
 * [x] `Log NAME OFFSET SIZE [FILENUM] [XSIZE]`
     * [ ] Add support for FILENUM and XSIZE
-* [ ] `Clog NAME OFFSET ZSIZE SIZE [FILENUM] [XSIZE]`
+* [x] `Clog NAME OFFSET ZSIZE SIZE [FILENUM] [XSIZE]`
 * [x] `Math VAR OP VAR`
     * [ ] Support all operators
 * [ ] `XMath VAR INSTR`

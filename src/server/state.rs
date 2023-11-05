@@ -476,6 +476,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "comtype".to_string(),
             include_str!("keyword_docs/comtype.txt").to_string(),
         ),
+        (
+            "clog".to_string(),
+            include_str!("keyword_docs/clog.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

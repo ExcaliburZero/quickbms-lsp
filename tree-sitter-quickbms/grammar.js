@@ -46,6 +46,7 @@ module.exports = grammar({
       $.getvarchr_statement,
       $.putvarchr_statement,
       $.comtype_statement,
+      $.clog_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -248,6 +249,20 @@ module.exports = grammar({
       $.comtype,
       field("algorithm", $._expression),
     ),
+    clog_statement: $ => seq(
+      $.clog,
+      field("name", $._expression),
+      field("offset", $._expression),
+      field("zsize", $._expression),
+      field("size", $._expression),
+      optional(choice(
+        field("file_number", $._expression),
+        seq(
+          field("file_number", $._expression),
+          field("xsize", $._expression),
+        ),
+      )),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -371,6 +386,7 @@ module.exports = grammar({
     getvarchr: $ => /[Gg][Ee][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     putvarchr: $ => /[Pp][Uu][Tt][Vv][Aa][Rr][Cc][Hh][Rr]/,
     comtype: $ => /[Cc][Oo][Mm][Tt][Yy][Pp][Ee]/,
+    clog: $ => /[Cc][Ll][Oo][Gg]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.]+[a-zA-Z0-9_\-\\\.]*/,

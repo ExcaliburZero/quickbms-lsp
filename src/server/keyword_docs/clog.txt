@@ -1,0 +1,26 @@
+Clog NAME OFFSET ZSIZE SIZE [FILENUM] [XSIZE]
+
+    It extracts the file decompressing it in real-time, this
+    operation doesn't change the current position of the file.
+    The decompression algorithm used in the operation is decided by
+    the ComType command which is zlib by default.
+    The content of the extracted file can be decrypted
+    automatically after decompression using the Encryption command.
+    For additional information please refer to the Log command.
+
+    Arguments:
+      NAME      Name of the output file
+      OFFSET    Position of the archive where is located the file
+      ZSIZE     Size of the compressed data in the archive
+      SIZE      Size of the uncompressed file, if you have used a
+                "_compress" algorithm then use SIZE equal to ZSIZE
+                because the tool will automatically calculate the
+                maximum amount of bytes taken for the compression
+      FILENUM   Number of the file associated to the archive (0)
+      XSIZE     Used with block encryptions like AES, just like Log
+
+    Examples:
+      Clog NAME OFFSET ZSIZE SIZE
+      Clog "dump.dat" 0 ZSIZE 10000000
+        # with some compression algorithms the file will have the
+        # real size while others will set it to 10000000

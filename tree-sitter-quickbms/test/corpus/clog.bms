@@ -1,0 +1,34 @@
+================================================================================
+Clog statements
+================================================================================
+
+Clog NAME OFFSET ZSIZE SIZE
+Clog "dump.dat" 0 ZSIZE 10000000
+# with some compression algorithms the file will have the
+# real size while others will set it to 10000000
+
+clog NAME 8 ZSIZE ZSIZE
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (clog_statement
+    (clog)
+    (identifier)
+    (identifier)
+    (identifier)
+    (identifier))
+  (clog_statement
+    (clog)
+    (string_literal)
+    (integer_literal)
+    (identifier)
+    (integer_literal))
+  (comment)
+  (comment)
+  (clog_statement
+    (clog)
+    (identifier)
+    (integer_literal)
+    (identifier)
+    (identifier)))
