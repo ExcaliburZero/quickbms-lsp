@@ -1,0 +1,20 @@
+GetDString VAR LENGTH [FILENUM]
+
+    It reads a defined amount of data from the file and stores it
+    in the given variable.
+    It's useful with filenames and other strings that have a length
+    specified in a previous 8, 16 or 32 bit field.
+
+    Arguments:
+      VAR       Variable which will receive the read data
+      LENGTH    Amount of bytes to read.
+                There is also an experimental method in which you
+                can specify the elements and their size like
+                LENGTH*NUM, for example:
+                  getdstring ARRAY NUMBERS*4
+      FILENUM   Number of the file associated to the archive (0)
+
+    Examples:
+      GetDString NAME NAME_LENGTH
+      GetDString NAME 0x100
+      getdstring ARRAY ELEMENTS*4

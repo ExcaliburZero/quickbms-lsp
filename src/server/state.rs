@@ -492,6 +492,10 @@ pub fn get_keyword_docs() -> HashMap<String, String> {
             "extension".to_string(),
             include_str!("keyword_docs/extension.txt").to_string(),
         ),
+        (
+            "getdstring".to_string(),
+            include_str!("keyword_docs/getdstring.txt").to_string(),
+        ),
     ]
     .iter()
     .cloned()

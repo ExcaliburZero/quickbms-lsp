@@ -1,0 +1,31 @@
+================================================================================
+GetDString statements
+================================================================================
+
+GetDString NAME NAME_LENGTH
+GetDString NAME 0x100
+getdstring ARRAY ELEMENTS*4
+
+getdstring name 0x10
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (getdstring_statement
+    (getdstring)
+    (identifier)
+    (identifier))
+  (getdstring_statement
+    (getdstring)
+    (identifier)
+    (integer_literal))
+  (getdstring_statement
+    (getdstring)
+    (identifier)
+    (array_size_expression
+      (identifier)
+      (integer_literal)))
+  (getdstring_statement
+    (getdstring)
+    (identifier)
+    (integer_literal)))

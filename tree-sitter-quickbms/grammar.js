@@ -49,6 +49,7 @@ module.exports = grammar({
       $.clog_statement,
       $.padding_statement,
       $.savepos_statement,
+      $.getdstring_statement,
     ),
     set_statement: $ => seq(
       $.set,
@@ -282,6 +283,12 @@ module.exports = grammar({
       field("variable", $._expression),
       field("file_number", optional($._expression)),
     ),
+    getdstring_statement: $ => seq(
+      $.getdstring,
+      field("variable", $._expression),
+      field("length", choice($._expression, $.array_size_expression)),
+      field("file_number", optional($._expression)),
+    ),
     comparison: $ => choice(
       "<",
       ">",
@@ -350,6 +357,11 @@ module.exports = grammar({
       $.integer_literal,
       $.identifier,
     ),
+    array_size_expression: $ => seq(
+      field("length", $._expression),
+      "*",
+      field("number", $._expression),
+    ),
 
     print: $ => /[Pp][Rr][Ii][Nn][Tt]/,
     set: $ => /[Ss][Ee][Tt]/,
@@ -411,6 +423,7 @@ module.exports = grammar({
     clog: $ => /[Cc][Ll][Oo][Gg]/,
     padding: $ => /[Pp][Aa][Dd][Dd][Ii][Nn][Gg]/,
     savepos: $ => /[Ss][Aa][Vv][Ee][Pp][Oo][Ss]/,
+    getdstring: $ => /[Gg][Ee][Tt][Dd][Ss][Tt][Rr][Ii][Nn][Gg]/,
     question_mark: $ => /\?/,
 
     identifier: $ => /[a-zA-Z_\\\.]+[a-zA-Z0-9_\-\\\.]*/,
