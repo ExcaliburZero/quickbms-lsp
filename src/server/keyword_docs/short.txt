@@ -1,0 +1,3 @@
+SHORT
+
+16 bit (aka INT), 0 to 0xffff

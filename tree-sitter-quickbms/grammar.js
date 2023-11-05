@@ -336,6 +336,7 @@ module.exports = grammar({
       $.seek_end,
     ),
     type: $ => choice(
+      $.short,
       $.long,
       $.asize,
       $.string,
@@ -377,6 +378,7 @@ module.exports = grammar({
     startfunction: $ => /[Ss][Tt][Aa][Rr][Tt][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     endfunction: $ => /[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
     callfunction: $ => /[Cc][Aa][Ll][Ll][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]/,
+    short: $ => /[Ss][Hh][Oo][Rr][Tt]/,
     long: $ => /[Ll][Oo][Nn][Gg]/,
     asize: $ => /[Aa][Ss][Ii][Zz][Ee]/,
     string: $ => /[Ss][Tt][Rr][Ii][Nn][Gg]/,
