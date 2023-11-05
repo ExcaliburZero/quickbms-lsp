@@ -112,6 +112,10 @@ class TestDocumentSymbolFunctions(Util.TestRegression):
     name = "document_symbol_functions"
 
 
+class TestFoldingRangeFunctions(Util.TestRegression):
+    name = "folding_range_functions"
+
+
 def update_baselines(tests: List[type[Util.TestRegression]]) -> None:
     for test in tests:
         print(f"Updating baseline: {test.name}")

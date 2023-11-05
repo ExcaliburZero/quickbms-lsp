@@ -1,0 +1,7 @@
+Content-Length: 202
+
+{"jsonrpc":"2.0","result":{"capabilities":{"definitionProvider":true,"documentSymbolProvider":true,"foldingRangeProvider":{},"hoverProvider":true,"referencesProvider":true,"textDocumentSync":1}},"id":0}Content-Length: 125
+
+{"jsonrpc":"2.0","result":[{"endLine":2,"kind":"region","startLine":0},{"endLine":31,"kind":"region","startLine":29}],"id":2}Content-Length: 38
+
+{"jsonrpc":"2.0","result":null,"id":2}
