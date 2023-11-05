@@ -8,11 +8,13 @@ This is an experimental language server for the scripting language QuickBMS.
 ## Language server endpoints
 These are the currently supported language server endpoints.
 * `initialize`
+* `textDocument/definition`
 * `textDocument/didOpen`
 * `textDocument/didChange`
 * `textDocument/documentSymbol`
+* `textDocument/foldingRange`
+    * Currently only for function declarations and `if/else if/else`` statements
 * `textDocument/hover`
-* `textDocument/definition`
 * `textDocument/references`
     * Currently only for functions
 
